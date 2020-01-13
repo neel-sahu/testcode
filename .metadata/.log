@@ -4327,3 +4327,9 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64 -showlocation -product
 
 !ENTRY com.ibm.mq.runtime 1 0 2020-01-13 11:34:22.244
 !MESSAGE 
+
+!ENTRY org.eclipse.osgi 2 1 2020-01-13 12:59:48.347
+!MESSAGE NLS unused message: SendMessage_msgNameLabel in: com.ibm.etools.mft.testmode.TestModeStrings
+
+!ENTRY org.eclipse.osgi 2 1 2020-01-13 12:59:48.348
+!MESSAGE NLS missing message: SendLastMessageAction_label in: com.ibm.etools.mft.testmode.TestModeStrings
