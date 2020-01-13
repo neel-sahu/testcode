@@ -1,0 +1,114 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		CALL EDI_TGetAGNCHG(Environment.variables.txnID,Environment.Variables.TXTResult1[],Environment.Variables.TXTResult2[],Environment.Variables.TXTResult3[],Environment.Variables.TXTResult4[],Environment.Variables.TXTResult5[],Environment.Variables.TXTResult6[]);
+		SET Environment.variables.dbEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBENDTIME;');
+		SET OutputRoot.Properties.CodedCharSetId = 1208;
+
+		SET OutputRoot.Properties.MessageType ='{}:AGNCHG';
+		SET OutputRoot.Properties.MessageSet ='{JMB_DFDL}';
+		SET OutputRoot.Properties.ReplyProtocol = 'FILE';
+		--UNH
+
+		SET OutputRoot.DFDL.AGNCHG.UNH.DocumentType = Environment.Variables.TXTResult1[1].DocumentType;
+		SET OutputRoot.DFDL.AGNCHG.UNH.DocumentName = Environment.Variables.TXTResult1[1].DocumentName;
+		SET OutputRoot.DFDL.AGNCHG.UNH.DocumentNumber = Environment.Variables.TXTResult1[1].DocumentNumber;
+		SET OutputRoot.DFDL.AGNCHG.UNH.CommonRefNumber = Environment.Variables.TXTResult1[1].CommonRefNumber;
+		SET OutputRoot.DFDL.AGNCHG.UNH.MessageType = Environment.Variables.TXTResult1[1].MessageType;
+		SET OutputRoot.DFDL.AGNCHG.UNH.SenderID = Environment.Variables.TXTResult1[1].SenderID;
+		--RPD
+		DECLARE countRecord INTEGER 0;
+		DECLARE i INTEGER 1;
+
+		SET countRecord = CARDINALITY(Environment.Variables.TXTResult2[]);
+
+		WHILE countRecord > 0 DO
+			SET OutputRoot.DFDL.AGNCHG.RPD.RecipientsID[i] = Environment.Variables.TXTResult2[i].ReceivingParty ;
+			SET i = i + 1;
+			SET countRecord = countRecord - 1;
+		END WHILE;
+		-- NPD
+		DECLARE countRecord1 INTEGER 0;
+		DECLARE j INTEGER 1;
+
+		SET countRecord1 = CARDINALITY(Environment.Variables.TXTResult3[]);
+
+		WHILE countRecord1 > 0 DO
+			SET OutputRoot.DFDL.AGNCHG.NPD.NotifyPartyID[j] = Environment.Variables.TXTResult3[j].NotifyParty ;
+			SET j = j + 1;
+			SET countRecord1 = countRecord1 - 1;
+		END WHILE;
+		--for AGH
+		SET OutputRoot.DFDL.AGNCHG.AGH.RecordType = Environment.Variables.TXTResult4[1].RecordType;
+		SET OutputRoot.DFDL.AGNCHG.AGH.DeliveryOrderNumber = Environment.Variables.TXTResult4[1].DeliveryOrderNumber;
+		SET OutputRoot.DFDL.AGNCHG.AGH.DeliveryOrderDate = Environment.Variables.TXTResult4[1].DeliveryOrderNumber;
+		--SET OutputRoot.DFDL.AGNCHG.AGH.DeliveryOrderNumber = Environment.Variables.TXTResult4[1].DeliveryOrderDate;
+		SET OutputRoot.DFDL.AGNCHG.AGH.DeliveryOrderforExamination = Environment.Variables.TXTResult4[1].DeliveryOrderExamination;
+		--SET OutputRoot.DFDL.AGNCHG.AGH.ValidityPeriodupto = Environment.Variables.TXTResult4[1].VCN;
+		SET OutputRoot.DFDL.AGNCHG.AGH.VIAORVCN = Environment.Variables.TXTResult4[1].VCN;
+		SET OutputRoot.DFDL.AGNCHG.AGH.CallSign = Environment.Variables.TXTResult4[1].CallSignVesselCode;
+		SET OutputRoot.DFDL.AGNCHG.AGH.IMONumber = Environment.Variables.TXTResult4[1].IMONumber;
+		SET OutputRoot.DFDL.AGNCHG.AGH.VoyageNumber = Environment.Variables.TXTResult4[1].VoyageNumber;
+		SET OutputRoot.DFDL.AGNCHG.AGH.WhetherForeignCoastal = Environment.Variables.TXTResult4[1].ForeignCoastalFlag;
+		SET OutputRoot.DFDL.AGNCHG.AGH.IGMNumber = Environment.Variables.TXTResult4[1].IGMNumber;
+		SET OutputRoot.DFDL.AGNCHG.AGH.IGMDate = Environment.Variables.TXTResult4[1].IGMDate;
+		--SET OutputRoot.DFDL.AGNCHG.AGH.IGMLineNumber = Environment.Variables.TXTResult4[1].IGMNumber;
+		--SET OutputRoot.DFDL.AGNCHG.AGH.IGMSubLineNumber = Environment.Variables.TXTResult4[1].IGMNumber;
+		--SET OutputRoot.DFDL.AGNCHG.AGH.BillofLadingNo = Environment.Variables.TXTResult4[1].IGMNumber;
+		--SET OutputRoot.DFDL.AGNCHG.AGH.IGMNumber = Environment.Variables.TXTResult4[1].IGMNumber;
+		--SET OutputRoot.DFDL.AGNCHG.AGH.BillofLadingDate = Environment.Variables.TXTResult4[1].IGMNumber;
+		--SET OutputRoot.DFDL.AGNCHG.AGH.HouseBillofLadingNumber = Environment.Variables.TXTResult4[1].IGMNumber;
+		--SET OutputRoot.DFDL.AGNCHG.AGH.HouseBillofLadingDate = Environment.Variables.TXTResult4[1].IGMNumber;
+		--SET OutputRoot.DFDL.AGNCHG.AGH.IGMNumber = Environment.Variables.TXTResult4[1].IGMNumber;
+		---for AGD
+		DECLARE countRecord3 INTEGER 0;
+		DECLARE k INTEGER 1;
+
+		SET countRecord3 = CARDINALITY(Environment.Variables.TXTResult5[]);
+		WHILE countRecord3 > 0 DO
+
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].RecordType = Environment.Variables.TXTResult5[k].RecordType;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].RecordNumber = Environment.Variables.TXTResult5[k].RecordNumber;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].NameofConsignee = Environment.Variables.TXTResult5[k].NameofConsignee;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].ConsigneeAddress1 = Environment.Variables.TXTResult5[k].ConsigneeAddress1;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].ConsigneeAddress2 = Environment.Variables.TXTResult5[k].ConsigneeAddress2;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].ConsigneeCity = Environment.Variables.TXTResult5[k].ConsigneeAddress3;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].ConsigneeState = Environment.Variables.TXTResult5[k].IGMNumber;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].PortofLoading = Environment.Variables.TXTResult5[k].PortOfLoading;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].PortofDischarge = Environment.Variables.TXTResult5[k].PortOfDestination;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].Containerised = Environment.Variables.TXTResult5[k].Containerised;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].ContainerNo = Environment.Variables.TXTResult5[k].IGMNumber;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].ISOCodeofContainer = Environment.Variables.TXTResult5[k].IGMNumber;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].CargoDescription = Environment.Variables.TXTResult5[k].CargoDescription;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].NumberofPackages = Environment.Variables.TXTResult5[k].NumberOfPackages;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].PackageCode = Environment.Variables.TXTResult5[k].PackageCode;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].MarksandNumbers = Environment.Variables.TXTResult5[k].MarksAndNumbers;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].FreightPaid = Environment.Variables.TXTResult5[k].FreightPaid;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].ReceiptNumber = Environment.Variables.TXTResult5[k].IGMNumber;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].ReceiptDate = Environment.Variables.TXTResult5[k].IGMNumber;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].StampDuty = Environment.Variables.TXTResult5[k].StampDuty;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].StampDutyPaidAmount = Environment.Variables.TXTResult5[k].IGMNumber;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].StampDutyPaidDate = Environment.Variables.TXTResult5[k].IGMNumber;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].Deliveryto = Environment.Variables.TXTResult5[k].IGMNumber;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].Authorisationcodeofagent = Environment.Variables.TXTResult5[k].IGMNumber;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].CHACode = Environment.Variables.TXTResult5[k].IGMNumber;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].TotalGrossweight = Environment.Variables.TXTResult5[k].TotalGrossWeight;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].DirectTransit = Environment.Variables.TXTResult5[k].DirectOrTransit;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].StageFullPartDelivery = Environment.Variables.TXTResult5[k].DeliveryStage;
+			SET OutputRoot.DFDL.AGNCHG.AGD[k].IECode = Environment.Variables.TXTResult5[k].IGMNumber;
+
+			SET k = k + 1;
+			SET countRecord3 = countRecord3 - 1;
+		END WHILE;
+		--
+		-- --UNH
+		-- SET OutputRoot.DFDL.AGNCHG.UNT.DocumentCreatedDateandTime = Environment.Variables.TXTResult6[1].IssuedDateTime;
+		--
+		SET OutputRoot.DFDL.AGNCHG.UNT.DocumentCreatedDateandTime = Environment.Variables.TXTResult6[1].IssuedDateTime;
+
+	END;
+
+	CREATE PROCEDURE EDI_TGetAGNCHG( IN TransactionID CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 6
+	EXTERNAL NAME "dbo.EDI_TGetAGNCHG";
+

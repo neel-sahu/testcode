@@ -1,0 +1,464 @@
+
+
+
+
+
+
+
+
+
+
+
+
+BROKER SCHEMA OUTBOUND_TEXT_XML
+
+CREATE COMPUTE MODULE VESSEL_Get_IFTDGN_Data_GetFormatType_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.variables.ediStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS EDISTARTTIME;');
+		SET Environment.variables.txnID = InputRoot.XMLNSC.PCS.Common_Ref;
+		DECLARE MessageName CHARACTER InputRoot.XMLNSC.PCS.Action_In;
+		DECLARE request BLOB ASBITSTREAM(InputRoot.XMLNSC, 549,1208);
+		DECLARE ReplaceCarriageReturn BLOB X'0d0a';
+		SET request = REPLACE(request, ReplaceCarriageReturn);
+		SET Environment.variables.request = CAST(request AS CHARACTER CCSID 1208);
+		SET Environment.variables.dbStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBSTARTTIME;');
+		CALL EDI_GetFormatTypeByRefAndMsg(Environment.variables.txnID,MessageName,Environment.Variables.Result[],Environment.Variables.Result56[]);
+
+		RETURN TRUE;
+	END;
+END MODULE;
+
+
+CREATE COMPUTE MODULE VESSEL_Get_IFTDGN_Data_textCreation_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+
+		CALL EDI_TGetIFTDGN(Environment.variables.txnID,Environment.Variables.TXTResult1[],Environment.Variables.TXTResult2[],Environment.Variables.TXTResult3[],Environment.Variables.TXTResult4[],Environment.Variables.TXTResult5[],Environment.Variables.TXTResult6[],Environment.Variables.TXTResult7[]);
+		SET Environment.variables.dbEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBENDTIME;');
+		SET OutputRoot.Properties.CodedCharSetId = 1208;
+		-- SET OutputRoot.Properties.MessageType ='{}:iftdgn';
+		-- SET OutputRoot.Properties.MessageSet ='{JMB_DFDL}';
+		-- SET OutputRoot.Properties.ReplyProtocol = 'FILE';
+
+		SET OutputRoot.DFDL.iftdgn.UNH.Values = COALESCE(Environment.Variables.TXTResult1[1].DocumentType,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].DocumentName,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].DocumentNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].CommonRefNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].Messagetype,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].SenderID,'');
+		--for RPD
+		DECLARE countRecord INTEGER 0;
+		DECLARE i INTEGER 1;
+
+		SET countRecord = CARDINALITY(Environment.Variables.TXTResult2[]);
+
+		WHILE countRecord > 0 DO
+			SET OutputRoot.DFDL.iftdgn.RPD.RPDValues[i] = Environment.Variables.TXTResult2[i].ReceivingParty ;
+			SET i = i + 1;
+			SET countRecord = countRecord - 1;
+		END WHILE;
+		--for NPD
+		DECLARE countRecord1 INTEGER 0;
+		DECLARE j INTEGER 1;
+
+		SET countRecord1 = CARDINALITY(Environment.Variables.TXTResult3[]);
+
+		WHILE countRecord1 > 0 DO
+			SET OutputRoot.DFDL.iftdgn.NPD.NPDValues[j] = Environment.Variables.TXTResult3[j].NotifyParty ;
+			SET j = j + 1;
+			SET countRecord1 = countRecord1 - 1;
+		END WHILE;
+		--for DGH
+		SET OutputRoot.DFDL.iftdgn.DGH.DGHValues = COALESCE(Environment.Variables.TXTResult4[1].RecordType,'')||''||
+		-- COALESCE(Environment.Variables.TXTResult4[1].RecordType,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].CallSign,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].IMONumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].VoyageNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].VesselCountryCode,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].ShippingAgent,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].ShippingLine,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].IGMNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].IGMDate,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].RotationNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].RotationNumberDate,'');
+		-- --for CGT
+
+		DECLARE countRecord2 INTEGER 0;
+		DECLARE countRecord3 INTEGER 0;
+		DECLARE k INTEGER 1;
+		DECLARE m INTEGER 1;
+
+
+		SET countRecord2 = CARDINALITY(Environment.Variables.TXTResult5[]);
+		SET countRecord3 = CARDINALITY(Environment.Variables.TXTResult6[]);
+		DECLARE sk INTEGER 1;
+		DECLARE ad INTEGER 1;
+		WHILE (sk <= countRecord2) DO
+			SET OutputRoot.DFDL.iftdgn.CGT[sk].CGTValues = COALESCE(Environment.Variables.TXTResult5[sk].RecordType ,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].RecordNumber,'')||''||
+			COALESCE(Environment.TXTResult5.TXTResult5[sk].CACode,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].ContainerNumber,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].ContainerClassification ,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].ContainerISOCode ,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].ShippersOwnContainerFlag,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].CargoETA,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].POLorDischargeCode,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].DOLorDischarge,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].FinalPortOfDischarge,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].CargoType,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].EquipmentStatus,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].RSDCertNumber,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].RSDCertDate ,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].RSDValidityDate,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].IGMLineNumber ,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].IGMSubLineNumber,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].NotifyParty,'');
+			--DGD
+			--SET ad = 1;
+			WHILE (ad <= countRecord3) DO
+				SET OutputRoot.DFDL.iftdgn.DGD.DGDValues = COALESCE(Environment.Variables.TXTResult6[ad].MLOClass,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].IMOClass,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].UNIMDGNumber,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].ContainerOrCargo,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].CargoDescription,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].MarksAndNumbers,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].NumberOfPackages,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].PackageType,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].UnitOfQuantity,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].WeightOfConsignment,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].WeightOfDangerousSubstance,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].HandlingInstructions,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].EMS,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].MFAG,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].DescriptionOfFilledCylinders,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].StorageInstruction,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].MaxFlashPoint,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].MinFlashPoint,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].StowagePositionOnBoard,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].ToalNoOfCylindersInVessel,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].ToalQtyOfCylindersInVessel,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].UnitOfQty,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].CustomSiteCode,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].EmergencyContactNumber,'');
+				SET ad = countRecord3 +1;
+
+			END WHILE;
+			SET sk = sk + 1;
+			SET ad = sk;
+		END WHILE;
+
+
+
+		SET OutputRoot.DFDL.iftdgn.UNT.DocumentCreatedDateandTime = Environment.Variables.TXTResult7[1].IssuedDateTime;
+
+
+	END;
+
+
+END MODULE;
+
+CREATE COMPUTE MODULE VESSEL_Get_IFTDGN_Data_xmlCreation_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		CALL EDI_XGetIFTDGN(Environment.variables.txnID,Environment.Variables.XMLResultHD[],Environment.Variables.XMLResultREC[],Environment.Variables.XMLResultFID[],Environment.Variables.XMLResultD[],Environment.Variables.XMLResultISD[]);
+		SET Environment.variables.dbEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBENDTIME;');
+		DECLARE i INTEGER 1;
+		SET OutputRoot.XMLNSC.DangerousGoods.DocumentHeader.DocumentReference.DocumentType = Environment.Variables.XMLResultHD[1].DocumentType;
+		DECLARE headerRef REFERENCE TO OutputRoot.XMLNSC.DangerousGoods.DocumentHeader.DocumentReference;
+		SET headerRef.DocumentName = Environment.Variables.XMLResultHD[1].DocumentName;
+		SET headerRef.DocumentNumber = Environment.Variables.XMLResultHD[1].DocumentNumber;
+		SET headerRef.CommonRefNumber = Environment.Variables.XMLResultHD[1].CommonRefNumber;
+		SET headerRef.MessageType = Environment.Variables.XMLResultHD[1].MessageType;
+		SET headerRef.SenderID = Environment.Variables.XMLResultHD[1].SenderID;
+
+		DECLARE recPartyCardinality INTEGER CARDINALITY (Environment.Variables.XMLResultREC[]);
+		DECLARE notPartyCardinality INTEGER CARDINALITY (Environment.Variables.XMLResultFID[]);
+		WHILE (i <= recPartyCardinality) DO
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentHeader.DocumentExchangeDetails.ReceivingPartyDetails.ReceivingParty[i] = Environment.Variables.XMLResultREC[i].ReceivingParty;
+			SET i = i + 1;
+		END WHILE;
+		SET i = 1;
+		WHILE (i <= notPartyCardinality) DO
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentHeader.DocumentExchangeDetails.NotifyPartyDetails.NotifyParty[i] = Environment.Variables.XMLResultFID[i].NotifyParty;
+			SET i = i + 1;
+		END WHILE;
+		SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNHeader.RecordType = Environment.Variables.XMLResultREC[1].RecordType;
+		DECLARE iftdgnHeader REFERENCE TO OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNHeader;
+		SET iftdgnHeader.VCN = Environment.Variables.XMLResultREC[1].VCN;
+		SET iftdgnHeader.CallSign = Environment.Variables.XMLResultREC[1].CallSign;
+		SET iftdgnHeader.IMONumber = Environment.Variables.XMLResultREC[1].IMONumber;
+		SET iftdgnHeader.VoyageNumber = Environment.Variables.XMLResultREC[1].VoyageNumber;
+		SET iftdgnHeader.VesselCountryCode = Environment.Variables.XMLResultREC[1].VesselCountryCode;
+		SET iftdgnHeader.ShippingAgent = Environment.Variables.XMLResultREC[1].ShippingAgent;
+		SET iftdgnHeader.ShippingLine = Environment.Variables.XMLResultREC[1].ShippingLine;
+		SET iftdgnHeader.IGMNumber = Environment.Variables.XMLResultREC[1].IGMNumber;
+		SET iftdgnHeader.IGMDate = Environment.Variables.XMLResultREC[1].IGMDate;
+		SET iftdgnHeader.RotationNumber = Environment.Variables.XMLResultREC[1].RotationNumber;
+		SET iftdgnHeader.RotationNumberDate = Environment.Variables.XMLResultREC[1].RotationNumberDate;
+
+		DECLARE j INTEGER 1;
+		DECLARE consignmentCard INTEGER CARDINALITY (Environment.Variables.XMLResultREC[]);
+		WHILE (j <= consignmentCard) DO
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].RecordType = Environment.Variables.XMLResultREC[j].RecordType;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].RecordNumber = Environment.Variables.XMLResultREC[j].RecordNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].CACode = Environment.Variables.XMLResultREC[j].CACode;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ContainerNumber = Environment.Variables.XMLResultREC[j].ContainerNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ContainerClassification = Environment.Variables.XMLResultREC[j].ContainerClassification;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ContainerISOCode = Environment.Variables.XMLResultREC[j].ContainerISOCode;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ShippersOwnContainerFlag = Environment.Variables.XMLResultREC[j].ShippersOwnContainerFlag;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].CargoETA = Environment.Variables.XMLResultREC[j].CargoETA;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].POLorDischargeCode = Environment.Variables.XMLResultREC[j].POLorDischargeCode;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].DOLorDischarge = Environment.Variables.XMLResultREC[j].DOLorDischarge;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].FinalPortOfDischarge = Environment.Variables.XMLResultREC[j].FinalPortOfDischarge;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].CargoType = Environment.Variables.XMLResultREC[j].CargoType;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].EquipmentStatus = Environment.Variables.XMLResultREC[j].EquipmentStatus;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].RSDCertNumber = Environment.Variables.XMLResultREC[j].RSDCertNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].RSDCertDate = Environment.Variables.XMLResultREC[j].RSDCertDate;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].RSDValidityDate = Environment.Variables.XMLResultREC[j].RSDValidityDate;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].IGMLineNumber = Environment.Variables.XMLResultREC[j].IGMLineNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].IGMSubLineNumber = Environment.Variables.XMLResultREC[j].IGMSubLineNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].SBNumber = Environment.Variables.XMLResultREC[j].SBNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].MLOClass = Environment.Variables.XMLResultREC[j].MLOClass;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].IMOClass = Environment.Variables.XMLResultREC[j].IMOClass;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].UNIMDGNumber = Environment.Variables.XMLResultREC[j].UNIMDGNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ContainerOrCargo = Environment.Variables.XMLResultREC[j].ContainerOrCargo;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].CargoDescription = Environment.Variables.XMLResultREC[j].CargoDescription;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].MarksAndNumbers = Environment.Variables.XMLResultREC[j].MarksAndNumbers;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].NumberOfPackages = Environment.Variables.XMLResultREC[j].NumberOfPackages;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].PackageType = Environment.Variables.XMLResultREC[j].PackageType;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].UnitOfQuantity = Environment.Variables.XMLResultREC[j].UnitOfQuantity;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].WeightOfConsignment = Environment.Variables.XMLResultREC[j].WeightOfConsignment;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].WeightOfDangerousSubstance = Environment.Variables.XMLResultREC[j].WeightOfDangerousSubstance;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].HandlingInstructions = Environment.Variables.XMLResultREC[j].HandlingInstructions;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].EMS = Environment.Variables.XMLResultREC[j].EMS;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].MFAG = Environment.Variables.XMLResultREC[j].MFAG;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].DescriptionOfFilledCylinders = Environment.Variables.XMLResultREC[j].DescriptionOfFilledCylinders;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].StorageInstruction = Environment.Variables.XMLResultREC[j].StorageInstruction;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].MaxFlashPoint = Environment.Variables.XMLResultREC[j].MaxFlashPoint;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].MinFlashPoint = Environment.Variables.XMLResultREC[j].MinFlashPoint;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].StowagePositionOnBoard = Environment.Variables.XMLResultREC[j].StowagePositionOnBoard;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ToalNoOfCylindersInVessel = Environment.Variables.XMLResultREC[j].ToalNoOfCylindersInVessel;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ToalQtyOfCylindersInVessel = Environment.Variables.XMLResultREC[j].ToalQtyOfCylindersInVessel;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].UnitOfQty = Environment.Variables.XMLResultREC[j].UnitOfQty;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].CustomSiteCode = Environment.Variables.XMLResultREC[j].CustomSiteCode;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].EmergencyContactNumber = Environment.Variables.XMLResultREC[j].EmergencyContactNumber;
+			SET j = j + 1;
+		END WHILE;
+		SET OutputRoot.XMLNSC.DangerousGoods.DocumentSummary.IssuedDateTime = Environment.Variables.XMLResultISD[1].IssuedDateTime;
+	END;
+END MODULE;
+
+CREATE COMPUTE MODULE VESSEL_Get_IFTDGN_Data_failureResponse_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE errorCode CHARACTER;
+		DECLARE errorText CHARACTER;
+		IF (EXISTS(InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException[])) THEN
+			SET errorCode = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException.Number;
+			SET errorText = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException.Text;
+		ELSEIF (EXISTS(InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException[])) THEN
+			SET errorCode = InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException.Number;
+			SET errorText = InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException.Insert[3].Text;
+		ELSEIF (Environment.variables.noResultbyProcedure = TRUE) THEN
+			SET errorCode = 'ERR01';
+			SET errorText = 'No resultset obtained from EDI_GetFormatTypeByRefAndMsg procedure';
+		ELSEIF (EXISTS(InputExceptionList.RecoverableException.RecoverableException.RecoverableException[])) THEN
+			SET errorCode = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.Number;
+			SET errorText = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.Text;
+		ELSE
+			SET errorCode = 'ERR01';
+			SET errorText = 'ESB exception occurred';
+		END IF;
+
+		DECLARE currTime CHARACTER CURRENT_TIMESTAMP;
+		SET currTime = REPLACE(currTime,'TIMESTAMP ','');
+		SET currTime = SUBSTRING(currTime BEFORE '.');
+		SET currTime = SUBSTRING(currTime FROM 2);
+		SET OutputRoot.XMLNSC.MQI_ERRORS.UserExceptionTree.Executiongroup = ExecutionGroupLabel;
+		DECLARE userExcepRef REFERENCE TO OutputRoot.XMLNSC.MQI_ERRORS.UserExceptionTree;
+		SET userExcepRef.Brokername = BrokerName;
+		SET userExcepRef.FlowName = MessageFlowLabel;
+		SET userExcepRef.ErrorCode = errorCode;
+		SET userExcepRef.ErrorText = errorText;
+
+
+		SET OutputRoot.XMLNSC.MQI_ERRORS.TIMESTAMP = currTime;
+
+		SET OutputRoot.XMLNSC.MQI_ERRORS.MsgBody = Environment.variables.request;
+
+		SET OutputRoot.XMLNSC.MQI_ERRORS.ExceptionList = InputExceptionList;
+
+		DECLARE outputBlob BLOB ASBITSTREAM(OutputRoot.XMLNSC, 549,1208);
+		DECLARE outputChar CHARACTER CAST(outputBlob AS CHARACTER CCSID 1208);
+		CALL EDI_InsIIBError(outputChar);
+		-- CALL zzz_EDI_InsIIBError_20190118(outputChar);
+		COMMIT;
+		RETURN TRUE;
+	END;
+	CREATE PROCEDURE EDI_InsIIBError( IN errorXML CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 0
+	EXTERNAL NAME "dbo.EDI_InsIIBError";
+	-- CREATE PROCEDURE zzz_EDI_InsIIBError_20190118( IN errorXML CHARACTER)
+	-- LANGUAGE DATABASE
+	-- DYNAMIC RESULT SETS 0
+	-- EXTERNAL NAME "dbo.zzz_EDI_InsIIBError_20190118";
+END MODULE;
+
+
+CREATE COMPUTE MODULE VESSEL_Get_IFTDGN_Data_fileCreation_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		IF (EXISTS(InputRoot.XMLNSC[])) THEN
+			DECLARE outputBlob BLOB ASBITSTREAM(InputRoot.XMLNSC, 549,1208);
+			DECLARE ReplaceCarriageReturn BLOB X'0d0a';
+
+			SET outputBlob = REPLACE(outputBlob, ReplaceCarriageReturn);
+			SET Environment.Variables.charData = CAST(outputBlob AS CHARACTER CCSID 1208);
+			SET OutputRoot.XMLNSC = xmlBeautify(Environment.Variables.charData);
+			SET OutputRoot.XMLNSC.root = SUBSTRING(OutputRoot.XMLNSC AFTER '?>');
+			DECLARE stringOut BLOB;
+			SET stringOut = CAST(OutputRoot.XMLNSC.root as BLOB CCSID 1208);
+
+			SET OutputRoot.BLOB.BLOB = stringOut;
+
+			SET OutputLocalEnvironment.Destination.File.Name = 'IFTDGN' || Environment.variables.txnID || '.xml';
+			SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = Environment.Variables.XMLResultREC[1].SFTP_PATH;
+		ELSEIF (EXISTS(InputRoot.DFDL[])) THEN
+			SET OutputRoot.Properties.MessageType ='{}:iftdgn';
+			SET OutputRoot.Properties.MessageSet ='{JMB_DFDL}';
+			SET OutputRoot.DFDL.iftdgn = InputRoot.DFDL.iftdgn;
+			SET OutputLocalEnvironment.Destination.File.Name = 'IFTDGN' || Environment.variables.txnID || '.txt';
+			SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = Environment.Variables.TXTResult2[1].SFTP_PATH;
+		END IF;
+		SET Environment.variables.fileName = OutputLocalEnvironment.Destination.File.Name;
+		SET Environment.variables.fileDirectory = OutputLocalEnvironment.Destination.File.Remote.ServerDirectory;
+	END;
+
+	CREATE PROCEDURE xmlBeautify( IN unformattedXML CHARACTER)
+	RETURNS CHARACTER
+	LANGUAGE JAVA
+	EXTERNAL NAME "com.portall.xmlBeautify.XmlBeautifier.prettyFormat";
+END MODULE;
+
+CREATE PROCEDURE EDI_TGetIFTDGN( IN TransactionID CHARACTER)
+LANGUAGE DATABASE
+DYNAMIC RESULT SETS 7
+EXTERNAL NAME "dbo.EDI_TGetIFTDGN";
+
+CREATE PROCEDURE EDI_XGetIFTDGN( IN TransactionID CHARACTER)
+LANGUAGE DATABASE
+DYNAMIC RESULT SETS 5
+EXTERNAL NAME "dbo.EDI_XGetIFTDGN";
+
+CREATE PROCEDURE EDI_GetFormatTypeByRefAndMsg( IN TransactionID CHARACTER,IN MessageName CHARACTER)
+LANGUAGE DATABASE
+DYNAMIC RESULT SETS 2
+EXTERNAL NAME "dbo.EDI_GetFormatTypeByRefAndMsg";
+
+CREATE COMPUTE MODULE VESSEL_Get_IFTDGN_Data_mailSMSCall_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.variables.mailStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS MAILSTARTTIME;');
+		SET Environment.variables.mailEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS MAILENDTIME;');
+		SET Environment.variables.SMSStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS SMSSTARTTIME;');
+	END;
+END MODULE;
+
+CREATE COMPUTE MODULE VESSEL_Get_IFTDGN_Data_auditDetails_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.variables.ediEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS EDIENDTIME;');
+		DECLARE ediEndTime CHARACTER CAST(Environment.variables.ediEndTime[1].EDIENDTIME AS CHARACTER);
+		SET ediEndTime = REPLACE(ediEndTime,'TIMESTAMP ','');
+		-- SET ediEndTime = SUBSTRING(mailStartTime BEFORE '.');
+		SET ediEndTime = SUBSTRING(ediEndTime FROM 2 FOR 23);
+
+		DECLARE ediStartTime CHARACTER CAST(Environment.variables.ediStartTime[1].EDISTARTTIME AS CHARACTER);
+		DECLARE mailStartTime CHARACTER CAST(Environment.variables.mailStartTime[1].MAILSTARTTIME AS CHARACTER);
+		DECLARE mailEndTime CHARACTER CAST(Environment.variables.mailEndTime[1].MAILENDTIME AS CHARACTER);
+		DECLARE dbStartTime CHARACTER CAST(Environment.variables.dbStartTime[1].DBSTARTTIME AS CHARACTER);
+		DECLARE dbEndTime CHARACTER CAST(Environment.variables.dbEndTime[1].DBENDTIME AS CHARACTER);
+		DECLARE SMSStartTime CHARACTER CAST(Environment.variables.SMSStartTime[1].SMSSTARTTIME AS CHARACTER);
+
+		SET ediStartTime = REPLACE(ediStartTime,'TIMESTAMP ','');
+		SET ediStartTime = SUBSTRING(ediStartTime FROM 2 FOR 23);
+
+		SET mailStartTime = REPLACE(mailStartTime,'TIMESTAMP ','');
+		SET mailStartTime = SUBSTRING(mailStartTime FROM 2 FOR 23);
+
+		SET mailEndTime = REPLACE(mailEndTime,'TIMESTAMP ','');
+		SET mailEndTime = SUBSTRING(mailEndTime FROM 2 FOR 23);
+
+		SET SMSStartTime = REPLACE(SMSStartTime,'TIMESTAMP ','');
+		SET SMSStartTime = SUBSTRING(SMSStartTime FROM 2 FOR 23);
+
+		SET dbStartTime = REPLACE(dbStartTime,'TIMESTAMP ','');
+		SET dbStartTime = SUBSTRING(dbStartTime FROM 2 FOR 23);
+
+		SET dbEndTime = REPLACE(dbEndTime,'TIMESTAMP ','');
+		SET dbEndTime = SUBSTRING(dbEndTime FROM 2 FOR 23);
+
+		DECLARE messageSender CHARACTER;
+		DECLARE emailId CHARACTER;
+		DECLARE mobileNumber CHARACTER;
+		IF (Environment.Variables.Result[1].FileFormat = 'XML' OR Environment.Variables.Result56[1].FileFormat = 'XML') THEN
+			SET messageSender = Environment.Variables.XMLResultHD[1].SenderID;
+			SET emailId = Environment.Variables.XMLResultREC[1].Email_id;
+			SET mobileNumber = Environment.Variables.XMLResultREC[1].Mobile;
+		ELSE
+			SET messageSender = Environment.Variables.TXTResult1[1].SenderID;
+			SET emailId = Environment.Variables.TXTResult2[1].Email_id;
+			SET mobileNumber = Environment.Variables.TXTResult2[1].Mobile;
+		END IF;
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Header.MS_REF_NO = Environment.variables.txnID;
+		DECLARE headerRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Header;
+		SET headerRef.MSG_UID = UUIDASCHAR;
+		IF (Environment.Variables.Result[1].FileFormat = 'XML' OR Environment.Variables.Result56[1].FileFormat = 'XML') THEN
+			SET headerRef.MSG_TYPE = 'IFTDGN_XML_OUT';
+		ELSE
+			SET headerRef.MSG_TYPE = 'IFTDGN_TXT_OUT';
+		END IF;
+		SET headerRef.MSG_TIME = ediStartTime;
+		SET headerRef.MSG_SNDR = messageSender;
+		SET headerRef.PORT_CODE = SUBSTRING( Environment.variables.fileDirectory AFTER 'PORTS/');
+		SET headerRef.PORT_CODE = SUBSTRING(headerRef.PORT_CODE BEFORE '/');
+		SET headerRef.EVENT_NAME = 'Generation';
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.Message.EDI_START_TS = ediStartTime;
+		DECLARE messageRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.Message;
+		SET messageRef.EDI_END_TS = ediEndTime;
+		SET messageRef.FILE_NAME = Environment.variables.fileName;
+		SET messageRef.EDI_DIRECTORY_INFO = Environment.variables.fileDirectory;
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.Email.MAIL_START_TS = mailStartTime;
+		DECLARE emailRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.Email;
+		SET emailRef.MAILING_ID = emailId;
+		SET emailRef.MAIL_NOTIFICATION_STATUS = 'Not Sent';
+		SET emailRef.MAIL_END_TS = mailEndTime;
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.SMS.SMS_START_TS = SMSStartTime;
+		DECLARE smsRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.SMS;
+		SET smsRef.SMS_NOTIFICATION_NO = mobileNumber;
+		SET smsRef.SMS_NOTIFICATION_STATUS = 'Not Sent';
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.Database.DB_SP_START_TS = dbStartTime;
+		DECLARE databaseRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.Database;
+		SET databaseRef.DB_SP_END_TS = dbEndTime;
+		SET databaseRef.DB_SP_STATUS = 'S';
+		SET databaseRef.DB_SP_REMARK = 'Executed successfully';
+
+		DECLARE outputBlob BLOB ASBITSTREAM(OutputRoot.XMLNSC, 549,1208);
+		DECLARE outputChar CHARACTER CAST(outputBlob AS CHARACTER CCSID 1208);
+		CALL EDI_InsIIBAudit(outputChar);
+		COMMIT;
+	END;
+
+	CREATE PROCEDURE EDI_InsIIBAudit( IN auditXML CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 0
+	EXTERNAL NAME "dbo.EDI_InsIIBAudit";
+END MODULE;

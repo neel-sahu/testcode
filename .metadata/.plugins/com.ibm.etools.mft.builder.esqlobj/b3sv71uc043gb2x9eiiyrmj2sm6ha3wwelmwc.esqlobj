@@ -1,0 +1,128 @@
+CREATE COMPUTE MODULE VESSEL_Get_IFTDGN_Data_textCreation_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+
+		CALL EDI_TGetIFTDGN(Environment.variables.txnID,Environment.Variables.TXTResult1[],Environment.Variables.TXTResult2[],Environment.Variables.TXTResult3[],Environment.Variables.TXTResult4[],Environment.Variables.TXTResult5[],Environment.Variables.TXTResult6[],Environment.Variables.TXTResult7[]);
+		SET Environment.variables.dbEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBENDTIME;');
+		SET OutputRoot.Properties.CodedCharSetId = 1208;
+		-- SET OutputRoot.Properties.MessageType ='{}:iftdgn';
+		-- SET OutputRoot.Properties.MessageSet ='{JMB_DFDL}';
+		-- SET OutputRoot.Properties.ReplyProtocol = 'FILE';
+
+		SET OutputRoot.DFDL.iftdgn.UNH.Values = COALESCE(Environment.Variables.TXTResult1[1].DocumentType,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].DocumentName,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].DocumentNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].CommonRefNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].Messagetype,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].SenderID,'');
+		--for RPD
+		DECLARE countRecord INTEGER 0;
+		DECLARE i INTEGER 1;
+
+		SET countRecord = CARDINALITY(Environment.Variables.TXTResult2[]);
+
+		WHILE countRecord > 0 DO
+			SET OutputRoot.DFDL.iftdgn.RPD.RPDValues[i] = Environment.Variables.TXTResult2[i].ReceivingParty ;
+			SET i = i + 1;
+			SET countRecord = countRecord - 1;
+		END WHILE;
+		--for NPD
+		DECLARE countRecord1 INTEGER 0;
+		DECLARE j INTEGER 1;
+
+		SET countRecord1 = CARDINALITY(Environment.Variables.TXTResult3[]);
+
+		WHILE countRecord1 > 0 DO
+			SET OutputRoot.DFDL.iftdgn.NPD.NPDValues[j] = Environment.Variables.TXTResult3[j].NotifyParty ;
+			SET j = j + 1;
+			SET countRecord1 = countRecord1 - 1;
+		END WHILE;
+		--for DGH
+		SET OutputRoot.DFDL.iftdgn.DGH.DGHValues = COALESCE(Environment.Variables.TXTResult4[1].RecordType,'')||''||
+		-- COALESCE(Environment.Variables.TXTResult4[1].RecordType,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].CallSign,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].IMONumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].VoyageNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].VesselCountryCode,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].ShippingAgent,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].ShippingLine,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].IGMNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].IGMDate,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].RotationNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult4[1].RotationNumberDate,'');
+		-- --for CGT
+
+		DECLARE countRecord2 INTEGER 0;
+		DECLARE countRecord3 INTEGER 0;
+		DECLARE k INTEGER 1;
+		DECLARE m INTEGER 1;
+
+
+		SET countRecord2 = CARDINALITY(Environment.Variables.TXTResult5[]);
+		SET countRecord3 = CARDINALITY(Environment.Variables.TXTResult6[]);
+		DECLARE sk INTEGER 1;
+		DECLARE ad INTEGER 1;
+		WHILE (sk <= countRecord2) DO
+			SET OutputRoot.DFDL.iftdgn.CGT[sk].CGTValues = COALESCE(Environment.Variables.TXTResult5[sk].RecordType ,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].RecordNumber,'')||''||
+			COALESCE(Environment.TXTResult5.TXTResult5[sk].CACode,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].ContainerNumber,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].ContainerClassification ,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].ContainerISOCode ,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].ShippersOwnContainerFlag,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].CargoETA,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].POLorDischargeCode,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].DOLorDischarge,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].FinalPortOfDischarge,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].CargoType,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].EquipmentStatus,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].RSDCertNumber,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].RSDCertDate ,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].RSDValidityDate,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].IGMLineNumber ,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].IGMSubLineNumber,'')||''||
+			COALESCE(Environment.Variables.TXTResult5[sk].NotifyParty,'');
+			--DGD
+			--SET ad = 1;
+			WHILE (ad <= countRecord3) DO
+				SET OutputRoot.DFDL.iftdgn.DGD.DGDValues = COALESCE(Environment.Variables.TXTResult6[ad].MLOClass,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].IMOClass,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].UNIMDGNumber,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].ContainerOrCargo,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].CargoDescription,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].MarksAndNumbers,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].NumberOfPackages,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].PackageType,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].UnitOfQuantity,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].WeightOfConsignment,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].WeightOfDangerousSubstance,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].HandlingInstructions,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].EMS,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].MFAG,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].DescriptionOfFilledCylinders,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].StorageInstruction,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].MaxFlashPoint,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].MinFlashPoint,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].StowagePositionOnBoard,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].ToalNoOfCylindersInVessel,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].ToalQtyOfCylindersInVessel,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].UnitOfQty,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].CustomSiteCode,'')||''||
+				COALESCE(Environment.Variables.TXTResult6[ad].EmergencyContactNumber,'');
+				SET ad = countRecord3 +1;
+
+			END WHILE;
+			SET sk = sk + 1;
+			SET ad = sk;
+		END WHILE;
+
+
+
+		SET OutputRoot.DFDL.iftdgn.UNT.DocumentCreatedDateandTime = Environment.Variables.TXTResult7[1].IssuedDateTime;
+
+
+	END;
+
+
+END MODULE;

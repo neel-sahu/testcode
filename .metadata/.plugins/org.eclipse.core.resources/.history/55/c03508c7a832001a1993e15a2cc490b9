@@ -1,0 +1,183 @@
+
+CREATE COMPUTE MODULE ACKPLM_TXT_MSG_IN_processFile
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.variables.ediStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS EDISTARTTIME;');
+
+		DECLARE inputTxt CHARACTER;
+		SET inputTxt = Cast(InputRoot.BLOB.BLOB AS CHARACTER CCSID 1208);
+		SET Environment.variables.filename = InputLocalEnvironment.File.Name;
+
+		SET Environment.variables.dbStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBSTARTTIME;');
+		CALL EDI_TUpdACKPLM (inputTxt);
+		COMMIT;
+		CALL EDI_GetTXTMsgGrpAsTable(inputTxt,'UNH', Environment.Variables.TresultSet1[], Environment.Variables.TresultSet2[], Environment.Variables.TresultSet3[], Environment.Variables.TresultSet4[], Environment.Variables.TresultSet5[], Environment.Variables.TresultSet6[]);
+		CALL EDI_TGetNotifyDetails('inputTxt','ACKPLM',Environment.Variables.TresultSet3[5].ElementValue,Environment.Variables.TresultSet3[7].ElementValue,Environment.Variables.TresultSet6[1].RPDNames,Environment.Variables.NresultSet1[], Environment.Variables.NresultSet2[], Environment.Variables.NresultSet3[], Environment.Variables.NresultSet4[], Environment.Variables.NresultSet5[], Environment.Variables.NresultSet6[]);
+		SET Environment.variables.dbEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBENDTIME;');
+		SET Environment.variables.sftpPath = COALESCE(Environment.Variables.NresultSet2[1].SFTP_PATH,Environment.Variables.NresultSet1[1].SFTP_PATH);
+		SET Environment.variables.commonRefNo = Environment.Variables.TresultSet3[5].ElementValue;
+		SET Environment.variables.msgSender = Environment.Variables.TresultSet3[7].ElementValue;
+
+		SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = Environment.variables.sftpPath;
+		-- SET OutputLocalEnvironment.Destination.File.Remote.Server = SFTP_TXT_Server_ACKPLM;
+		SET OutputLocalEnvironment.Destination.File.Name = Environment.variables.filename;
+
+		SET OutputRoot.BLOB.BLOB = InputRoot.BLOB.BLOB;
+		SET Environment.variables.ediDirectory = OutputLocalEnvironment.Destination.File.Remote.ServerDirectory;
+		RETURN TRUE;
+	END;
+
+
+
+	CREATE PROCEDURE EDI_TUpdACKPLM (IN T CHARACTER)
+	LANGUAGE DATABASE
+	EXTERNAL NAME "dbo.EDI_TUpdACKPLM" ;
+
+	CREATE PROCEDURE EDI_TGetNotifyDetails (IN Text CHARACTER, IN msgType CHARACTER, IN t1 CHARACTER, IN t2 CHARACTER, IN t3 CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 6
+	EXTERNAL NAME "dbo.EDI_TGetNotifyDetails";
+
+	CREATE PROCEDURE EDI_GetTXTMsgGrpAsTable (IN Text CHARACTER, IN msgType CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 6
+	EXTERNAL NAME "dbo.EDI_GetTXTMsgGrpAsTable";
+
+END MODULE;
+
+
+CREATE COMPUTE MODULE ACKPLM_TXT_MSG_IN_mailSMSCall
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		SET Environment.variables.mailStartTime = CURRENT_TIMESTAMP;
+		SET Environment.variables.mailEndTime = CURRENT_TIMESTAMP;
+		SET Environment.variables.SMSStartTime = CURRENT_TIMESTAMP;
+		-- SET Environment.variables.mailStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS MAILSTARTTIME;');
+		-- SET OutputRoot.XMLNSC.emailNotificationReq.emailTo = COALESCE(Environment.Variables.NresultSet2[1].Email_id,Environment.Variables.NresultSet1[1].Email_id);
+		-- SET OutputRoot.XMLNSC.emailNotificationReq.emailCc = '';
+		-- SET OutputRoot.XMLNSC.emailNotificationReq.emailBcc = '';
+		-- SET OutputRoot.XMLNSC.emailNotificationReq.emailReplyTo = '';
+		-- SET OutputRoot.XMLNSC.emailNotificationReq.emailFrom = '';
+		-- SET OutputRoot.XMLNSC.emailNotificationReq.emailSubject = 'Berth '||COALESCE(Environment.Variables.NresultSet1[1].AllottedBerth,'')||' has been allotted for vessel '||COALESCE(Environment.Variables.NresultSet1[1].VesselName,'')||' by '||COALESCE(Environment.Variables.NresultSet1[1].PortAbbr,'');
+		-- SET OutputRoot.XMLNSC.emailNotificationReq.emailBody = 'Dear '|| COALESCE(Environment.Variables.NresultSet1[1].AgentName,'')||',
+		-- Your berthing request for vessel '||COALESCE(Environment.Variables.NresultSet1[1].VesselName,'') ||' has been approved by '||COALESCE(Environment.Variables.NresultSet1[1].PortAbbr,'')||'.'||
+		-- ' Please find below details of the vessel.
+		--
+		-- Vessel Name: '||COALESCE(Environment.Variables.NresultSet1[1].VesselName,'')||'
+		-- IMO No.: '||COALESCE(Environment.Variables.NresultSet1[1].IMONumber,'')||'
+		-- VCN: '||COALESCE(Environment.Variables.NresultSet1[1].VCN,'')||'
+		-- Terminal Applied for: '||COALESCE(Environment.Variables.NresultSet1[1].TerminalName,'')||'
+		-- Submission Date & Time: '||COALESCE(Environment.Variables.NresultSet1[1].SubmissionDateTime,'')||'
+		-- Approval Date & Time: '||COALESCE(Environment.Variables.NresultSet1[1].ApprovalDateTime,'')||'
+		--
+		-- Please visit the PCS website for more details.
+		--
+		-- Thanks & regards,
+		-- Team PCS ';
+		-- PROPAGATE TO TERMINAL 'out1';
+		-- SET Environment.variables.mailEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS MAILENDTIME;');
+		-- SET OutputRoot.XMLNSC.ReqBody.MobileNo = COALESCE(Environment.Variables.NresultSet2[1].Mobile,Environment.Variables.NresultSet1[1].Mobile);
+		-- SET OutputRoot.XMLNSC.ReqBody.message = 'Your berthing request for vessel '|| COALESCE(Environment.Variables.NresultSet1[1].VesselName,'')||' has been approved by '|| COALESCE(Environment.Variables.NresultSet1[1].PortAbbr,'')||'. Allotted Berth is '|| COALESCE(Environment.Variables.NresultSet1[1].AllottedBerth,'')||'.
+		--
+		-- -Team PCS';
+		-- PROPAGATE TO TERMINAL 'out2';
+		-- SET Environment.variables.SMSStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS SMSSTARTTIME;');
+		-- RETURN TRUE;
+	END;
+END MODULE;
+
+
+CREATE COMPUTE MODULE ACKPLM_TXT_MSG_IN_auditDetails
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE inputTxt CHARACTER;
+		SET inputTxt = Cast(InputRoot.BLOB.BLOB AS CHARACTER CCSID 1208);
+
+		SET OutputRoot.XMLNSC.auditDetails.RefNo = Environment.variables.commonRefNo;
+		DECLARE auditDtlsRef REFERENCE TO OutputRoot.XMLNSC.auditDetails;
+		SET auditDtlsRef.msgUID = UUIDASCHAR;
+		SET auditDtlsRef.msgType = 'ACKPLM_TXT_IN';
+		SET auditDtlsRef.EVENT_NAME = 'Consumption';
+		SET auditDtlsRef.msgSender = Environment.variables.msgSender;
+		SET auditDtlsRef.portCode = SUBSTRING(Environment.variables.ediDirectory AFTER 'PORTS/');
+		SET auditDtlsRef.portCode = SUBSTRING(auditDtlsRef.portCode BEFORE '/');
+		SET auditDtlsRef.fileName = Environment.variables.filename;
+		SET auditDtlsRef.fileDirectory = Environment.variables.ediDirectory;
+		SET auditDtlsRef.MailId = COALESCE(Environment.Variables.NresultSet2[1].Email_id,Environment.Variables.NresultSet1[1].Email_id);
+		SET auditDtlsRef.mobileNo = COALESCE(Environment.Variables.NresultSet2[1].Mobile,Environment.Variables.NresultSet1[1].Mobile);
+
+		DECLARE ediStartTime CHARACTER CAST(Environment.variables.ediStartTime[1].EDISTARTTIME AS CHARACTER);
+		DECLARE mailStartTime CHARACTER CAST(Environment.variables.mailStartTime[1].MAILSTARTTIME AS CHARACTER);
+		DECLARE mailEndTime CHARACTER CAST(Environment.variables.mailEndTime[1].MAILENDTIME AS CHARACTER);
+		DECLARE dbStartTime CHARACTER CAST(Environment.variables.dbStartTime[1].DBSTARTTIME AS CHARACTER);
+		DECLARE dbEndTime CHARACTER CAST(Environment.variables.dbEndTime[1].DBENDTIME AS CHARACTER);
+		DECLARE SMSStartTime CHARACTER CAST(Environment.variables.SMSStartTime[1].SMSSTARTTIME AS CHARACTER);
+
+		SET ediStartTime = REPLACE(ediStartTime,'TIMESTAMP ','');
+		-- SET ediStartTime = SUBSTRING(ediStartTime BEFORE '.');
+		SET ediStartTime = SUBSTRING(ediStartTime FROM 2 FOR 23);
+		SET auditDtlsRef.ediStartTime = ediStartTime;
+
+		SET mailStartTime = REPLACE(mailStartTime,'TIMESTAMP ','');
+		-- SET mailStartTime = SUBSTRING(mailStartTime BEFORE '.');
+		SET mailStartTime = SUBSTRING(mailStartTime FROM 2 FOR 23);
+		SET auditDtlsRef.mailStartTime = mailStartTime;
+
+		SET mailEndTime = REPLACE(mailEndTime,'TIMESTAMP ','');
+		-- SET mailEndTime = SUBSTRING(mailEndTime BEFORE '.');
+		SET mailEndTime = SUBSTRING(mailEndTime FROM 2 FOR 23);
+		SET auditDtlsRef.mailEndTime = mailEndTime;
+
+		SET SMSStartTime = REPLACE(SMSStartTime,'TIMESTAMP ','');
+		-- SET SMSStartTime = SUBSTRING(SMSStartTime BEFORE '.');
+		SET SMSStartTime = SUBSTRING(SMSStartTime FROM 2 FOR 23);
+		SET auditDtlsRef.SMSStartTime = SMSStartTime;
+
+		SET dbStartTime = REPLACE(dbStartTime,'TIMESTAMP ','');
+		-- SET dbStartTime = SUBSTRING(dbStartTime BEFORE '.');
+		SET dbStartTime = SUBSTRING(dbStartTime FROM 2 FOR 23);
+		SET auditDtlsRef.dbStartTime = dbStartTime;
+
+		SET dbEndTime = REPLACE(dbEndTime,'TIMESTAMP ','');
+		-- SET dbEndTime = SUBSTRING(dbEndTime BEFORE '.');
+		SET dbEndTime = SUBSTRING(dbEndTime FROM 2 FOR 23);
+		SET auditDtlsRef.dbEndTime = dbEndTime;
+
+	END;
+
+END MODULE;
+
+
+CREATE COMPUTE MODULE ACKPLM_TXT_MSG_IN_failure
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.XMLNSC.errorDetails.messageFlowName = MessageFlowLabel;
+		SET OutputRoot.XMLNSC.errorDetails.messageBody = Environment.variables.filename;
+		SET OutputRoot.XMLNSC.errorDetails.exceptionList = InputExceptionList;
+		SET OutputRoot.XMLNSC.errorDetails.msRefNo = Environment.variables.commonRefNo;
+		SET OutputRoot.XMLNSC.errorDetails.eventName = 'Consumption';
+		SET Environment.variables.portCode = SUBSTRING(Environment.variables.ediDirectory AFTER 'PORTS/');
+		SET OutputRoot.XMLNSC.errorDetails.portCode = SUBSTRING(Environment.variables.portCode BEFORE '/');
+
+		IF (EXISTS(InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException[])) THEN
+			SET OutputRoot.XMLNSC.errorDetails.ErrorCode = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException.Number;
+			SET OutputRoot.XMLNSC.errorDetails.ErrorText = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException.Text;
+		ELSEIF (EXISTS(InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException[])) THEN
+			SET OutputRoot.XMLNSC.errorDetails.ErrorCode = InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException.Number;
+			SET OutputRoot.XMLNSC.errorDetails.ErrorText = InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException.Insert[3].Text;
+		ELSEIF (EXISTS(InputExceptionList.RecoverableException.RecoverableException.RecoverableException[])) THEN
+			SET OutputRoot.XMLNSC.errorDetails.ErrorCode = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.Number;
+			SET OutputRoot.XMLNSC.errorDetails.ErrorText = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.Text;
+		ELSE
+			SET OutputRoot.XMLNSC.errorDetails.ErrorCode = 'ER002';
+			SET OutputRoot.XMLNSC.errorDetails.ErrorText = 'ESB Exception Occurred';
+		END IF;
+
+		RETURN TRUE;
+
+	END;
+
+
+
+END MODULE;

@@ -1,0 +1,91 @@
+CREATE COMPUTE MODULE VESSEL_Get_IFTDGN_Data_xmlCreation_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		CALL EDI_XGetIFTDGN(Environment.variables.txnID,Environment.Variables.XMLResultHD[],Environment.Variables.XMLResultREC[],Environment.Variables.XMLResultFID[],Environment.Variables.XMLResultD[],Environment.Variables.XMLResultISD[]);
+		SET Environment.variables.dbEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBENDTIME;');
+		DECLARE i INTEGER 1;
+		SET OutputRoot.XMLNSC.DangerousGoods.DocumentHeader.DocumentReference.DocumentType = Environment.Variables.XMLResultHD[1].DocumentType;
+		DECLARE headerRef REFERENCE TO OutputRoot.XMLNSC.DangerousGoods.DocumentHeader.DocumentReference;
+		SET headerRef.DocumentName = Environment.Variables.XMLResultHD[1].DocumentName;
+		SET headerRef.DocumentNumber = Environment.Variables.XMLResultHD[1].DocumentNumber;
+		SET headerRef.CommonRefNumber = Environment.Variables.XMLResultHD[1].CommonRefNumber;
+		SET headerRef.MessageType = Environment.Variables.XMLResultHD[1].MessageType;
+		SET headerRef.SenderID = Environment.Variables.XMLResultHD[1].SenderID;
+
+		DECLARE recPartyCardinality INTEGER CARDINALITY (Environment.Variables.XMLResultREC[]);
+		DECLARE notPartyCardinality INTEGER CARDINALITY (Environment.Variables.XMLResultFID[]);
+		WHILE (i <= recPartyCardinality) DO
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentHeader.DocumentExchangeDetails.ReceivingPartyDetails.ReceivingParty[i] = Environment.Variables.XMLResultREC[i].ReceivingParty;
+			SET i = i + 1;
+		END WHILE;
+		SET i = 1;
+		WHILE (i <= notPartyCardinality) DO
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentHeader.DocumentExchangeDetails.NotifyPartyDetails.NotifyParty[i] = Environment.Variables.XMLResultFID[i].NotifyParty;
+			SET i = i + 1;
+		END WHILE;
+		SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNHeader.RecordType = Environment.Variables.XMLResultREC[1].RecordType;
+		DECLARE iftdgnHeader REFERENCE TO OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNHeader;
+		SET iftdgnHeader.VCN = Environment.Variables.XMLResultREC[1].VCN;
+		SET iftdgnHeader.CallSign = Environment.Variables.XMLResultREC[1].CallSign;
+		SET iftdgnHeader.IMONumber = Environment.Variables.XMLResultREC[1].IMONumber;
+		SET iftdgnHeader.VoyageNumber = Environment.Variables.XMLResultREC[1].VoyageNumber;
+		SET iftdgnHeader.VesselCountryCode = Environment.Variables.XMLResultREC[1].VesselCountryCode;
+		SET iftdgnHeader.ShippingAgent = Environment.Variables.XMLResultREC[1].ShippingAgent;
+		SET iftdgnHeader.ShippingLine = Environment.Variables.XMLResultREC[1].ShippingLine;
+		SET iftdgnHeader.IGMNumber = Environment.Variables.XMLResultREC[1].IGMNumber;
+		SET iftdgnHeader.IGMDate = Environment.Variables.XMLResultREC[1].IGMDate;
+		SET iftdgnHeader.RotationNumber = Environment.Variables.XMLResultREC[1].RotationNumber;
+		SET iftdgnHeader.RotationNumberDate = Environment.Variables.XMLResultREC[1].RotationNumberDate;
+
+		DECLARE j INTEGER 1;
+		DECLARE consignmentCard INTEGER CARDINALITY (Environment.Variables.XMLResultREC[]);
+		WHILE (j <= consignmentCard) DO
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].RecordType = Environment.Variables.XMLResultREC[j].RecordType;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].RecordNumber = Environment.Variables.XMLResultREC[j].RecordNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].CACode = Environment.Variables.XMLResultREC[j].CACode;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ContainerNumber = Environment.Variables.XMLResultREC[j].ContainerNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ContainerClassification = Environment.Variables.XMLResultREC[j].ContainerClassification;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ContainerISOCode = Environment.Variables.XMLResultREC[j].ContainerISOCode;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ShippersOwnContainerFlag = Environment.Variables.XMLResultREC[j].ShippersOwnContainerFlag;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].CargoETA = Environment.Variables.XMLResultREC[j].CargoETA;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].POLorDischargeCode = Environment.Variables.XMLResultREC[j].POLorDischargeCode;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].DOLorDischarge = Environment.Variables.XMLResultREC[j].DOLorDischarge;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].FinalPortOfDischarge = Environment.Variables.XMLResultREC[j].FinalPortOfDischarge;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].CargoType = Environment.Variables.XMLResultREC[j].CargoType;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].EquipmentStatus = Environment.Variables.XMLResultREC[j].EquipmentStatus;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].RSDCertNumber = Environment.Variables.XMLResultREC[j].RSDCertNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].RSDCertDate = Environment.Variables.XMLResultREC[j].RSDCertDate;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].RSDValidityDate = Environment.Variables.XMLResultREC[j].RSDValidityDate;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].IGMLineNumber = Environment.Variables.XMLResultREC[j].IGMLineNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].IGMSubLineNumber = Environment.Variables.XMLResultREC[j].IGMSubLineNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].SBNumber = Environment.Variables.XMLResultREC[j].SBNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].MLOClass = Environment.Variables.XMLResultREC[j].MLOClass;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].IMOClass = Environment.Variables.XMLResultREC[j].IMOClass;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].UNIMDGNumber = Environment.Variables.XMLResultREC[j].UNIMDGNumber;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ContainerOrCargo = Environment.Variables.XMLResultREC[j].ContainerOrCargo;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].CargoDescription = Environment.Variables.XMLResultREC[j].CargoDescription;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].MarksAndNumbers = Environment.Variables.XMLResultREC[j].MarksAndNumbers;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].NumberOfPackages = Environment.Variables.XMLResultREC[j].NumberOfPackages;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].PackageType = Environment.Variables.XMLResultREC[j].PackageType;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].UnitOfQuantity = Environment.Variables.XMLResultREC[j].UnitOfQuantity;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].WeightOfConsignment = Environment.Variables.XMLResultREC[j].WeightOfConsignment;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].WeightOfDangerousSubstance = Environment.Variables.XMLResultREC[j].WeightOfDangerousSubstance;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].HandlingInstructions = Environment.Variables.XMLResultREC[j].HandlingInstructions;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].EMS = Environment.Variables.XMLResultREC[j].EMS;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].MFAG = Environment.Variables.XMLResultREC[j].MFAG;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].DescriptionOfFilledCylinders = Environment.Variables.XMLResultREC[j].DescriptionOfFilledCylinders;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].StorageInstruction = Environment.Variables.XMLResultREC[j].StorageInstruction;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].MaxFlashPoint = Environment.Variables.XMLResultREC[j].MaxFlashPoint;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].MinFlashPoint = Environment.Variables.XMLResultREC[j].MinFlashPoint;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].StowagePositionOnBoard = Environment.Variables.XMLResultREC[j].StowagePositionOnBoard;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ToalNoOfCylindersInVessel = Environment.Variables.XMLResultREC[j].ToalNoOfCylindersInVessel;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].ToalQtyOfCylindersInVessel = Environment.Variables.XMLResultREC[j].ToalQtyOfCylindersInVessel;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].UnitOfQty = Environment.Variables.XMLResultREC[j].UnitOfQty;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].CustomSiteCode = Environment.Variables.XMLResultREC[j].CustomSiteCode;
+			SET OutputRoot.XMLNSC.DangerousGoods.DocumentDetails.IFTDGNDetails.Consignment[j].EmergencyContactNumber = Environment.Variables.XMLResultREC[j].EmergencyContactNumber;
+			SET j = j + 1;
+		END WHILE;
+		SET OutputRoot.XMLNSC.DangerousGoods.DocumentSummary.IssuedDateTime = Environment.Variables.XMLResultISD[1].IssuedDateTime;
+	END;
+END MODULE;

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:csv="http://www.ibm.com/dfdl/CommaSeparatedFormat" xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions">
+
+
+    <xsd:import namespace="http://www.ibm.com/dfdl/CommaSeparatedFormat" schemaLocation="../IBMdefined/CommaSeparatedFormat.xsd"/>
+            <xsd:annotation>
+		<xsd:appinfo source="http://www.ogf.org/dfdl/">
+			<dfdl:format documentFinalTerminatorCanBeMissing="yes" encoding="{$dfdl:encoding}" escapeSchemeRef="csv:CSVEscapeScheme" ref="csv:CommaSeparatedFormat"/>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+
+	<xsd:element ibmSchExtn:docRoot="true" name="iftdgn">
+		<xsd:complexType>
+			<xsd:sequence dfdl:separator="">
+				<xsd:element dfdl:initiator="UNH" dfdl:occursCountKind="implicit" dfdl:terminator="" maxOccurs="unbounded" name="UNH">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%#124;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="">
+                            							                            <xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="%GS;" dfdl:terminator="%CR;%LF;" ibmDfdlExtn:sampleValue="value1" minOccurs="0" name="Values" type="xsd:string"/>
+                            							                            							                            						                                                                                </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>				
+                			                                                <xsd:element dfdl:initiator="RPD" dfdl:terminator="" maxOccurs="unbounded" name="RPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%#124;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="">
+                            							                            <xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="%GS;" dfdl:terminator="%CR;%LF;" ibmDfdlExtn:sampleValue="value1" minOccurs="0" name="RPDValues" type="xsd:string"/>
+                            														                            						                                                                                                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="NPD" dfdl:terminator="" maxOccurs="unbounded" name="NPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%#124;" dfdl:separatorSuppressionPolicy="anyEmpty" dfdl:terminator="">
+                            							                            <xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="%GS;" dfdl:terminator="%CR;%LF;" ibmDfdlExtn:sampleValue="value1" minOccurs="0" name="NPDValues" type="xsd:string"/>
+                            														                            						                                                                                                                                                                </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="DGH" dfdl:terminator="" maxOccurs="unbounded" name="DGH">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%#124;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="">
+							                                                        														                            						                                                                                <xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="%GS;" dfdl:terminator="%CR;%LF;" minOccurs="0" name="DGHValues" type="xsd:string"/>
+                                                                                                                                                                                                                                                                                                                                                                                                    </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                                        <xsd:element dfdl:initiator="CGT" dfdl:terminator="" maxOccurs="unbounded" name="CGT">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%#124;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="">
+							                            														                            						                                                                                <xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="%GS;" dfdl:terminator="%CR;%LF;" minOccurs="0" name="CGTValues" type="xsd:string"/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                                            <xsd:element dfdl:initiator="DGD" dfdl:terminator="" maxOccurs="unbounded" name="DGD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%#124;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="">
+							                            														                            						                                                                                <xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="%GS;" dfdl:terminator="%CR;%LF;" minOccurs="0" name="DGDValues" type="xsd:string"/>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="UNT" dfdl:terminator="" maxOccurs="unbounded" name="UNT">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%#124;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="">
+                            							                            <xsd:element dfdl:initiator="%GS;" dfdl:terminator="%CR;%LF;" minOccurs="0" name="DocumentCreatedDateandTime" type="xsd:string"/>
+                                                        														                            						                                                                                                                                                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+            </xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+</xsd:schema>

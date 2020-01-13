@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:csv="http://www.ibm.com/dfdl/CommaSeparatedFormat" xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions">
+
+
+	<xsd:import namespace="http://www.ibm.com/dfdl/CommaSeparatedFormat" schemaLocation="../IBMdefined/CommaSeparatedFormat.xsd"/>
+	<xsd:annotation>
+		<xsd:appinfo source="http://www.ogf.org/dfdl/">
+			<dfdl:format documentFinalTerminatorCanBeMissing="yes" encoding="{$dfdl:encoding}" escapeSchemeRef="csv:CSVEscapeScheme" ref="csv:CommaSeparatedFormat"/>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+
+	<xsd:element ibmSchExtn:docRoot="true" name="carreq">
+		<xsd:complexType>
+			<xsd:sequence dfdl:separator="">
+				<xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="UNH" name="UNH">
+					<xsd:complexType>
+						<xsd:sequence dfdl:initiatedContent="yes" dfdl:separator="%#124;" dfdl:separatorSuppressionPolicy="anyEmpty">
+							<xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="%GS;" dfdl:terminator="%CR;%LF;" ibmDfdlExtn:sampleValue="head_value1" name="Values" type="xsd:string"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="RPD" maxOccurs="unbounded" name="RPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:initiatedContent="yes" dfdl:separator="%#124;" dfdl:separatorSuppressionPolicy="anyEmpty" dfdl:terminator="">
+							<xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="%GS;" dfdl:terminator="%CR;%LF;" ibmDfdlExtn:sampleValue="body_value1" name="BodyValues" type="xsd:string"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="NPD" maxOccurs="unbounded" minOccurs="0" name="NPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:initiatedContent="yes" dfdl:separator="%#124;" dfdl:separatorSuppressionPolicy="anyEmpty" dfdl:terminator="">
+							<xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="%GS;" dfdl:terminator="%CR;%LF;" ibmDfdlExtn:sampleValue="body_value1" minOccurs="0" name="BodyValues" type="xsd:string"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element dfdl:initiator="CPD" minOccurs="0" name="CPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%#124;">
+							<xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="%GS;" dfdl:terminator="%CR;%LF;" ibmDfdlExtn:sampleValue="body_value2" name="CPDValues" type="xsd:string"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element dfdl:initiator="CTD" minOccurs="0" name="CTD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%#124;">
+							<xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="%GS;" dfdl:terminator="%CR;%LF;" ibmDfdlExtn:sampleValue="body_value3" name="CTDValues" type="xsd:string"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="UNT" dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="trailer">
+					<xsd:complexType>
+						<xsd:sequence dfdl:initiatedContent="yes" dfdl:separator="%#124;" dfdl:separatorSuppressionPolicy="anyEmpty">
+							<xsd:element dfdl:emptyValueDelimiterPolicy="initiator" dfdl:initiator="%GS;" dfdl:terminator="" ibmDfdlExtn:sampleValue="trailer_value1" name="Trailvalues" type="xsd:string"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+</xsd:schema>

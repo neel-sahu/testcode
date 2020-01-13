@@ -1,0 +1,29 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+
+		DECLARE InXML CHARACTER;
+		SET InXML = Environment.Variables.InXML;
+
+		SET Environment.variables.dbStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBSTARTTIME;');
+--		CALL USP_Update_VESARR(InXML);
+		COMMIT;
+		CALL EDI_XGetNotifyDetails(InXML,'VESARR',Environment.Variables.NresultSet1[], Environment.Variables.NresultSet2[], Environment.Variables.NresultSet3[], Environment.Variables.NresultSet4[], Environment.Variables.NresultSet5[], Environment.Variables.NresultSet6[]);
+		SET Environment.variables.dbEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBENDTIME;');
+
+		SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = COALESCE(Environment.Variables.NresultSet2[1].SFTP_PATH,Environment.Variables.NresultSet1[1].SFTP_PATH,SFTP_Error_Path_VESARR);
+		SET OutputLocalEnvironment.Destination.File.Remote.Server = SFTP_Server_VESARR;
+		SET OutputLocalEnvironment.Destination.File.Name = Environment.variables.filename;		
+
+		SET OutputRoot.BLOB.BLOB = CAST(InXML AS BLOB CCSID 1208);
+		SET Environment.variables.sftpPath = OutputLocalEnvironment.Destination.File.Remote.ServerDirectory;
+		RETURN TRUE;
+	END;
+	
+	CREATE PROCEDURE USP_Update_VESARR (IN T CHARACTER)
+	LANGUAGE DATABASE
+	EXTERNAL NAME "dbo.USP_Update_VESARR";
+
+	CREATE PROCEDURE EDI_XGetNotifyDetails (IN Text CHARACTER, IN msgType CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 6
+	EXTERNAL NAME "dbo.EDI_XGetNotifyDetails";

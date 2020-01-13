@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><MessageBroker name="JMB_DFDL">
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/REQCTC.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/REQCTC.xsd#//REQCTC;XSDElementDeclaration" name="REQCTC"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/STOPLN.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/STOPLN.xsd#//STOPLN;XSDElementDeclaration" name="STOPLN"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/REQCAC.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/REQCAC.xsd#//REQCAC;XSDElementDeclaration" name="REQCAC"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/AGDORD.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/AGDORD.xsd#//AGDORD;XSDElementDeclaration" name="AGDORD"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/PLTMEM.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/RecordSeparatedFieldFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat"/>
+    <element href="platform:/resource/JMB_DFDL/PLTMEM.xsd#//PLTMEM;XSDElementDeclaration" name="PLTMEM"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/BAPLIE.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/BAPLIE.xsd#//BAPLIE;XSDElementDeclaration" name="BAPLIE"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/PAYSTS.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/RecordSeparatedFieldFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat"/>
+    <element href="platform:/resource/JMB_DFDL/PAYSTS.xsd#//PAYSTS;XSDElementDeclaration" name="PAYSTS"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/MOVINS.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/MOVINS.xsd#//MOVINS;XSDElementDeclaration" name="MOVINS"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/carreq.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/carreq.xsd#//carreq;XSDElementDeclaration" name="carreq"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/JOBORDER.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/JOBORDER.xsd#//JOBORDER;XSDElementDeclaration" name="JOBORDER"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/AGNCHG.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/RecordSeparatedFieldFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat"/>
+    <element href="platform:/resource/JMB_DFDL/AGNCHG.xsd#//ANCHG;XSDElementDeclaration" name="ANCHG"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/REQFPQ.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/REQFPQ.xsd#//REQFPQ;XSDElementDeclaration" name="REQFPQ"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/iftdgn.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/iftdgn.xsd#//iftdgn;XSDElementDeclaration" name="iftdgn"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/RESOURCE_REQUISITION.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/RESOURCE_REQUISITION.xsd#//RESOURCE_REQUISITION;XSDElementDeclaration" name="RESOURCE_REQUISITION"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/REQVAC.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/REQVAC.xsd#//REQVAC;XSDElementDeclaration" name="REQVAC"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/COPARN.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/COPARN.xsd#//COPARN;XSDElementDeclaration" name="COPARN"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/TPRORD.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/RecordSeparatedFieldFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat"/>
+    <element href="platform:/resource/JMB_DFDL/TPRORD.xsd#//TPRORD;XSDElementDeclaration" name="TPRORD"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/IBMdefined/CommaSeparatedFormat.xsd" prefix="tns" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+  <XSDCollection href="platform:/resource/JMB_DFDL/GTINAP.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/RecordSeparatedFieldFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat"/>
+    <element href="platform:/resource/JMB_DFDL/GTINAP.xsd#//GTINAP;XSDElementDeclaration" name="GTINAP"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/REQCOC.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/REQCOC.xsd#//REQCOC;XSDElementDeclaration" name="REQCOC"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/HLTDLR.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/HLTDLR.xsd#//HLTDLR;XSDElementDeclaration" name="HLTDLR"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/HLTDLR.xsd#//field4;XSDElementDeclaration=1" name="field4" type="mlib://JMB_DFDL#/-/simpleType{http://www.w3.org/2001/XMLSchema}string"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/STPCGO.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/STPCGO.xsd#//STPCGO;XSDElementDeclaration" name="STPCGO"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/DFDL_reqsac.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/DFDL_reqsac.xsd#//DFDL_reqsac;XSDElementDeclaration" name="DFDL_reqsac"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/IBMdefined/RecordSeparatedFieldFormat.xsd" prefix="tns" targetNamespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat"/>
+  <XSDCollection href="platform:/resource/JMB_DFDL/jmb/RLOENT.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/CommaSeparatedFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/CommaSeparatedFormat"/>
+    <element href="platform:/resource/JMB_DFDL/jmb/RLOENT.xsd#//rloent;XSDElementDeclaration" name="rloent"/>
+  </XSDCollection>
+  <XSDCollection href="platform:/resource/JMB_DFDL/AGDORDCT.xsd" prefix="" targetNamespace="">
+    <import name="IBMdefined/RecordSeparatedFieldFormat.xsd" targetNamespace="http://www.ibm.com/dfdl/RecordSeparatedFieldFormat"/>
+    <element href="platform:/resource/JMB_DFDL/AGDORDCT.xsd#//AGDORDCT;XSDElementDeclaration" name="AGDORDCT"/>
+  </XSDCollection>
+</MessageBroker>

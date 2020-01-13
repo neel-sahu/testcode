@@ -1,0 +1,14 @@
+CREATE COMPUTE MODULE EDGA_Get_AGNCHG_Data_GetFormatType_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.variables.ediStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS EDISTARTTIME;');
+		SET Environment.variables.txnID = InputRoot.XMLNSC.PCS.Common_Ref;
+		DECLARE MessageName CHARACTER InputRoot.XMLNSC.PCS.Action_In;
+		DECLARE request BLOB ASBITSTREAM(InputRoot.XMLNSC, 549,1208);
+		DECLARE ReplaceCarriageReturn BLOB X'0d0a';
+		SET request = REPLACE(request, ReplaceCarriageReturn);
+		SET Environment.variables.request = CAST(request AS CHARACTER CCSID 1208);
+		SET Environment.variables.dbStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBSTARTTIME;');
+		CALL EDI_GetFormatTypeByRefAndMsg(Environment.variables.txnID,MessageName,Environment.Variables.Result[],Environment.Variables.Result56[]);
+	END;
+END MODULE;

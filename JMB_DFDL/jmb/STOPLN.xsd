@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:csv="http://www.ibm.com/dfdl/CommaSeparatedFormat" xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions">
+
+
+    <xsd:import namespace="http://www.ibm.com/dfdl/CommaSeparatedFormat" schemaLocation="../IBMdefined/CommaSeparatedFormat.xsd"/>
+    <xsd:annotation>
+		<xsd:appinfo source="http://www.ogf.org/dfdl/">
+			<dfdl:format documentFinalTerminatorCanBeMissing="yes" encoding="{$dfdl:encoding}" escapeSchemeRef="csv:CSVEscapeScheme" ref="csv:CommaSeparatedFormat"/>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+
+	<xsd:element ibmSchExtn:docRoot="true" name="STOPLN">
+		<xsd:complexType>
+			<xsd:sequence dfdl:separator="">
+				<xsd:element dfdl:initiator="UNH%GS;" dfdl:terminator="" name="UNH">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" name="DocumentType" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" name="DocumentName" type="xsd:string"/>
+                            						<xsd:element name="DocumentNumber" type="xsd:string"/>
+                            <xsd:element name="CommonRefNumber" type="xsd:string"/>
+                            <xsd:element name="MessageType" type="xsd:string"/>
+                            <xsd:element name="SenderID" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>				
+                			<xsd:element dfdl:initiator="RPD%GS;" dfdl:terminator="" name="RPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" maxOccurs="unbounded" name="RecipientsID" type="xsd:string"/>
+													</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="NPD%GS;" dfdl:terminator="" name="NPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" maxOccurs="unbounded" name="NotifyPartyIDs" type="xsd:string"/>
+													</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="SPH%GS;" dfdl:terminator="" name="SPH">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" name="RecordType" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" name="VCN" type="xsd:string"/>
+                            						<xsd:element name="IMONumber" type="xsd:string"/>
+                            <xsd:element name="CallSign" type="xsd:string"/>
+                            <xsd:element name="VoyageNumber" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="SPD%GS;" dfdl:terminator="" maxOccurs="2" name="SPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" name="RecordType" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" name="EquipmentStatus" type="xsd:string"/>
+                            						<xsd:element name="ContainerNumber" type="xsd:string"/>
+                            <xsd:element name="ShippingBillNumber" type="xsd:string"/>
+                            <xsd:element name="VesselBay" type="xsd:string"/>
+                            <xsd:element name="VesselRow" type="xsd:string"/>
+                            <xsd:element name="VesselTier" type="xsd:string"/>
+                            <xsd:element name="VesselSubtier" type="xsd:string"/>
+                            <xsd:element name="DeckHoldIndicator" type="xsd:string"/>
+                            <xsd:element name="DischargehookNumber" type="xsd:string"/>
+                            <xsd:element name="LoadHookNumber" type="xsd:string"/>
+                            <xsd:element name="Hookdischargesequence" type="xsd:string"/>
+                            <xsd:element name="HookLoadSequence" type="xsd:string"/>
+                            <xsd:element name="DischargeOperationalUnitNo" type="xsd:string"/>
+                            <xsd:element name="LoadOperationalUnit" type="xsd:string"/>
+                            <xsd:element name="OperationalUnitDischargesequence" type="xsd:string"/>
+                            <xsd:element name="OperationalUnitLoadSequence" type="xsd:string"/>
+                            <xsd:element name="ImportRemain-on-board" type="xsd:string"/>
+                            <xsd:element name="Calldischargestatus" type="xsd:string"/>
+                            <xsd:element name="Callloadstatus" type="xsd:string"/>
+                            <xsd:element name="DischargeContainernumber" type="xsd:string"/>
+                            <xsd:element name="Loadcontainernumber" type="xsd:string"/>
+                            <xsd:element name="Weightcategoryprestowage" type="xsd:string"/>
+                            <xsd:element name="Portofdischargestowage" type="xsd:string"/>
+                            <xsd:element name="Weightcategorystowage" type="xsd:string"/>
+                            <xsd:element name="Celltype" type="xsd:string"/>
+                            <xsd:element name="Modeofdispatch" type="xsd:string"/>
+                            <xsd:element name="MessageDateandTime" type="xsd:string"/>
+                            <xsd:element name="UnitofQuantity" type="xsd:string"/>
+                            <xsd:element name="WeightofQuantity" type="xsd:string"/>
+                            <xsd:element name="NumberofPackages" type="xsd:string"/>
+                            <xsd:element name="TemperaturevalueofReeferContainer" type="xsd:string"/>
+                            <xsd:element name="UnitofTemperature" type="xsd:string"/>
+                            <xsd:element name="DimensionCode" type="xsd:string"/>
+                            <xsd:element name="OverDimensionLength" type="xsd:string"/>
+                            <xsd:element name="OverDimensionWidth" type="xsd:string"/>
+                            <xsd:element name="OverDimensionHeight" type="xsd:string"/>
+                            <xsd:element name="IMOClass" type="xsd:string"/>
+                            <xsd:element name="IMDGNumber" type="xsd:string"/>
+                            <xsd:element name="FlashPoint" type="xsd:string"/>
+                            <xsd:element name="GoodsDescription" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="UNT%GS;" dfdl:terminator="" name="UNT">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element dfdl:calendarPattern="ddMMyyyyhhmmss" dfdl:calendarPatternKind="explicit" name="DocumentCreatedDateandTime" type="xsd:dateTime"/>
+													</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+            </xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+</xsd:schema>

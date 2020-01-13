@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:csv="http://www.ibm.com/dfdl/CommaSeparatedFormat" xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions">
+
+
+    <xsd:import namespace="http://www.ibm.com/dfdl/CommaSeparatedFormat" schemaLocation="../IBMdefined/CommaSeparatedFormat.xsd"/>
+    <xsd:annotation>
+		<xsd:appinfo source="http://www.ogf.org/dfdl/">
+			<dfdl:format documentFinalTerminatorCanBeMissing="yes" encoding="{$dfdl:encoding}" escapeSchemeRef="csv:CSVEscapeScheme" ref="csv:CommaSeparatedFormat"/>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+
+	
+
+    <xsd:element ibmSchExtn:docRoot="true" name="AGDORD">
+		<xsd:complexType>
+			<xsd:sequence dfdl:outputNewLine="%LF;" dfdl:separator="">
+				<xsd:element dfdl:initiator="UNH%GS;" dfdl:outputNewLine="%CR;%LF;" dfdl:terminator="" name="UNH">
+					<xsd:complexType>
+						<xsd:sequence dfdl:outputNewLine="%CR;%LF;" dfdl:separator="%GS;" dfdl:terminator="%CR;%LF;">
+                            							                            <xsd:element dfdl:outputNewLine="%CR;%LF;" ibmDfdlExtn:sampleValue="value1" name="DocumentType" type="xsd:string"/>
+                            							                            <xsd:element dfdl:outputNewLine="%CR;%LF;" ibmDfdlExtn:sampleValue="value2" name="DocumentName" type="xsd:string"/>
+							<xsd:element dfdl:outputNewLine="%CR;%LF;" ibmDfdlExtn:sampleValue="value3" name="DocumentNumber" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" ibmDfdlExtn:sampleValue="value4" name="CommonRefNumber" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" ibmDfdlExtn:sampleValue="value5" name="MessageType" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" ibmDfdlExtn:sampleValue="value6" name="SenderID" type="xsd:string"/>
+                                                                            </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>				
+                			<xsd:element dfdl:initiator="RPD%GS;" dfdl:outputNewLine="%CR;%LF;" dfdl:terminator="" name="RPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:outputNewLine="%CR;%LF;" dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+                            							                            <xsd:element dfdl:outputNewLine="%CR;%LF;" ibmDfdlExtn:sampleValue="value1" maxOccurs="unbounded" name="RecipientsID" type="xsd:string"/>
+                            														                                                                                                                                                                                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="NPD%GS;" dfdl:outputNewLine="%CR;%LF;" dfdl:terminator="" name="NPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:outputNewLine="%CR;%LF;" dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+                            							                            <xsd:element dfdl:outputNewLine="%CR;%LF;" ibmDfdlExtn:sampleValue="value1" maxOccurs="unbounded" name="NotifyPartyID" type="xsd:string"/>
+                            														                                                                                                                                                                                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="AGH%GS;" dfdl:outputNewLine="%CR;%LF;" dfdl:terminator="" name="AGH">
+					<xsd:complexType>
+						<xsd:sequence dfdl:outputNewLine="%CR;%LF;" dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+                            							                            <xsd:element ibmDfdlExtn:sampleValue="value1" minOccurs="0" name="RecordType" type="xsd:string"/>
+                            														                                                                                                                                                                                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="DeliveryOrderNumber" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="DeliveryOrderDate" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="DeliveryOrderforExamination" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="ValidityPeriodupto" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="VIAORVCN" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="CallSignVesselCode" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="IMONumber" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="VoyageNumber" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="WhetherForeignCoastal" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="IGMNumber" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="IGMDate" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="IGMLineNumber" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="IGMSubLineNumber" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="BillofLadingNo" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="BillofLadingDate" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="HouseBillofLadingNumber" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="HouseBillofLadingDate" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="AGD%GS;" dfdl:occursCountKind="implicit" dfdl:outputNewLine="%CR;%LF;" dfdl:terminator="" maxOccurs="unbounded" minOccurs="0" name="AGD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:outputNewLine="%CR;%LF;" dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+                            							                            <xsd:element dfdl:outputNewLine="%CR;%LF;" ibmDfdlExtn:sampleValue="value1" minOccurs="0" name="RecordType" type="xsd:string"/>
+                            														                                                                                                                                                                                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="RecordNumber" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="NameofConsignee" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="ConsigneeAddress1" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="ConsigneeAddress2" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="ConsigneeCity" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="ConsigneeState" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="PortofLoading" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="PortofDischarge" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="Containerised" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="ContainerNo" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="ISOCodeofContainer" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="CargoDescription" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="NumberofPackages" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="PackageCode" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="MarksandNumbers" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="FreightPaid" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="ReceiptNumber" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="ReceiptDate" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="StampDuty" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="StampDutyPaidAmount" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="StampDutyPaidDate" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="Deliveryto" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="Authorisationcodeofagent" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="CHACode" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="TotalGrossweight" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="DirectTransit" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="StageFullPartDelivery" type="xsd:string"/>
+                            <xsd:element dfdl:outputNewLine="%CR;%LF;" minOccurs="0" name="IECode" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="UNT%GS;" dfdl:outputNewLine="%CR;%LF;" dfdl:terminator="" name="UNT">
+					<xsd:complexType>
+						<xsd:sequence dfdl:outputNewLine="%CR;%LF;" dfdl:separator="%GS;" dfdl:terminator="%CR;%LF;">
+                            							                            <xsd:element dfdl:outputNewLine="%CR;%LF;" ibmDfdlExtn:sampleValue="value1" name="DocumentCreatedDateandTime" type="xsd:string"/>
+                            														                                                                                                                                                                                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+            </xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+</xsd:schema>

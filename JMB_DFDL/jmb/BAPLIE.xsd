@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:csv="http://www.ibm.com/dfdl/CommaSeparatedFormat" xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions">
+
+
+    <xsd:import namespace="http://www.ibm.com/dfdl/CommaSeparatedFormat" schemaLocation="../IBMdefined/CommaSeparatedFormat.xsd"/>
+    <xsd:annotation>
+		<xsd:appinfo source="http://www.ogf.org/dfdl/">
+			<dfdl:format documentFinalTerminatorCanBeMissing="yes" encoding="{$dfdl:encoding}" escapeSchemeRef="csv:CSVEscapeScheme" ref="csv:CommaSeparatedFormat"/>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+
+	<xsd:element ibmSchExtn:docRoot="true" name="BAPLIE">
+		<xsd:complexType>
+			<xsd:sequence dfdl:separator="">
+				<xsd:element dfdl:initiator="UNH%GS;" dfdl:terminator="" minOccurs="0" name="UNH">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="DocumentType" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" minOccurs="0" name="DocumentName" type="xsd:string"/>
+                            						<xsd:element minOccurs="0" name="DocumentNumber" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="CommonRefNumber" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="MessageType" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="field1" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>				
+                			<xsd:element dfdl:initiator="RPD%GS;" dfdl:terminator="" minOccurs="0" name="RPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" maxOccurs="unbounded" minOccurs="0" name="RecipientsID" type="xsd:string"/>
+													</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="NPD%GS;" dfdl:terminator="" minOccurs="0" name="NPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" maxOccurs="unbounded" minOccurs="0" name="NotifyPartyID" type="xsd:string"/>
+													</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="BPH%GS;" dfdl:terminator="" minOccurs="0" name="BPH">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="VCN" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" minOccurs="0" name="IMOnumber" type="xsd:string"/>
+                            						<xsd:element minOccurs="0" name="Callsign" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="VoyageNumber" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="BPD%GS;" dfdl:occursCountKind="implicit" dfdl:terminator="" maxOccurs="unbounded" minOccurs="0" name="BPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="EquipmentStatus" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" minOccurs="0" name="VesselBay" type="xsd:string"/>
+                            						<xsd:element minOccurs="0" name="VesselRow" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="VesselTier" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="DeckHoldIndicator" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="ContainerNumber" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="SBnumber" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Portofdischargestowage" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="DateandTimeofMessage" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Unitofquantity" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="WeightQuantity" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="NumberofPackages" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="TemperatureValueofReeferContainer" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Unitoftemperature" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="DimensionCode" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="OverdimensionLength" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="OverdimensionWidth" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="OverdimensionHeight" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="IMOClass" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="UNIMDGNumber" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Flashpoint" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="GoodsDescription" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="UNT%GS;" dfdl:occursCountKind="implicit" dfdl:terminator="" maxOccurs="unbounded" minOccurs="0" name="UNT">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="DocumentCreatedDateandTime" type="xsd:string"/>
+													</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+            </xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+</xsd:schema>

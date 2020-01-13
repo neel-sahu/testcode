@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workingSetManager>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1576144117437_1" label="[VESARR_XML_TXT]" name="[VESARR_XML_TXT]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/VESARR_XML_TXT" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1576144366787_2" label="[ACKPLM_TXT]" name="[ACKPLM_TXT]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/ACKPLM_TXT" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1576737390067_7" label="[INVOIC_TXT]" name="[INVOIC_TXT]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/INVOIC_TXT" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1576752108171_11" label="[JMB_DFDL]" name="[JMB_DFDL]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/JMB_DFDL" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1576752108180_12" label="[xmlBeautifierLIB]" name="[xmlBeautifierLIB]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/xmlBeautifierLIB" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1576752212841_14" label="[AGNCHG_TXT]" name="[AGNCHG_TXT]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/AGNCHG_TXT" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578483978548_21" label="[VESSEL_IFTDGN]" name="[VESSEL_IFTDGN]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/VESSEL_IFTDGN" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/xmlBeautifier" type="4"/>
+</workingSet>
+<workingSet editPageId="com.ibm.etools.mft.navigator.BrokerWorkingSet.AppLib" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578562339155_23" label="[VESSEL_RESREQ]" name="[VESSEL_RESREQ]">
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/VESSEL_RESREQ" type="4"/>
+<item factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/xmlBeautifier" type="4"/>
+</workingSet>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1576144036699_0" label="Window Working Set" name="Aggregate for window 1576144036699"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1576218768638_4" label="Window Working Set" name="Aggregate for window 1576218768638"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1576304089153_5" label="Window Working Set" name="Aggregate for window 1576304089153"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1576736375983_6" label="Window Working Set" name="Aggregate for window 1576736375983"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1576822843160_10" label="Window Working Set" name="Aggregate for window 1576822843160"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1577690471186_11" label="Window Working Set" name="Aggregate for window 1577690471186"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1577711317139_12" label="Window Working Set" name="Aggregate for window 1577711317139"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578056049075_13" label="Window Working Set" name="Aggregate for window 1578056049075"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578378534012_14" label="Window Working Set" name="Aggregate for window 1578378534012"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578389281703_15" label="Window Working Set" name="Aggregate for window 1578389281703"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578390107162_16" label="Window Working Set" name="Aggregate for window 1578390107162"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578392045307_17" label="Window Working Set" name="Aggregate for window 1578392045307"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578399827467_18" label="Window Working Set" name="Aggregate for window 1578399827467"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578467333802_19" label="Window Working Set" name="Aggregate for window 1578467333802"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578482715686_20" label="Window Working Set" name="Aggregate for window 1578482715686"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578549222710_22" label="Window Working Set" name="Aggregate for window 1578549222710"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578572760181_24" label="Window Working Set" name="Aggregate for window 1578572760181"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578636446103_25" label="Window Working Set" name="Aggregate for window 1578636446103"/>
+<workingSet aggregate="true" factoryID="org.eclipse.ui.internal.WorkingSetFactory" id="1578895455051_26" label="Window Working Set" name="Aggregate for window 1578895455050"/>
+</workingSetManager>

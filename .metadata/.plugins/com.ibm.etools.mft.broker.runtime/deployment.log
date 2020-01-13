@@ -1,0 +1,144 @@
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>2>>1576145275616
+2087<<Runtime Response<<2019-12-12 15:37:56.354 IST<<TESTNODE_neelimas<<5798423f-dfdf-4275-ab3a-2d6799550125
+4041<<Runtime Response<<2019-12-12 15:37:56.354 IST<<default<<f3e81296-44ae-4d12-8d9b-4b94b66329e8
+2432<<Runtime Response<<2019-12-12 15:37:56.354 IST<<.ACKPLM_TXT_MSG_IN_processFile.Main<<16.143<<SFTP_TXT_Error_Path_ACKPLM<<SFTP_Error_Path, SFTP_Server, UserStoredProcedure, Environment, InputLocalEnvironment, OutputLocalEnvironment, InputRoot, InputBody, InputProperties, OutputRoot, InputExceptionList, OutputExceptionList, InputDestinationList, OutputDestinationList, inputTxt
+2871<<Administration Result<<2019-12-12 15:37:56.354 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/GATRCI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<FAILED
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>2>>1576145299842
+2087<<Runtime Response<<2019-12-12 15:38:20.429 IST<<TESTNODE_neelimas<<5798423f-dfdf-4275-ab3a-2d6799550125
+4041<<Runtime Response<<2019-12-12 15:38:20.429 IST<<default<<f3e81296-44ae-4d12-8d9b-4b94b66329e8
+2432<<Runtime Response<<2019-12-12 15:38:20.429 IST<<.ACKPLM_TXT_MSG_IN_processFile.Main<<16.143<<SFTP_TXT_Error_Path_ACKPLM<<SFTP_Error_Path, SFTP_Server, UserStoredProcedure, Environment, InputLocalEnvironment, OutputLocalEnvironment, InputRoot, InputBody, InputProperties, OutputRoot, InputExceptionList, OutputExceptionList, InputDestinationList, OutputDestinationList, inputTxt
+2871<<Administration Result<<2019-12-12 15:38:20.429 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/GATRCI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<FAILED
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>2>>1576145405553
+2087<<Runtime Response<<2019-12-12 15:40:06.283 IST<<TESTNODE_neelimas<<5798423f-dfdf-4275-ab3a-2d6799550125
+4041<<Runtime Response<<2019-12-12 15:40:06.283 IST<<default<<f3e81296-44ae-4d12-8d9b-4b94b66329e8
+2432<<Runtime Response<<2019-12-12 15:40:06.283 IST<<.ACKPLM_TXT_MSG_IN_processFile.Main<<16.143<<SFTP_TXT_Error_Path_ACKPLM<<SFTP_Error_Path, SFTP_Server, UserStoredProcedure, Environment, InputLocalEnvironment, OutputLocalEnvironment, InputRoot, InputBody, InputProperties, OutputRoot, InputExceptionList, OutputExceptionList, InputDestinationList, OutputDestinationList, inputTxt
+2871<<Administration Result<<2019-12-12 15:40:06.283 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/GATRCI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<FAILED
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>2>>1576145791790
+2087<<Runtime Response<<2019-12-12 15:46:32.423 IST<<TESTNODE_neelimas<<5798423f-dfdf-4275-ab3a-2d6799550125
+4041<<Runtime Response<<2019-12-12 15:46:32.423 IST<<default<<f3e81296-44ae-4d12-8d9b-4b94b66329e8
+2432<<Runtime Response<<2019-12-12 15:46:32.423 IST<<.ACKPLM_TXT_MSG_IN_processFile.Main<<16.143<<SFTP_TXT_Error_Path_ACKPLM<<SFTP_Error_Path, SFTP_Server, UserStoredProcedure, Environment, InputLocalEnvironment, OutputLocalEnvironment, InputRoot, InputBody, InputProperties, OutputRoot, InputExceptionList, OutputExceptionList, InputDestinationList, OutputDestinationList, inputTxt
+2871<<Administration Result<<2019-12-12 15:46:32.423 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/GATRCI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<FAILED
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>0>>1576146031139
+2871<<Administration Result<<2019-12-12 15:50:31.863 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/GATRCI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>0>>1576146080263
+2871<<Administration Result<<2019-12-12 15:51:23.193 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/GATRCI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>0>>1576756861071
+2871<<Administration Result<<2019-12-19 17:31:06.955 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>0>>1576756960085
+2871<<Administration Result<<2019-12-19 17:32:43.189 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+INVOIC_TXT>>TESTNODE_neelimas>>default>>0>>1576758215131
+2871<<Administration Result<<2019-12-19 17:53:35.750 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/INVOIC_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>2>>1576760965314
+2087<<Runtime Response<<2019-12-19 18:39:26.305 IST<<TESTNODE_neelimas<<5798423f-dfdf-4275-ab3a-2d6799550125
+4041<<Runtime Response<<2019-12-19 18:39:26.305 IST<<default<<f3e81296-44ae-4d12-8d9b-4b94b66329e8
+1301<<Runtime Response<<2019-12-19 18:39:26.305 IST<<AGNCHG_TXT<<JMB_DFDL<<AGNCHG_TXT
+2871<<Administration Result<<2019-12-19 18:39:26.305 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<FAILED
+JMB_DFDL>>TESTNODE_neelimas>>default>>0>>1576760983425
+2871<<Administration Result<<2019-12-19 18:39:53.220 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/JMB_DFDLproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576761083683
+2871<<Administration Result<<2019-12-19 18:41:26.690 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576762142281
+2871<<Administration Result<<2019-12-19 18:59:05.825 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576762465366
+2871<<Administration Result<<2019-12-19 19:04:27.799 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576762517707
+2871<<Administration Result<<2019-12-19 19:05:22.334 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576762572970
+2871<<Administration Result<<2019-12-19 19:06:15.682 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576823060536
+2871<<Administration Result<<2019-12-20 11:54:28.059 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576823672031
+2871<<Administration Result<<2019-12-20 12:04:36.898 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576824006951
+2871<<Administration Result<<2019-12-20 12:10:08.560 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+JMB_DFDL>>TESTNODE_neelimas>>default>>0>>1576824486365
+2871<<Administration Result<<2019-12-20 12:18:18.444 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/JMB_DFDLproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576826876236
+2871<<Administration Result<<2019-12-20 12:57:59.666 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+JMB_DFDL>>TESTNODE_neelimas>>default>>0>>1576826933882
+2871<<Administration Result<<2019-12-20 12:58:58.094 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/JMB_DFDLproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576827355708
+2871<<Administration Result<<2019-12-20 13:06:00.822 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576827480045
+2871<<Administration Result<<2019-12-20 13:08:03.814 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576827706940
+2871<<Administration Result<<2019-12-20 13:11:49.145 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576827933368
+2871<<Administration Result<<2019-12-20 13:15:40.861 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576828123308
+2871<<Administration Result<<2019-12-20 13:18:47.404 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576828193792
+2871<<Administration Result<<2019-12-20 13:19:59.792 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576829282261
+2871<<Administration Result<<2019-12-20 13:38:08.313 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576833107629
+2871<<Administration Result<<2019-12-20 14:41:53.285 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576833688976
+2871<<Administration Result<<2019-12-20 14:51:33.625 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576834077683
+2871<<Administration Result<<2019-12-20 14:58:03.337 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576834354387
+2871<<Administration Result<<2019-12-20 15:02:37.535 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576834959927
+2871<<Administration Result<<2019-12-20 15:12:44.358 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576835177588
+2871<<Administration Result<<2019-12-20 15:16:22.830 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576836040341
+2871<<Administration Result<<2019-12-20 15:30:45.160 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+JMB_DFDL>>TESTNODE_neelimas>>default>>0>>1576836988896
+2871<<Administration Result<<2019-12-20 15:46:42.132 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/JMB_DFDLproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576837042283
+2871<<Administration Result<<2019-12-20 15:47:28.389 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1576838452008
+2871<<Administration Result<<2019-12-20 16:10:57.030 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1578487038098
+2871<<Administration Result<<2020-01-08 18:07:22.410 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+JMB_DFDL>>TESTNODE_neelimas>>default>>0>>1578487047055
+2871<<Administration Result<<2020-01-08 18:07:39.087 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/JMB_DFDLproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1578487421740
+2871<<Administration Result<<2020-01-08 18:13:47.616 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+AGNCHG_TXT>>TESTNODE_neelimas>>default>>0>>1578487575026
+2871<<Administration Result<<2020-01-08 18:16:18.584 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/AGNCHG_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>0>>1578488899827
+2871<<Administration Result<<2020-01-08 18:38:20.483 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>2>>1578489213142
+2087<<Runtime Response<<2020-01-08 18:43:39.876 IST<<TESTNODE_neelimas<<5798423f-dfdf-4275-ab3a-2d6799550125
+4041<<Runtime Response<<2020-01-08 18:43:39.877 IST<<default<<f3e81296-44ae-4d12-8d9b-4b94b66329e8
+2432<<Runtime Response<<2020-01-08 18:43:39.877 IST<<.ACKPLM_TXT_MSG_IN_processFile.Main<<15.144<<SFTP_TXT_Error_Path_ACKPLM<<Environment, InputLocalEnvironment, OutputLocalEnvironment, InputRoot, InputBody, InputProperties, OutputRoot, InputExceptionList, OutputExceptionList, InputDestinationList, OutputDestinationList, inputTxt
+2871<<Administration Result<<2020-01-08 18:43:39.877 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<FAILED
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>2>>1578489254265
+2087<<Runtime Response<<2020-01-08 18:44:17.124 IST<<TESTNODE_neelimas<<5798423f-dfdf-4275-ab3a-2d6799550125
+4041<<Runtime Response<<2020-01-08 18:44:17.124 IST<<default<<f3e81296-44ae-4d12-8d9b-4b94b66329e8
+2432<<Runtime Response<<2020-01-08 18:44:17.124 IST<<.ACKPLM_TXT_MSG_IN_processFile.Main<<15.144<<SFTP_TXT_Error_Path_ACKPLM<<Environment, InputLocalEnvironment, OutputLocalEnvironment, InputRoot, InputBody, InputProperties, OutputRoot, InputExceptionList, OutputExceptionList, InputDestinationList, OutputDestinationList, inputTxt
+2871<<Administration Result<<2020-01-08 18:44:17.125 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<FAILED
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>2>>1578489354412
+2087<<Runtime Response<<2020-01-08 18:45:59.479 IST<<TESTNODE_neelimas<<5798423f-dfdf-4275-ab3a-2d6799550125
+4041<<Runtime Response<<2020-01-08 18:45:59.479 IST<<default<<f3e81296-44ae-4d12-8d9b-4b94b66329e8
+2432<<Runtime Response<<2020-01-08 18:45:59.479 IST<<.ACKPLM_TXT_MSG_IN_processFile.Main<<15.144<<SFTP_TXT_Error_Path_ACKPLM<<Environment, InputLocalEnvironment, OutputLocalEnvironment, InputRoot, InputBody, InputProperties, OutputRoot, InputExceptionList, OutputExceptionList, InputDestinationList, OutputDestinationList, inputTxt
+2871<<Administration Result<<2020-01-08 18:45:59.479 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<FAILED
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>0>>1578489420828
+2871<<Administration Result<<2020-01-08 18:47:05.960 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+ACKPLM_TXT>>TESTNODE_neelimas>>default>>0>>1578551138294
+2871<<Administration Result<<2020-01-09 11:55:44.745 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/ACKPLM_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+JMB_DFDL>>TESTNODE_neelimas>>default>>0>>1578563004811
+2871<<Administration Result<<2020-01-09 15:13:41.320 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/JMB_DFDLproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+VESSEL_RESREQ>>TESTNODE_neelimas>>default>>0>>1578563023609
+2871<<Administration Result<<2020-01-09 15:13:48.790 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/VESSEL_RESREQproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+JMB_DFDL>>TESTNODE_neelimas>>default>>0>>1578563159358
+2871<<Administration Result<<2020-01-09 15:16:08.208 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/JMB_DFDLproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+VESSEL_RESREQ>>TESTNODE_neelimas>>default>>0>>1578563168671
+2871<<Administration Result<<2020-01-09 15:16:15.682 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/VESSEL_RESREQproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+JMB_DFDL>>TESTNODE_neelimas>>default>>0>>1578563665442
+2871<<Administration Result<<2020-01-09 15:24:33.269 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/JMB_DFDLproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+VESSEL_RESREQ>>TESTNODE_neelimas>>default>>0>>1578563673950
+2871<<Administration Result<<2020-01-09 15:24:39.338 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/VESSEL_RESREQproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+VESSEL_RESREQ>>TESTNODE_neelimas>>default>>0>>1578564042959
+2871<<Administration Result<<2020-01-09 15:30:48.869 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/VESSEL_RESREQproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+VESSEL_RESREQ>>TESTNODE_neelimas>>default>>0>>1578564539917
+2871<<Administration Result<<2020-01-09 15:39:04.314 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/VESSEL_RESREQproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+VESSEL_RESREQ>>TESTNODE_neelimas>>default>>0>>1578565033394
+2871<<Administration Result<<2020-01-09 15:47:15.237 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/VESSEL_RESREQproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+VESSEL_RESREQ>>TESTNODE_neelimas>>default>>0>>1578565154276
+2871<<Administration Result<<2020-01-09 15:49:16.108 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/VESSEL_RESREQproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE
+INVOIC_TXT>>TESTNODE_neelimas>>default>>0>>1578573097559
+2871<<Administration Result<<2020-01-09 18:01:38.645 IST<<JMBAXIGRP\neelimas<<deploy<<C:/Users/neelimas/Desktop/PI/Pradeep/GeneratedBarFiles/INVOIC_TXTproject.generated.bar<<BAR<<default<<ExecutionGroup<<COMPLETE

@@ -1,0 +1,49 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		SET Environment.variables.ediEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS EDIENDTIME;');
+		DECLARE ediEndTime CHARACTER  CAST(Environment.variables.ediEndTime[1].EDIENDTIME AS CHARACTER);
+		SET ediEndTime = REPLACE(ediEndTime,'TIMESTAMP ','');
+	--	SET ediEndTime = SUBSTRING(mailStartTime BEFORE '.');
+		SET ediEndTime = SUBSTRING(ediEndTime FROM 2 FOR 23);		
+		
+		SET OutputRoot.XMLNSC.PCS_Audit.Header.MS_REF_NO = InputRoot.XMLNSC.auditDetails.RefNo;
+		DECLARE headerRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Header;
+		SET headerRef.MSG_UID = InputRoot.XMLNSC.auditDetails.msgUID;
+		SET headerRef.MSG_TYPE = InputRoot.XMLNSC.auditDetails.msgType;
+		SET headerRef.MSG_TIME = InputRoot.XMLNSC.auditDetails.ediStartTime;
+		SET headerRef.MSG_SNDR = InputRoot.XMLNSC.auditDetails.msgSender;
+		SET headerRef.PORT_CODE = InputRoot.XMLNSC.auditDetails.portCode;
+		SET headerRef.EVENT_NAME = InputRoot.XMLNSC.auditDetails.EVENT_NAME;
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.Message.EDI_START_TS = InputRoot.XMLNSC.auditDetails.ediStartTime;
+		DECLARE messageRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.Message;
+		SET messageRef.EDI_END_TS = ediEndTime;
+		SET messageRef.FILE_NAME = InputRoot.XMLNSC.auditDetails.fileName;
+		SET messageRef.EDI_DIRECTORY_INFO = InputRoot.XMLNSC.auditDetails.fileDirectory;
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.Email.MAIL_START_TS = InputRoot.XMLNSC.auditDetails.mailStartTime;
+		DECLARE emailRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.Email;
+		SET emailRef.MAILING_ID = InputRoot.XMLNSC.auditDetails.MailId;
+		SET emailRef.MAIL_NOTIFICATION_STATUS = 'Sent';
+		SET emailRef.MAIL_END_TS = InputRoot.XMLNSC.auditDetails.mailEndTime;
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.SMS.SMS_START_TS = InputRoot.XMLNSC.auditDetails.SMSStartTime;
+		DECLARE smsRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.SMS;
+		SET smsRef.SMS_NOTIFICATION_NO = InputRoot.XMLNSC.auditDetails.mobileNo;
+		SET smsRef.SMS_NOTIFICATION_STATUS = 'Sent';
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.Database.DB_SP_START_TS = InputRoot.XMLNSC.auditDetails.dbStartTime;
+		DECLARE databaseRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.Database;
+		SET databaseRef.DB_SP_END_TS = InputRoot.XMLNSC.auditDetails.dbEndTime;
+		SET databaseRef.DB_SP_STATUS = 'S';
+		SET databaseRef.DB_SP_REMARK = 'Executed successfully';
+		
+		DECLARE outputBlob BLOB ASBITSTREAM(OutputRoot.XMLNSC, 549,1208);
+		DECLARE outputChar CHARACTER CAST(outputBlob AS CHARACTER CCSID 1208);
+		CALL EDI_InsIIBAudit(outputChar);
+		COMMIT;
+	END;
+	CREATE PROCEDURE EDI_InsIIBAudit( IN auditXML CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 0
+	EXTERNAL NAME "dbo.EDI_InsIIBAudit";

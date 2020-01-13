@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?><xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:csv="http://www.ibm.com/dfdl/CommaSeparatedFormat" xmlns:dfdl="http://www.ogf.org/dfdl/dfdl-1.0/" xmlns:fn="http://www.w3.org/2005/xpath-functions" xmlns:ibmDfdlExtn="http://www.ibm.com/dfdl/extensions" xmlns:ibmSchExtn="http://www.ibm.com/schema/extensions">
+
+
+    <xsd:import namespace="http://www.ibm.com/dfdl/CommaSeparatedFormat" schemaLocation="../IBMdefined/CommaSeparatedFormat.xsd"/>
+    <xsd:annotation>
+		<xsd:appinfo source="http://www.ogf.org/dfdl/">
+			<dfdl:format documentFinalTerminatorCanBeMissing="yes" encoding="{$dfdl:encoding}" escapeSchemeRef="csv:CSVEscapeScheme" ref="csv:CommaSeparatedFormat"/>
+		</xsd:appinfo>
+	</xsd:annotation>
+
+
+	<xsd:element ibmSchExtn:docRoot="true" name="REQFPQ">
+		<xsd:complexType>
+			<xsd:sequence dfdl:separator="">
+				<xsd:element dfdl:initiator="UNH%GS;" dfdl:terminator="" minOccurs="0" name="UNH">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="DocumentType" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" minOccurs="0" name="DocumentName" type="xsd:string"/>
+                            						<xsd:element minOccurs="0" name="DocumentNumber" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="CommonRefNumber" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="MessageType" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="SenderID" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>				
+                			<xsd:element dfdl:initiator="RPD%GS;" dfdl:terminator="" minOccurs="0" name="RPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" name="RecipientsID" type="xsd:string"/>
+													</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="NPD%GS;" dfdl:terminator="" minOccurs="0" name="NPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" name="NotifyPartyIDs" type="xsd:string"/>
+													</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="RPQ%GS;" dfdl:terminator="" minOccurs="0" name="RPQ">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="RecordType" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" minOccurs="0" name="VIAORVCN" type="xsd:string"/>
+                            						<xsd:element minOccurs="0" name="CallSignORVesselCode" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="IMONumber" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="VoyageNumber" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="MasterName" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Anchordropped" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="ShipSanitationControlExemptionCertNo" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="IssueDate" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="IssuingPort" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="ShipSanitationControlCertificate" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Re-InspectionDate" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="CompliedControlMeasures" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Descriptionofmeasures" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Portscalledduringthelast30days" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="ComingfromYellowfeverArea" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="PersonRescuedfromseaonBoard" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="StowawayonBoard" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="vesseltogetafreepassage" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="CrewPassengerEmbarkedinthelastonemonth" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="AnimalsonBoard" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Detailsofanimalsonboard" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="IsalltheanimalVaccinated" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Detailsofanimals" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="AnyRatsorMiceonboard" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Anyunusualdeathofrats" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="AnycrewwithillnesstreatedbyMedicalPractitionerintheLastonemonth" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="DeathonBoard" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="CauseofDeath" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="DetailofDeath" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="CurrentSicknessonboard" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="DetailsofCurrentsickness" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Anyconditionwhichcanleadtoinfection" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Anysanitarymeasuresappliedonboardinlast1month" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="FreshWaterRequired" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="ProvisionsRequirement" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="SludgeDisposal" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="GarbageDisposal" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="TheDeclarationOfHealthScheduleGivenisTrueAndCorrecttoTheBestOfMyKnowledgeAndBelief" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="TheMasterIsAwareOfTheDeclarationForTheFreePratiqueRequestGivenByTheSA" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="ShippingAgentCode" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="CFD%GS;" dfdl:terminator="" minOccurs="0" name="CFD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="RecordNumber" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" minOccurs="0" name="Port" type="xsd:string"/>
+                            						<xsd:element minOccurs="0" name="Country" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="DepartureDate" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="PRD%GS;" dfdl:terminator="" minOccurs="0" name="PRD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="RecordNumber" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" minOccurs="0" name="NameofthePerson" type="xsd:string"/>
+                            						<xsd:element minOccurs="0" name="Nationality" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Portembarked" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Healthstatus" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="SBD%GS;" dfdl:terminator="" minOccurs="0" name="SBD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="RecordNumber" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" minOccurs="0" name="NameofthePerson" type="xsd:string"/>
+                            						<xsd:element minOccurs="0" name="Nationality" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Portembarked" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Healthstatus" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="CPD%GS;" dfdl:terminator="" minOccurs="0" name="CPD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="RecordNumber" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" minOccurs="0" name="Name" type="xsd:string"/>
+                            						<xsd:element minOccurs="0" name="NationalityoftheCrew" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="PortofEmbarkation" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Dateofembarkation" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="PCD%GS;" dfdl:terminator="" minOccurs="0" name="PCD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="RecordNumber" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" minOccurs="0" name="SLNo." type="xsd:string"/>
+                            						<xsd:element minOccurs="0" name="Portcode" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="Departuredate" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="CTD%GS;" dfdl:terminator="" minOccurs="0" name="CTD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="RecordNumber" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" minOccurs="0" name="CrewName" type="xsd:string"/>
+                            						<xsd:element minOccurs="0" name="TypeofIllness" type="xsd:string"/>
+                            <xsd:element minOccurs="0" name="TreatmentParticulars" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="SMD%GS;" dfdl:terminator="" minOccurs="0" name="SMD">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="RecordNumber" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" minOccurs="0" name="Measures" type="xsd:string"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="CID%GS;" dfdl:terminator="" minOccurs="0" name="CID">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element ibmDfdlExtn:sampleValue="value2" minOccurs="0" name="RecordNumber" type="xsd:string"/>
+							<xsd:element ibmDfdlExtn:sampleValue="value3" minOccurs="0" name="MainSymptomsforconsideringInfectiousDiseases" type="xsd:string"/>
+                            						<xsd:element minOccurs="0" name="SubSymptomsforconsideringInfectiousDiseases" type="xsd:string"/>
+                        </xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+                <xsd:element dfdl:initiator="UNT%GS;" dfdl:terminator="" minOccurs="0" name="UNT">
+					<xsd:complexType>
+						<xsd:sequence dfdl:separator="%GS;" dfdl:separatorSuppressionPolicy="trailingEmpty" dfdl:terminator="%CR;%LF;">
+														<xsd:element dfdl:calendarPattern="ddMMyyyyhhmmss" dfdl:calendarPatternKind="explicit" minOccurs="0" name="DocumentCreatedDateandTime" type="xsd:dateTime"/>
+													</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+            </xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+</xsd:schema>

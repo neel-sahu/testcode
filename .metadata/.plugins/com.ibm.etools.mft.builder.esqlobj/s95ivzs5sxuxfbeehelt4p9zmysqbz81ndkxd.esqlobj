@@ -1,0 +1,11 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		SET OutputRoot.Properties.MessageType ='{}:AGNCHG';
+		SET OutputRoot.Properties.MessageSet ='{JMB_DFDL}';
+		SET OutputRoot.DFDL.AGNCHG = InputRoot.DFDL.AGNCHG;
+		SET OutputLocalEnvironment.Destination.File.Name = 'AGNCHG' || Environment.variables.txnID || '.txt';
+		SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = Environment.Variables.TXTResult2[1].SFTP_PATH;
+		SET Environment.variables.fileName = OutputLocalEnvironment.Destination.File.Name;
+		SET Environment.variables.fileDirectory = OutputLocalEnvironment.Destination.File.Remote.ServerDirectory;
+		-- RETURN TRUE;
+	END;

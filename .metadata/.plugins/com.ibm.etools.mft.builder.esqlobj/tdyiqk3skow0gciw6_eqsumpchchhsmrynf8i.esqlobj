@@ -1,0 +1,59 @@
+CREATE COMPUTE MODULE AGNCHG_TXT_MSG_IN_auditDetails
+			CREATE FUNCTION Main() RETURNS BOOLEAN
+			BEGIN
+				DECLARE inputTxt CHARACTER;
+				SET inputTxt = Cast(InputRoot.BLOB.BLOB AS CHARACTER CCSID 1208);
+
+				SET OutputRoot.XMLNSC.auditDetails.RefNo = Environment.variables.commonRefNo;
+				DECLARE auditDtlsRef REFERENCE TO OutputRoot.XMLNSC.auditDetails;
+				SET auditDtlsRef.msgUID = UUIDASCHAR;
+				SET auditDtlsRef.msgType = 'AGNCHG_TXT_IN';
+				SET auditDtlsRef.EVENT_NAME = 'Consumption';
+				SET auditDtlsRef.msgSender = Environment.variables.msgSender;
+				SET auditDtlsRef.portCode = SUBSTRING(Environment.variables.ediDirectory AFTER 'PORTS/');
+				SET auditDtlsRef.portCode = SUBSTRING(auditDtlsRef.portCode BEFORE '/');
+				SET auditDtlsRef.fileName = Environment.variables.filename;
+				SET auditDtlsRef.fileDirectory = Environment.variables.ediDirectory;
+				SET auditDtlsRef.MailId = COALESCE(Environment.Variables.NresultSet2[1].Email_id,Environment.Variables.NresultSet1[1].Email_id);
+				SET auditDtlsRef.mobileNo = COALESCE(Environment.Variables.NresultSet2[1].Mobile,Environment.Variables.NresultSet1[1].Mobile);
+
+				DECLARE ediStartTime CHARACTER CAST(Environment.variables.ediStartTime[1].EDISTARTTIME AS CHARACTER);
+				DECLARE mailStartTime CHARACTER CAST(Environment.variables.mailStartTime[1].MAILSTARTTIME AS CHARACTER);
+				DECLARE mailEndTime CHARACTER CAST(Environment.variables.mailEndTime[1].MAILENDTIME AS CHARACTER);
+				DECLARE dbStartTime CHARACTER CAST(Environment.variables.dbStartTime[1].DBSTARTTIME AS CHARACTER);
+				DECLARE dbEndTime CHARACTER CAST(Environment.variables.dbEndTime[1].DBENDTIME AS CHARACTER);
+				DECLARE SMSStartTime CHARACTER CAST(Environment.variables.SMSStartTime[1].SMSSTARTTIME AS CHARACTER);
+
+				SET ediStartTime = REPLACE(ediStartTime,'TIMESTAMP ','');
+				-- SET ediStartTime = SUBSTRING(ediStartTime BEFORE '.');
+				SET ediStartTime = SUBSTRING(ediStartTime FROM 2 FOR 23);
+				SET auditDtlsRef.ediStartTime = ediStartTime;
+
+				SET mailStartTime = REPLACE(mailStartTime,'TIMESTAMP ','');
+				-- SET mailStartTime = SUBSTRING(mailStartTime BEFORE '.');
+				SET mailStartTime = SUBSTRING(mailStartTime FROM 2 FOR 23);
+				SET auditDtlsRef.mailStartTime = mailStartTime;
+
+				SET mailEndTime = REPLACE(mailEndTime,'TIMESTAMP ','');
+				-- SET mailEndTime = SUBSTRING(mailEndTime BEFORE '.');
+				SET mailEndTime = SUBSTRING(mailEndTime FROM 2 FOR 23);
+				SET auditDtlsRef.mailEndTime = mailEndTime;
+
+				SET SMSStartTime = REPLACE(SMSStartTime,'TIMESTAMP ','');
+				-- SET SMSStartTime = SUBSTRING(SMSStartTime BEFORE '.');
+				SET SMSStartTime = SUBSTRING(SMSStartTime FROM 2 FOR 23);
+				SET auditDtlsRef.SMSStartTime = SMSStartTime;
+
+				SET dbStartTime = REPLACE(dbStartTime,'TIMESTAMP ','');
+				-- SET dbStartTime = SUBSTRING(dbStartTime BEFORE '.');
+				SET dbStartTime = SUBSTRING(dbStartTime FROM 2 FOR 23);
+				SET auditDtlsRef.dbStartTime = dbStartTime;
+
+				SET dbEndTime = REPLACE(dbEndTime,'TIMESTAMP ','');
+				-- SET dbEndTime = SUBSTRING(dbEndTime BEFORE '.');
+				SET dbEndTime = SUBSTRING(dbEndTime FROM 2 FOR 23);
+				SET auditDtlsRef.dbEndTime = dbEndTime;
+
+			END;
+
+		END MODULE;

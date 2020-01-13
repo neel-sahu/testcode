@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 07 Crimsonlogic Pte Ltd; Version : 3.0-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:PCS-CMN="PCS_Common_Types">
+	<xsd:import namespace="PCS_Common_Types" schemaLocation="PCS_CommonTypes.xsd"/>
+	<xsd:element name="DangerousGoods" type="DangerousGoodsType"/>
+	<xsd:complexType name="DangerousGoodsType">
+		<xsd:sequence>
+			<xsd:element name="DocumentHeader" type="PCS-CMN:DocumentHeaderType"/>
+			<xsd:element name="DocumentDetails" type="DocumentDetailsType"/>
+			<xsd:element name="DocumentSummary" type="PCS-CMN:DocumentSummaryType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DocumentDetailsType">
+		<xsd:sequence>
+			<xsd:element name="IFTDGNHeader" type="IFTDGNHeaderType"/>
+			<xsd:element name="IFTDGNDetails" type="IFTDGNDetailsType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="IFTDGNHeaderType">
+		<xsd:sequence>
+			<xsd:element name="RecordType" type="PCS-CMN:RecordType"/>
+			<xsd:element name="VCN" type="PCS-CMN:VCNType"/>
+			<xsd:element name="CallSign" type="PCS-CMN:CodeIDNameTextType"/>
+			<xsd:element name="IMONumber" type="PCS-CMN:CodeIDNameTextType"/>
+			<xsd:element name="VoyageNumber" type="PCS-CMN:CodeIDNameTextType"/>
+			<xsd:element name="VesselCountryCode" type="PCS-CMN:CountryCodeType" minOccurs="0"/>
+			<xsd:element name="ShippingAgent" type="PCS-CMN:StakeholderIDTextType"/>
+			<xsd:element name="ShippingLine" type="PCS-CMN:StakeholderIDTextType"/>
+			<xsd:element name="IGMNumber" type="PCS-CMN:IGMNumberType" minOccurs="0"/>
+			<xsd:element name="IGMDate" type="PCS-CMN:DateType" minOccurs="0"/>
+			<xsd:element name="RotationNumber" type="PCS-CMN:CustomNumberType" minOccurs="0"/>
+			<xsd:element name="RotationNumberDate" type="PCS-CMN:DateType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="IFTDGNDetailsType">
+		<xsd:sequence>
+			<xsd:element name="Consignment" type="ConsignmentLevelType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="ConsignmentLevelType">
+		<xsd:sequence>
+			<xsd:element name="RecordType" type="PCS-CMN:RecordType"/>
+			<xsd:element name="RecordNumber" type="PCS-CMN:RecordNumberType"/>
+			<xsd:element name="CACode" type="PCS-CMN:ContainerAgentCodeType" minOccurs="0"/>
+			<xsd:element name="ContainerNumber" type="PCS-CMN:ContainerNumberType" minOccurs="0"/>
+			<xsd:element name="ContainerClassification" type="PCS-CMN:Char3CodeType" minOccurs="0"/>
+			<xsd:element name="ContainerISOCode" type="PCS-CMN:ISOCodeType" minOccurs="0"/>
+			<xsd:element name="ShippersOwnContainerFlag" type="PCS-CMN:Char3CodeType" minOccurs="0"/>
+			<xsd:element name="CargoETA" type="PCS-CMN:DateType" minOccurs="0"/>
+			<xsd:element name="POLorDischargeCode" type="PCS-CMN:PortEquipmentCodeType"/>
+			<xsd:element name="DOLorDischarge" type="PCS-CMN:DateType"/>
+			<xsd:element name="FinalPortOfDischarge" type="PCS-CMN:PortEquipmentCodeType" minOccurs="0"/>
+			<xsd:element name="CargoType" type="PCS-CMN:Char1CodeType" minOccurs="0"/>
+			<xsd:element name="EquipmentStatus" type="PCS-CMN:Char1CodeType" minOccurs="0"/>
+			<xsd:element name="RSDCertNumber" type="PCS-CMN:RSDNumberType" minOccurs="0"/>
+			<xsd:element name="RSDCertDate" type="PCS-CMN:DateType" minOccurs="0"/>
+			<xsd:element name="RSDValidityDate" type="PCS-CMN:DateType" minOccurs="0"/>
+			<xsd:element name="IGMLineNumber" type="PCS-CMN:CustomSubLineNumberType" minOccurs="0"/>
+			<xsd:element name="IGMSubLineNumber" type="PCS-CMN:CustomSubLineNumberType" minOccurs="0"/>
+			<xsd:element name="SBNumber" type="PCS-CMN:SBType" minOccurs="0"/>
+			<xsd:element name="MLOClass" type="PCS-CMN:CodeIDNameTextType" minOccurs="0"/>
+			<xsd:element name="IMOClass" type="PCS-CMN:IMOClassType"/>
+			<xsd:element name="UNIMDGNumber" type="PCS-CMN:IMDGNumberType" minOccurs="0"/>
+			<xsd:element name="ContainerOrCargo" type="PCS-CMN:Char1CodeType"/>
+			<xsd:element name="CargoDescription" type="PCS-CMN:DescType"/>
+			<xsd:element name="MarksAndNumbers" type="PCS-CMN:PropulsionType" minOccurs="0"/>
+			<xsd:element name="NumberOfPackages" type="PCS-CMN:NumOfPackagesType"/>
+			<xsd:element name="PackageType" type="PCS-CMN:Char3CodeType"/>
+			<xsd:element name="UnitOfQuantity" type="PCS-CMN:Char3CodeType" minOccurs="0"/>
+			<xsd:element name="WeightOfConsignment" type="PCS-CMN:QuantityType" minOccurs="0"/>
+			<xsd:element name="WeightOfDangerousSubstance" type="PCS-CMN:QuantityType" minOccurs="0"/>
+			<xsd:element name="HandlingInstructions" type="PCS-CMN:HandlingInstructionsType"/>
+			<xsd:element name="EMS" type="PCS-CMN:MedicalDescType" minOccurs="0"/>
+			<xsd:element name="MFAG" type="PCS-CMN:MedicalDescType" minOccurs="0"/>
+			<xsd:element name="DescriptionOfFilledCylinders" type="PCS-CMN:DescType" minOccurs="0"/>
+			<xsd:element name="StorageInstruction" type="PCS-CMN:DescType" minOccurs="0"/>
+			<xsd:element name="MaxFlashPoint" type="PCS-CMN:FlashPointType" minOccurs="0"/>
+			<xsd:element name="MinFlashPoint" type="PCS-CMN:FlashPointType" minOccurs="0"/>
+			<xsd:element name="StowagePositionOnBoard" type="PCS-CMN:CodeIDNameTextType" minOccurs="0"/>
+			<xsd:element name="ToalNoOfCylindersInVessel" type="PCS-CMN:QtyType" minOccurs="0"/>
+			<xsd:element name="ToalQtyOfCylindersInVessel" type="PCS-CMN:CargoRescuedFrmSeaOnBoardType" minOccurs="0"/>
+			<xsd:element name="UnitOfQty" type="PCS-CMN:Char3CodeType"/>
+			<xsd:element name="CustomSiteCode" type="PCS-CMN:PortEquipmentCodeType"/>
+			<xsd:element name="EmergencyContactNumber" type="PCS-CMN:IndentNoType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

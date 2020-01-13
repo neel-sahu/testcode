@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><launchConfiguration type="com.ibm.etools.mft.debug.internal.mbLaunchConfigurationDelegate">
+<stringAttribute key="BRName" value="TESTNODE_neelimas"/>
+<stringAttribute key="ConnectionInfo" value=""/>
+<stringAttribute key="EGName" value="default"/>
+<stringAttribute key="com.ibm.debug.wsa.attr_vm_name" value="IBM J9 VM"/>
+<stringAttribute key="com.ibm.debug.wsa.attr_vm_version" value="1.8.0_181"/>
+<intAttribute key="com.ibm.debug.wsa.attr_was_version" value="61"/>
+<stringAttribute key="com.ibm.etools.mft.debug.attr_hostname" value="PIPLMUMDT002"/>
+<stringAttribute key="com.ibm.etools.mft.debug.attr_javaportname" value="8548"/>
+<stringAttribute key="org.eclipse.debug.core.source_locator_id" value="com.ibm.etools.mft.debug.sourcelookup.MBSourceLookupDirector"/>
+<stringAttribute key="org.eclipse.debug.core.source_locator_memento" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;sourceLookupDirector&gt;&#13;&#10;&lt;sourceContainers duplicates=&quot;true&quot;/&gt;&#13;&#10;&lt;/sourceLookupDirector&gt;"/>
+</launchConfiguration>

@@ -1,0 +1,34 @@
+CREATE COMPUTE MODULE VESARR_XML_MSG_IN_failure
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+			BEGIN
+				SET OutputRoot.XMLNSC.errorDetails.messageFlowName = MessageFlowLabel;
+				SET OutputRoot.XMLNSC.errorDetails.messageBody = Environment.variables.filename;
+				SET OutputRoot.XMLNSC.errorDetails.exceptionList = InputExceptionList;
+				
+				DECLARE charPosCommonRefStart INTEGER POSITION('<CommonRefNumber>' IN Environment.Variables.InXML);
+				DECLARE charPosCommonRefEnd INTEGER POSITION('</CommonRefNumber>' IN Environment.Variables.InXML);
+				DECLARE commonRefLength INTEGER charPosCommonRefEnd - charPosCommonRefStart;
+				SET Environment.variables.RefNo = SUBSTRING(Environment.Variables.InXML FROM charPosCommonRefStart+17 FOR commonRefLength);
+				
+				SET OutputRoot.XMLNSC.errorDetails.msRefNo = SUBSTRING(Environment.variables.RefNo BEFORE '<');				
+				SET OutputRoot.XMLNSC.errorDetails.eventName = 'Consumption';
+						
+				SET Environment.variables.portCode = SUBSTRING(Environment.variables.sftpPath AFTER 'PORTS/');
+				SET OutputRoot.XMLNSC.errorDetails.portCode = SUBSTRING(Environment.variables.portCode BEFORE '/');
+				
+				IF (EXISTS(InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException[])) THEN
+					SET OutputRoot.XMLNSC.errorDetails.ErrorCode = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException.Number;
+					SET OutputRoot.XMLNSC.errorDetails.ErrorText = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException.Text;
+				ELSEIF (EXISTS(InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException[])) THEN
+					SET OutputRoot.XMLNSC.errorDetails.ErrorCode = InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException.Number;
+					SET OutputRoot.XMLNSC.errorDetails.ErrorText = InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException.Insert[3].Text;
+				ELSEIF (EXISTS(InputExceptionList.RecoverableException.RecoverableException.RecoverableException[])) THEN
+					SET OutputRoot.XMLNSC.errorDetails.ErrorCode = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.Number;
+					SET OutputRoot.XMLNSC.errorDetails.ErrorText = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.Text;
+				ELSE
+					SET OutputRoot.XMLNSC.errorDetails.ErrorCode = 'ER002';
+					SET OutputRoot.XMLNSC.errorDetails.ErrorText = 'ESB Exception Occurred';
+				END IF;
+				RETURN TRUE;
+			END;
+		END MODULE;

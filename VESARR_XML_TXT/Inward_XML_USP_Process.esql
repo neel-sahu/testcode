@@ -1,0 +1,142 @@
+
+
+DECLARE SFTP_Error_Path EXTERNAL CHARACTER '';
+DECLARE SFTP_Server EXTERNAL CHARACTER '';
+DECLARE UserStoredProcedure EXTERNAL CHARACTER '';
+
+CREATE COMPUTE MODULE Inward_XML_USP_Process
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CALL CopyMessageHeaders();
+		CALL CopyEntireMessage();
+		SET Environment.variables.ediStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS EDISTARTTIME;');	
+		DECLARE ReplaceCarriageReturn BLOB X'0d0a';
+		DECLARE InBLOB_CRLF BLOB;
+		DECLARE XMLBLOB BLOB;
+		
+		SET Environment.Variables.InBlob = InputRoot.BLOB.BLOB;	
+		SET Environment.variables.filename =  InputLocalEnvironment.File.Name;
+		SET InBLOB_CRLF = REPLACE(Environment.Variables.InBlob, ReplaceCarriageReturn);
+		
+		SET Environment.Variables.charData = CAST(InBLOB_CRLF AS CHARACTER CCSID 1208);
+		SET Environment.Variables.charData = SUBSTRING(Environment.Variables.charData AFTER '?>');
+		
+--		IF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="UTF-8"?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="UTF-8"?>');
+--		ELSEIF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="utf-8"?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="utf-8"?>');
+--		ELSEIF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="UTF-8" ?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="UTF-8" ?>');
+--		ELSEIF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="utf-8" ?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="utf-8" ?>');
+--		ELSEIF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>');
+--		ELSEIF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="utf-8" standalone="yes"?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="utf-8" standalone="yes"?>');
+--		ELSEIF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="UTF-8" standalone="no"?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="UTF-8" standalone="no"?>');
+--		ELSEIF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="utf-8" standalone="no"?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="utf-8" standalone="no"?>');
+--		END IF;
+		
+--		IF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="UTF-8"?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="UTF-8"?>');
+--		ELSEIF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="utf-8"?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="utf-8"?>');
+--		ELSEIF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>');
+--		ELSEIF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="utf-8" standalone="yes"?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="utf-8" standalone="yes"?>');
+--		ELSEIF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="UTF-8" standalone="no"?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="UTF-8" standalone="no"?>');
+--		ELSEIF (CONTAINS(Environment.Variables.charData,'<?xml version="1.0" encoding="utf-8" standalone="no"?>')) THEN
+--			SET Environment.Variables.charData = REPLACE(Environment.Variables.charData, '<?xml version="1.0" encoding="utf-8" standalone="no"?>');
+--		END IF;
+		SET Environment.Variables.InXML = Environment.Variables.charData;
+		
+		--		DECLARE ReplaceXMLValue BLOB X'3c3f786d6c2076657273696f6e3d22312e302220656e636f64696e673d225554462d38223f3e'; --<?xml version="1.0" encoding="UTF-8"?>
+--		DECLARE ReplaceCarriageReturn BLOB X'0d0a';
+--		DECLARE ReplaceXMLValue2 BLOB X'3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D227574662D38223F3E'; --<?xml version="1.0" encoding="utf-8"?>
+--		DECLARE ReplaceXMLValue3 BLOB X'3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D225554462D3822207374616E64616C6F6E653D22796573223F3E'; --<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+--		DECLARE ReplaceXMLValue4 BLOB X'3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D227574662D3822207374616E64616C6F6E653D22796573223F3E'; --<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+--		DECLARE ReplaceXMLValue5 BLOB X'3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D225554462D3822207374616E64616C6F6E653D226E6F223F3E'; --<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+--		DECLARE ReplaceXMLValue6 BLOB X'3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D227574662D3822207374616E64616C6F6E653D226E6F223F3E'; --<?xml version="1.0" encoding="utf-8" standalone="no"?>
+--		SET Environment.Variables.InBlob = InputRoot.BLOB.BLOB;	
+--		
+--		SET InBLOB_CRLF = REPLACE(Environment.Variables.InBlob, ReplaceCarriageReturn);
+--		IF (CONTAINS(CAST(Environment.Variables.InBlob AS CHARACTER),'3c3f786d6c2076657273696f6e3d22312e302220656e636f64696e673d225554462d38223f3e')) THEN			
+--			SET XMLBLOB = REPLACE(InBLOB_CRLF, ReplaceXMLValue);
+--		ELSEIF (CONTAINS(Environment.Variables.InBlob,'3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D227574662D38223F3E')) THEN
+--			SET XMLBLOB = REPLACE(InBLOB_CRLF, ReplaceXMLValue2);
+--		ELSEIF (CONTAINS(Environment.Variables.InBlob,'3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D225554462D3822207374616E64616C6F6E653D22796573223F3E')) THEN
+--			SET XMLBLOB = REPLACE(InBLOB_CRLF, ReplaceXMLValue3);
+--		ELSEIF (CONTAINS(Environment.Variables.InBlob,'3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D227574662D3822207374616E64616C6F6E653D22796573223F3E')) THEN
+--			SET XMLBLOB = REPLACE(InBLOB_CRLF, ReplaceXMLValue4);
+--		ELSEIF (CONTAINS(Environment.Variables.InBlob,'3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D225554462D3822207374616E64616C6F6E653D226E6F223F3E')) THEN
+--			SET XMLBLOB = REPLACE(InBLOB_CRLF, ReplaceXMLValue5);
+--		ELSEIF (CONTAINS(Environment.Variables.InBlob,'3C3F786D6C2076657273696F6E3D22312E302220656E636F64696E673D227574662D3822207374616E64616C6F6E653D226E6F223F3E')) THEN
+--			SET XMLBLOB = REPLACE(InBLOB_CRLF, ReplaceXMLValue6);
+--		END IF;
+--
+--		SET Environment.Variables.InXML = CAST (XMLBLOB AS CHARACTER CCSID 1208);	
+      RETURN TRUE;
+	END;
+
+
+
+
+
+	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+		DECLARE I INTEGER 1;
+		DECLARE J INTEGER;
+		SET J = CARDINALITY(InputRoot.*[]);
+		WHILE I < J DO
+			SET OutputRoot.*[I] = InputRoot.*[I];
+			SET I = I + 1;
+		END WHILE;
+	END;
+
+	CREATE PROCEDURE CopyEntireMessage() BEGIN
+		SET OutputRoot = InputRoot;
+		
+--		CALL CopyMessageHeaders();
+--		CALL CopyEntireMessage();
+--		
+--		DECLARE ReplaceXMLValue BLOB X'3c3f786d6c2076657273696f6e3d22312e302220656e636f64696e673d225554462d38223f3e';
+--		DECLARE ReplaceCarriageReturn BLOB X'0d0a';
+--
+--		DECLARE InBLOB_CRLF BLOB;
+--		DECLARE XMLBLOB BLOB;
+--
+--		SET Environment.Variables.InBlob = InputRoot.BLOB.BLOB;		
+--		
+--
+--
+--		SET InBLOB_CRLF = REPLACE(Environment.Variables.InBlob, ReplaceCarriageReturn);
+--		SET XMLBLOB = REPLACE(InBLOB_CRLF, ReplaceXMLValue);
+--		SET Environment.Variables.InXML = CAST (XMLBLOB AS CHARACTER CCSID 1208);
+--		
+--		
+--
+--
+--		RETURN TRUE;
+--	END;
+--
+--
+--
+--
+--
+--	CREATE PROCEDURE CopyMessageHeaders() BEGIN
+--		DECLARE I INTEGER 1;
+--		DECLARE J INTEGER;
+--		SET J = CARDINALITY(InputRoot.*[]);
+--		WHILE I < J DO
+--			SET OutputRoot.*[I] = InputRoot.*[I];
+--			SET I = I + 1;
+--		END WHILE;
+--	END;
+--
+--	CREATE PROCEDURE CopyEntireMessage() BEGIN
+--		SET OutputRoot = InputRoot;
+	END;
+END MODULE;

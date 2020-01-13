@@ -1,0 +1,32 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		IF (EXISTS(InputRoot.XMLNSC[])) THEN
+			DECLARE outputBlob BLOB ASBITSTREAM(InputRoot.XMLNSC, 549,1208);
+			DECLARE ReplaceCarriageReturn BLOB X'0d0a';
+
+			SET outputBlob = REPLACE(outputBlob, ReplaceCarriageReturn);
+			SET Environment.Variables.charData = CAST(outputBlob AS CHARACTER CCSID 1208);
+			SET OutputRoot.XMLNSC = xmlBeautify(Environment.Variables.charData);
+			SET OutputRoot.XMLNSC.root = SUBSTRING(OutputRoot.XMLNSC AFTER '?>');
+			DECLARE stringOut BLOB;
+			SET stringOut = CAST(OutputRoot.XMLNSC.root as BLOB CCSID 1208);
+
+			SET OutputRoot.BLOB.BLOB = stringOut;
+
+			SET OutputLocalEnvironment.Destination.File.Name = 'IFTDGN' || Environment.variables.txnID || '.xml';
+			SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = Environment.Variables.XMLResultREC[1].SFTP_PATH;
+		ELSEIF (EXISTS(InputRoot.DFDL[])) THEN
+			SET OutputRoot.Properties.MessageType ='{}:iftdgn';
+			SET OutputRoot.Properties.MessageSet ='{JMB_DFDL}';
+			SET OutputRoot.DFDL.iftdgn = InputRoot.DFDL.iftdgn;
+			SET OutputLocalEnvironment.Destination.File.Name = 'IFTDGN' || Environment.variables.txnID || '.txt';
+			SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = Environment.Variables.TXTResult2[1].SFTP_PATH;
+		END IF;
+		SET Environment.variables.fileName = OutputLocalEnvironment.Destination.File.Name;
+		SET Environment.variables.fileDirectory = OutputLocalEnvironment.Destination.File.Remote.ServerDirectory;
+	END;
+
+	CREATE PROCEDURE xmlBeautify( IN unformattedXML CHARACTER)
+	RETURNS CHARACTER
+	LANGUAGE JAVA
+	EXTERNAL NAME "com.portall.xmlBeautify.XmlBeautifier.prettyFormat";

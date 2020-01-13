@@ -1,0 +1,42 @@
+CREATE COMPUTE MODULE Errorhandling_process_fileCreation
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE currTime CHARACTER CURRENT_TIMESTAMP;
+		SET currTime = REPLACE(currTime,'TIMESTAMP ','');
+		SET currTime = SUBSTRING(currTime BEFORE '.');
+		SET currTime = SUBSTRING(currTime FROM 2);
+		SET OutputRoot.XMLNSC.MQI_ERRORS.UserExceptionTree.Executiongroup = ExecutionGroupLabel;
+		DECLARE userExcepRef REFERENCE TO OutputRoot.XMLNSC.MQI_ERRORS.UserExceptionTree;
+		SET userExcepRef.Brokername = BrokerName;
+		SET userExcepRef.FlowName = InputRoot.XMLNSC.errorDetails.messageFlowName;
+		
+		IF (InputRoot.XMLNSC.errorDetails.ErrorCode = '' OR InputRoot.XMLNSC.errorDetails.ErrorText = '') THEN
+			SET userExcepRef.ErrorCode = 'ER002';
+			SET userExcepRef.ErrorText = 'ESB exception occurred';
+		ELSE
+			SET userExcepRef.ErrorCode = InputRoot.XMLNSC.errorDetails.ErrorCode;
+			SET userExcepRef.ErrorText = InputRoot.XMLNSC.errorDetails.ErrorText;
+		END IF;
+		SET OutputRoot.XMLNSC.MQI_ERRORS.EVENT_NAME = InputRoot.XMLNSC.errorDetails.eventName;
+		SET OutputRoot.XMLNSC.MQI_ERRORS.PORT_CODE = InputRoot.XMLNSC.errorDetails.portCode;
+		SET OutputRoot.XMLNSC.MQI_ERRORS.MS_REF_NO = InputRoot.XMLNSC.errorDetails.msRefNo;
+		
+		SET OutputRoot.XMLNSC.MQI_ERRORS.TIMESTAMP = currTime;
+
+		SET OutputRoot.XMLNSC.MQI_ERRORS.MsgBody = InputRoot.XMLNSC.errorDetails.messageBody;
+
+		SET OutputRoot.XMLNSC.MQI_ERRORS.ExceptionList = InputRoot.XMLNSC.errorDetails.exceptionList;
+
+		DECLARE outputBlob BLOB ASBITSTREAM(OutputRoot.XMLNSC, 549,1208);
+		DECLARE outputChar CHARACTER CAST(outputBlob AS CHARACTER CCSID 1208);
+		CALL EDI_InsIIBError(outputChar);
+		COMMIT;
+
+		RETURN TRUE;
+	END;
+	CREATE PROCEDURE EDI_InsIIBError( IN errorXML CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 0
+	EXTERNAL NAME "dbo.EDI_InsIIBError";
+
+END MODULE;

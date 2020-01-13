@@ -1,0 +1,76 @@
+CREATE COMPUTE MODULE VESSEL_Get_RESREQ_Data_xmlCreation_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		CALL EDI_XGetRESREQ(Environment.variables.txnID,Environment.Variables.XMLResultHD[],Environment.Variables.XMLResultREC[],Environment.Variables.XMLResultFID[],Environment.Variables.XMLResult4[],Environment.Variables.XMLResult5[],Environment.Variables.XMLResultISD[]);
+		SET Environment.variables.dbEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBENDTIME;');
+		DECLARE i INTEGER 1;
+		SET OutputRoot.XMLNSC.ResourceRequisition.DocumentHeader.DocumentReference.DocumentType = Environment.Variables.XMLResultHD[1].DocumentType;
+		DECLARE headerRef REFERENCE TO OutputRoot.XMLNSC.ResourceRequisition.DocumentHeader.DocumentReference;
+		SET headerRef.DocumentName = Environment.Variables.XMLResultHD[1].DocumentName;
+		SET headerRef.DocumentNumber = Environment.Variables.XMLResultHD[1].DocumentNumber;
+		SET headerRef.CommonRefNumber = Environment.Variables.XMLResultHD[1].CommonRefNumber;
+		SET headerRef.MessageType = Environment.Variables.XMLResultHD[1].MessageType;
+		SET headerRef.SenderID = Environment.Variables.XMLResultHD[1].SenderID;
+
+		DECLARE recPartyCardinality INTEGER CARDINALITY (Environment.Variables.XMLResult4[]);
+		DECLARE notPartyCardinality INTEGER CARDINALITY (Environment.Variables.XMLResult5[]);
+		WHILE (i <= recPartyCardinality) DO
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentHeader.DocumentExchangeDetails.ReceivingPartyDetails.ReceivingParty[i] = Environment.Variables.XMLResult4[i].ReceivingParty;
+			SET i = i + 1;
+		END WHILE;
+		SET i = 1;
+		WHILE (i <= notPartyCardinality) DO
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentHeader.DocumentExchangeDetails.NotifyPartyDetails.NotifyParty[i] = Environment.Variables.XMLResult5[i].NotifyParty;
+			SET i = i + 1;
+		END WHILE;
+
+		SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestHeader.RecordType = Environment.Variables.XMLResultHD[1].RecordType;
+		DECLARE resourceReqHeader REFERENCE TO OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestHeader;
+		SET resourceReqHeader.VCN = Environment.Variables.XMLResultHD[1].VCN;
+		SET resourceReqHeader.CallSign = Environment.Variables.XMLResultHD[1].CallSign;
+		SET resourceReqHeader.IMONumber = Environment.Variables.XMLResultHD[1].IMONumber;
+		SET resourceReqHeader.VoyageNumber = Environment.Variables.XMLResultHD[1].VoyageNumber;
+		SET resourceReqHeader.TOOrDOckCode = Environment.Variables.XMLResultHD[1].TOOrDOckCode;
+		SET resourceReqHeader.ResReqFrom = Environment.Variables.XMLResultHD[1].ResReqFrom;
+		SET resourceReqHeader.ResReqDate = Environment.Variables.XMLResultHD[1].ResReqDate;
+
+
+		DECLARE j INTEGER 1;
+		DECLARE k INTEGER 1;
+		DECLARE reqResCard INTEGER CARDINALITY (Environment.Variables.XMLResultREC[]);
+		DECLARE resReqEquipCard INTEGER CARDINALITY (Environment.Variables.XMLResultFID[]);
+		WHILE (j <= reqResCard) DO
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].RecordType = Environment.Variables.XMLResultREC[j].RecordType;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].RecordNumber = Environment.Variables.XMLResultREC[j].RecordNumber;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].NatureOfOperation = Environment.Variables.XMLResultREC[j].NatureOfOperation;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].CargoType = Environment.Variables.XMLResultREC[j].CargoType;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].BerthNumber = Environment.Variables.XMLResultREC[j].BerthNumber;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].HSCode = Environment.Variables.XMLResultREC[j].HSCode;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].CraneDeploymentType = Environment.Variables.XMLResultREC[j].CraneDeploymentType;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].PurposeOfGang = Environment.Variables.XMLResultREC[j].PurposeOfGang;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].HookType = Environment.Variables.XMLResultREC[j].HookType;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].ModeOfOperation = Environment.Variables.XMLResultREC[j].ModeOfOperation;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].NoOfGangsReq = Environment.Variables.XMLResultREC[j].NoOfGangsReq;
+			WHILE (k <= resReqEquipCard) DO
+				SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].EquipmentDetails.Equipment[k].RecordType = Environment.Variables.XMLResultFID[j].RecordType;
+				SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].EquipmentDetails.Equipment[k].RecordNumber = Environment.Variables.XMLResultFID[j].RecordNumber;
+				SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].EquipmentDetails.Equipment[k].EquipmentNo = Environment.Variables.XMLResultFID[j].EquipmentNo;
+				SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].EquipmentDetails.Equipment[k].UOMofequipment = Environment.Variables.XMLResultFID[j].UOMofequipment;
+				SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].EquipmentDetails.Equipment[k].Size = Environment.Variables.XMLResultFID[j].Size;
+				SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].EquipmentDetails.Equipment[k].TypeofEquipment = Environment.Variables.XMLResultFID[j].TypeofEquipment;
+				SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].EquipmentDetails.Equipment[k].NoofEquipmentrequested = Environment.Variables.XMLResultFID[j].NoofEquipmentrequested;
+				SET k = k + 1;
+			END WHILE;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].SupervisoryStaffRequired = Environment.Variables.XMLResultREC[j].SupervisoryStaffRequired;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].OvertimeStaffRequired = Environment.Variables.XMLResultREC[j].OvertimeStaffRequired;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].ShiftNumber = Environment.Variables.XMLResultREC[j].ShiftNumber;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].PlaceOfDeployment = Environment.Variables.XMLResultREC[j].PlaceOfDeployment;
+			SET OutputRoot.XMLNSC.ResourceRequisition.DocumentDetails.RessourceRequestDetails.ResourceRequest[j].Remark = Environment.Variables.XMLResultREC[j].Remark;
+			SET j = j + 1;
+
+		END WHILE;
+		SET OutputRoot.XMLNSC.ResourceRequisition.DocumentSummary.IssuedDateTime = Environment.Variables.XMLResultISD[1].IssuedDateTime;
+
+	END;
+END MODULE;

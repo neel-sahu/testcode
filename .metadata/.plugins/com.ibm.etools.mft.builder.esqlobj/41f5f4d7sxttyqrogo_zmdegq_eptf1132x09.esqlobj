@@ -1,0 +1,92 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		SET Environment.variables.ediEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS EDIENDTIME;');
+		DECLARE ediEndTime CHARACTER CAST(Environment.variables.ediEndTime[1].EDIENDTIME AS CHARACTER);
+		SET ediEndTime = REPLACE(ediEndTime,'TIMESTAMP ','');
+		-- SET ediEndTime = SUBSTRING(mailStartTime BEFORE '.');
+		SET ediEndTime = SUBSTRING(ediEndTime FROM 2 FOR 23);
+
+		DECLARE ediStartTime CHARACTER CAST(Environment.variables.ediStartTime[1].EDISTARTTIME AS CHARACTER);
+		DECLARE mailStartTime CHARACTER CAST(Environment.variables.mailStartTime[1].MAILSTARTTIME AS CHARACTER);
+		DECLARE mailEndTime CHARACTER CAST(Environment.variables.mailEndTime[1].MAILENDTIME AS CHARACTER);
+		DECLARE dbStartTime CHARACTER CAST(Environment.variables.dbStartTime[1].DBSTARTTIME AS CHARACTER);
+		DECLARE dbEndTime CHARACTER CAST(Environment.variables.dbEndTime[1].DBENDTIME AS CHARACTER);
+		DECLARE SMSStartTime CHARACTER CAST(Environment.variables.SMSStartTime[1].SMSSTARTTIME AS CHARACTER);
+
+		SET ediStartTime = REPLACE(ediStartTime,'TIMESTAMP ','');
+		SET ediStartTime = SUBSTRING(ediStartTime FROM 2 FOR 23);
+
+		SET mailStartTime = REPLACE(mailStartTime,'TIMESTAMP ','');
+		SET mailStartTime = SUBSTRING(mailStartTime FROM 2 FOR 23);
+
+		SET mailEndTime = REPLACE(mailEndTime,'TIMESTAMP ','');
+		SET mailEndTime = SUBSTRING(mailEndTime FROM 2 FOR 23);
+
+		SET SMSStartTime = REPLACE(SMSStartTime,'TIMESTAMP ','');
+		SET SMSStartTime = SUBSTRING(SMSStartTime FROM 2 FOR 23);
+
+		SET dbStartTime = REPLACE(dbStartTime,'TIMESTAMP ','');
+		SET dbStartTime = SUBSTRING(dbStartTime FROM 2 FOR 23);
+
+		SET dbEndTime = REPLACE(dbEndTime,'TIMESTAMP ','');
+		SET dbEndTime = SUBSTRING(dbEndTime FROM 2 FOR 23);
+
+		DECLARE messageSender CHARACTER;
+		DECLARE emailId CHARACTER;
+		DECLARE mobileNumber CHARACTER;
+		IF (Environment.Variables.Result[1].FileFormat = 'XML' OR Environment.Variables.Result56[1].FileFormat = 'XML') THEN
+			SET messageSender = Environment.Variables.XMLResultHD[1].SenderID;
+			SET emailId = Environment.Variables.XMLResultREC[1].Email_id;
+			SET mobileNumber = Environment.Variables.XMLResultREC[1].Mobile;
+		ELSE
+			SET messageSender = Environment.Variables.TXTResult1[1].SenderID;
+			SET emailId = Environment.Variables.TXTResult2[1].Email_id;
+			SET mobileNumber = Environment.Variables.TXTResult2[1].Mobile;
+		END IF;
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Header.MS_REF_NO = Environment.variables.txnID;
+		DECLARE headerRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Header;
+		SET headerRef.MSG_UID = UUIDASCHAR;
+		IF (Environment.Variables.Result[1].FileFormat = 'XML' OR Environment.Variables.Result56[1].FileFormat = 'XML') THEN
+			SET headerRef.MSG_TYPE = 'IFTDGN_XML_OUT';
+		ELSE
+			SET headerRef.MSG_TYPE = 'IFTDGN_TXT_OUT';
+		END IF;
+		SET headerRef.MSG_TIME = ediStartTime;
+		SET headerRef.MSG_SNDR = messageSender;
+		SET headerRef.PORT_CODE = SUBSTRING( Environment.variables.fileDirectory AFTER 'PORTS/');
+		SET headerRef.PORT_CODE = SUBSTRING(headerRef.PORT_CODE BEFORE '/');
+		SET headerRef.EVENT_NAME = 'Generation';
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.Message.EDI_START_TS = ediStartTime;
+		DECLARE messageRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.Message;
+		SET messageRef.EDI_END_TS = ediEndTime;
+		SET messageRef.FILE_NAME = Environment.variables.fileName;
+		SET messageRef.EDI_DIRECTORY_INFO = Environment.variables.fileDirectory;
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.Email.MAIL_START_TS = mailStartTime;
+		DECLARE emailRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.Email;
+		SET emailRef.MAILING_ID = emailId;
+		SET emailRef.MAIL_NOTIFICATION_STATUS = 'Not Sent';
+		SET emailRef.MAIL_END_TS = mailEndTime;
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.SMS.SMS_START_TS = SMSStartTime;
+		DECLARE smsRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.SMS;
+		SET smsRef.SMS_NOTIFICATION_NO = mobileNumber;
+		SET smsRef.SMS_NOTIFICATION_STATUS = 'Not Sent';
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.Database.DB_SP_START_TS = dbStartTime;
+		DECLARE databaseRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.Database;
+		SET databaseRef.DB_SP_END_TS = dbEndTime;
+		SET databaseRef.DB_SP_STATUS = 'S';
+		SET databaseRef.DB_SP_REMARK = 'Executed successfully';
+
+		DECLARE outputBlob BLOB ASBITSTREAM(OutputRoot.XMLNSC, 549,1208);
+		DECLARE outputChar CHARACTER CAST(outputBlob AS CHARACTER CCSID 1208);
+		CALL EDI_InsIIBAudit(outputChar);
+		COMMIT;
+	END;
+
+	CREATE PROCEDURE EDI_InsIIBAudit( IN auditXML CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 0
+	EXTERNAL NAME "dbo.EDI_InsIIBAudit";

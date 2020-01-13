@@ -1,0 +1,116 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+	
+		CALL EDI_TGetPAYSTS (Environment.variables.txnID,Environment.Variables.TXTResult1[],Environment.Variables.TXTResult2[],Environment.Variables.TXTResult3[],Environment.Variables.TXTResult4[],Environment.Variables.TXTResult5[]);
+		SET Environment.variables.dbEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBENDTIME;');
+		--UNH
+		
+		SET OutputRoot.DFDL.PAYSTS.Header.Values = COALESCE(Environment.Variables.TXTResult1[1].DocumentType,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].DocumentName,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].DocumentNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].CommonRefNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].MessageType,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].SenderID,'');
+		
+--		SET OutputRoot.DFDL.PAYSTS.UNH.DocumentType = Environment.Variables.TXTResult1[1].DocumentType;
+--		SET OutputRoot.DFDL.PAYSTS.UNH.DocumentName = Environment.Variables.TXTResult1[1].DocumentName;
+--		SET OutputRoot.DFDL.PAYSTS.UNH.DocumentNumber = Environment.Variables.TXTResult1[1].DocumentNumber;
+--		SET OutputRoot.DFDL.PAYSTS.UNH.CommonRefNumber = Environment.Variables.TXTResult1[1].CommonRefNumber;
+--		SET OutputRoot.DFDL.PAYSTS.UNH.MessageType = Environment.Variables.TXTResult1[1].MessageType;
+--		SET OutputRoot.DFDL.PAYSTS.UNH.SenderID = Environment.Variables.TXTResult1[1].SenderID;		
+		
+		--RPD
+		
+		DECLARE RecieveCount INTEGER CARDINALITY (Environment.Variables.TXTResult2[]);
+		DECLARE Recipientlist CHARACTER;
+		DECLARE K INTEGER 1;
+
+		WHILE K <= RecieveCount DO
+			IF K = 1 THEN
+				SET Recipientlist = ''||Environment.Variables.TXTResult2[1].ReceivingParty; 
+			ELSE
+				SET Recipientlist = COALESCE(Recipientlist,'')||''||Environment.Variables.TXTResult2[K].ReceivingParty;
+			END IF;
+			SET K=K+1;
+		END WHILE ;
+
+		SET Recipientlist = TRIM(LEADING '' FROM Recipientlist);		
+		
+		SET OutputRoot.DFDL.PAYSTS.RDP.BodyValues = Recipientlist;
+		
+		DECLARE RecieveCountNPD INTEGER CARDINALITY(Environment.Variables.TXTResult3[]);
+		DECLARE RecipientlistNPD CHARACTER;
+		DECLARE T INTEGER 1;
+
+		WHILE T <= RecieveCountNPD DO
+			IF T =1 THEN
+				SET RecipientlistNPD = ''||Environment.Variables.TXTResult3[1].NOTIFYPARTY; 
+			ELSE
+				SET RecipientlistNPD=COALESCE(RecipientlistNPD,'')||''||Environment.Variables.TXTResult3[T].NOTIFYPARTY;
+			END IF;			
+			SET T=T+1;
+		END WHILE ;
+
+		SET RecipientlistNPD = TRIM(LEADING '' FROM RecipientlistNPD);
+		IF (LENGTH(RecipientlistNPD) > 0) THEN
+			SET OutputRoot.DFDL.PAYSTS.NPD.BodyValues = RecipientlistNPD;
+		END IF;		
+		
+--		DECLARE countRecord INTEGER 0;
+--		DECLARE i INTEGER 1;
+--
+--		SET countRecord = CARDINALITY(Environment.Variables.TXTResult2[]);
+--
+--		WHILE countRecord > 0 DO
+--			SET OutputRoot.DFDL.PAYSTS.RPD.RecipientsID[i] = Environment.Variables.TXTResult2[i].ReceivingParty ;
+--			SET i = i + 1;
+--			SET countRecord = countRecord - 1;
+--		END WHILE;		
+--		
+--		-- NPD
+--		
+--		DECLARE countRecord1 INTEGER 0;
+--		DECLARE j INTEGER 1;
+--
+--		SET countRecord1 = CARDINALITY(Environment.Variables.TXTResult3[]);
+--
+--		WHILE countRecord1 > 0 DO
+--			SET OutputRoot.DFDL.PAYSTS.NPD.NotifyPartyIDs[j] = Environment.Variables.TXTResult3[j].NOTIFYPARTY ;
+--			SET j = j + 1;
+--			SET countRecord1 = countRecord1 - 1;
+--		END WHILE;		
+		-- FOR PSD
+		SET OutputRoot.DFDL.PAYSTS.PSD.PSDValues = COALESCE(CAST(Environment.Variables.TXTResult4[1].VCN AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].BillNumber AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].BankReferenceId AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].BankTransactionStatus AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].BankTransactionDate AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].PDAccountNo AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].ServiceCategory AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].GrossAmount AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].TDSAmount AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].NetAmount AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].Remarks AS CHARACTER),'');
+--		SET OutputRoot.DFDL.PAYSTS.PSD.VCN = Environment.Variables.TXTResult4[1].VCN;
+--		SET OutputRoot.DFDL.PAYSTS.PSD.BillNumber = Environment.Variables.TXTResult4[1].BillNumber;
+--		SET OutputRoot.DFDL.PAYSTS.PSD.BankReferenceId = Environment.Variables.TXTResult4[1].BankReferenceId;
+--		SET OutputRoot.DFDL.PAYSTS.PSD.BankTransactionStatus = Environment.Variables.TXTResult4[1].BankTransactionStatus;
+--		SET OutputRoot.DFDL.PAYSTS.PSD.BankTransactionDate = Environment.Variables.TXTResult4[1].BankTransactionDate;
+--		SET OutputRoot.DFDL.PAYSTS.PSD.PDAccountNo = Environment.Variables.TXTResult4[1].PDAccountNo;
+--		SET OutputRoot.DFDL.PAYSTS.PSD.ServiceCategory = Environment.Variables.TXTResult4[1].ServiceCategory;
+--		SET OutputRoot.DFDL.PAYSTS.PSD.GrossAmount = Environment.Variables.TXTResult4[1].GrossAmount;
+--		SET OutputRoot.DFDL.PAYSTS.PSD.TDSAmount = Environment.Variables.TXTResult4[1].TDSAmount;
+--		SET OutputRoot.DFDL.PAYSTS.PSD.NetAmount = Environment.Variables.TXTResult4[1].NetAmount||'';
+--		SET OutputRoot.DFDL.PAYSTS.PSD.Remarks = Environment.Variables.TXTResult4[1].Remarks;
+		
+		-- FOR UNT
+		SET OutputRoot.DFDL.PAYSTS.trailer.Trailvalues = COALESCE(Environment.Variables.TXTResult5[1].IssuedDateTime,'');
+		--SET OutputRoot.DFDL.PAYSTS.UNT.DocumentCreatedDateandTime = Environment.Variables.TXTResult5[1].IssuedDateTime;
+	END;
+
+	
+
+	CREATE PROCEDURE EDI_TGetPAYSTS( IN TransactionID CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 5
+	EXTERNAL NAME "dbo.EDI_TGetPAYSTS";

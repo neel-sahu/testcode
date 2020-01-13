@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:Auditlogging_process.subflow="Auditlogging_process.subflow" xmlns:ComIbmCompute.msgnode="ComIbmCompute.msgnode" xmlns:ComIbmFileInput.msgnode="ComIbmFileInput.msgnode" xmlns:ComIbmFileOutput.msgnode="ComIbmFileOutput.msgnode" xmlns:ComIbmMQOutput.msgnode="ComIbmMQOutput.msgnode" xmlns:Errorhandling_process.subflow="Errorhandling_process.subflow" xmlns:Inward_XML_USP_Process.subflow="Inward_XML_USP_Process.subflow" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:eflow="http://www.ibm.com/wbi/2005/eflow" xmlns:utility="http://www.ibm.com/wbi/2005/eflow_utility" nsURI="VESARR_XML_MSG_IN.msgflow" nsPrefix="VESARR_XML_MSG_IN.msgflow">
+  <eClassifiers xmi:type="eflow:FCMComposite" name="FCMComposite_1">
+    <eSuperTypes href="http://www.ibm.com/wbi/2005/eflow#//FCMBlock"/>
+    <translation xmi:type="utility:TranslatableString" key="VESARR_XML_MSG_IN" bundleName="VESARR_XML_MSG_IN" pluginId="VESARR_XML_TXT"/>
+    <colorGraphic16 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/VESARR_XML_TXT/icons/full/obj16/VESARR_XML_MSG_IN.gif"/>
+    <colorGraphic32 xmi:type="utility:GIFFileGraphic" resourceName="platform:/plugin/VESARR_XML_TXT/icons/full/obj30/VESARR_XML_MSG_IN.gif"/>
+    <composition>
+      <nodes xmi:type="ComIbmFileInput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_23" location="2,115" inputDirectory="/home/user/PCSUATADM/CATUAT/IN/XML" filenamePattern="VESARR*" processedFileAction="moveToArchiveWithTimestamp" messageDomainProperty="BLOB" remoteTransferType="SFTP" fileFtpServer="IPAFTP:22" fileFtpUser="JMBFILEIdentity" fileFtpDirectory="/home/padmin/PORTS/IIBINBOUND/XML">
+        <translation xmi:type="utility:ConstantString" string="VESARR_File_In"/>
+      </nodes>
+      <nodes xmi:type="ComIbmFileOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_24" location="347,153" outputDirectory="/home/PCSUATADM/CATUAT/OUT/XML" outputFilename="*" outputMode="archiveAndReplaceWithTimestamp" failedFileAction="moveToFailureWithTimestamp" remoteTransferType="SFTP" fileFtpServer="10.20.0.7:22" fileFtpUser="JMBFILEIdentity" fileFtpDirectory="">
+        <translation xmi:type="utility:ConstantString" string="VESARR_File_Out"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_25" location="177,48" dataSource="JMDSN" computeExpression="esql://routine/#VESARR_XML_MSG_IN_failure.Main">
+        <translation xmi:type="utility:ConstantString" string="failure"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_26" location="467,142" dataSource="JMDSN" computeExpression="esql://routine/#VESARR_XML_MSG_IN_mailSMSCall_Compute.Main">
+        <translation xmi:type="utility:ConstantString" string="mailSMSCall"/>
+      </nodes>
+      <nodes xmi:type="Auditlogging_process.subflow:FCMComposite_1" xmi:id="FCMComposite_1_27" location="650,139">
+        <translation xmi:type="utility:ConstantString" string="Auditlogging_process"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_28" location="556,37" queueName="PCS_UAT_EMAILQ" destinationQueueManagerName="PCS_UAT_QMG">
+        <translation xmi:type="utility:ConstantString" string="EMAIL.MSG.IN"/>
+      </nodes>
+      <nodes xmi:type="ComIbmMQOutput.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_29" location="601,225" queueName="PCS_UAT_SMSQ" destinationQueueManagerName="PCS_UAT_QMG">
+        <translation xmi:type="utility:ConstantString" string="SMS.MSG.IN"/>
+      </nodes>
+      <nodes xmi:type="Errorhandling_process.subflow:FCMComposite_1" xmi:id="FCMComposite_1_30" location="288,36">
+        <translation xmi:type="utility:ConstantString" string="Errorhandling_process"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_31" location="256,147" dataSource="JMDSN" computeExpression="esql://routine/#VESARR_XML_MSG_IN_processFile.Main" computeMode="all">
+        <translation xmi:type="utility:ConstantString" string="processFile"/>
+      </nodes>
+      <nodes xmi:type="ComIbmCompute.msgnode:FCMComposite_1" xmi:id="FCMComposite_1_32" location="558,139" dataSource="JMDSN" computeExpression="esql://routine/#VESARR_XML_MSG_IN_auditdetails.Main">
+        <translation xmi:type="utility:ConstantString" string="auditdetails"/>
+      </nodes>
+      <nodes xmi:type="Inward_XML_USP_Process.subflow:FCMComposite_1" xmi:id="FCMComposite_1_33" location="89,160">
+        <translation xmi:type="utility:ConstantString" string="Inward_XML_USP_Process"/>
+      </nodes>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_25" targetNode="FCMComposite_1_27" sourceNode="FCMComposite_1_32" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_26" targetNode="FCMComposite_1_25" sourceNode="FCMComposite_1_28" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_27" targetNode="FCMComposite_1_26" sourceNode="FCMComposite_1_24" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_28" targetNode="FCMComposite_1_25" sourceNode="FCMComposite_1_23" sourceTerminalName="OutTerminal.catch" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_29" targetNode="FCMComposite_1_28" sourceNode="FCMComposite_1_26" sourceTerminalName="OutTerminal.out1" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_30" targetNode="FCMComposite_1_25" sourceNode="FCMComposite_1_24" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_31" targetNode="FCMComposite_1_32" sourceNode="FCMComposite_1_26" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_32" targetNode="FCMComposite_1_25" sourceNode="FCMComposite_1_23" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_33" targetNode="FCMComposite_1_25" sourceNode="FCMComposite_1_29" sourceTerminalName="OutTerminal.failure" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_34" targetNode="FCMComposite_1_33" sourceNode="FCMComposite_1_23" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_35" targetNode="FCMComposite_1_31" sourceNode="FCMComposite_1_33" sourceTerminalName="OutTerminal.Output" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_36" targetNode="FCMComposite_1_30" sourceNode="FCMComposite_1_25" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.Input"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_37" targetNode="FCMComposite_1_24" sourceNode="FCMComposite_1_31" sourceTerminalName="OutTerminal.out" targetTerminalName="InTerminal.in"/>
+      <connections xmi:type="eflow:FCMConnection" xmi:id="FCMConnection_38" targetNode="FCMComposite_1_29" sourceNode="FCMComposite_1_26" sourceTerminalName="OutTerminal.out2" targetTerminalName="InTerminal.in"/>
+    </composition>
+    <propertyOrganizer/>
+    <stickyBoard/>
+  </eClassifiers>
+</ecore:EPackage>

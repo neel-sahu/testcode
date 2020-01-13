@@ -1,0 +1,43 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		SET Environment.variables.ediStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS EDISTARTTIME;');
+
+		DECLARE inputTxt CHARACTER;
+		SET inputTxt = Cast(InputRoot.BLOB.BLOB AS CHARACTER CCSID 1208);
+		SET Environment.variables.filename = InputLocalEnvironment.File.Name;
+
+		SET Environment.variables.dbStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBSTARTTIME;');
+		CALL EDI_TInsINVOIC (inputTxt);
+		COMMIT;
+		CALL EDI_GetTXTMsgGrpAsTable(inputTxt,'UNH', Environment.Variables.TresultSet1[], Environment.Variables.TresultSet2[], Environment.Variables.TresultSet3[], Environment.Variables.TresultSet4[], Environment.Variables.TresultSet5[], Environment.Variables.TresultSet6[]);
+		CALL EDI_TGetNotifyDetails('inputTxt','INVOIC',Environment.Variables.TresultSet3[5].ElementValue,Environment.Variables.TresultSet3[7].ElementValue,Environment.Variables.TresultSet6[1].RPDNames, Environment.Variables.NresultSet1[], Environment.Variables.NresultSet2[], Environment.Variables.NresultSet3[], Environment.Variables.NresultSet4[], Environment.Variables.NresultSet5[], Environment.Variables.NresultSet6[]);
+		SET Environment.variables.dbEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBENDTIME;');
+		 SET Environment.variables.sftpPath = COALESCE(Environment.Variables.NresultSet2[1].SFTP_PATH,Environment.Variables.NresultSet1[1].SFTP_PATH,SFTP_TXT_Error_Path_INVOIC);
+		SET Environment.variables.commonRefNo = Environment.Variables.TresultSet3[5].ElementValue;
+		SET Environment.variables.msgSender = Environment.Variables.TresultSet3[7].ElementValue;
+
+		SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = Environment.variables.sftpPath;
+		-- SET OutputLocalEnvironment.Destination.File.Remote.Server = SFTP_TXT_Server_INVOIC;
+		SET OutputLocalEnvironment.Destination.File.Name = Environment.variables.filename;
+
+		SET OutputRoot.BLOB.BLOB = InputRoot.BLOB.BLOB;
+		SET Environment.variables.ediDirectory = OutputLocalEnvironment.Destination.File.Remote.ServerDirectory;
+		RETURN TRUE;
+	END;
+
+
+
+	CREATE PROCEDURE EDI_TInsINVOIC (IN T CHARACTER)
+	LANGUAGE DATABASE
+	EXTERNAL NAME "dbo.EDI_TInsINVOIC" ;
+
+	CREATE PROCEDURE EDI_TGetNotifyDetails (IN Text CHARACTER, IN msgType CHARACTER, IN t1 CHARACTER, IN t2 CHARACTER, IN t3 CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 6
+	EXTERNAL NAME "dbo.EDI_TGetNotifyDetails";
+
+	CREATE PROCEDURE EDI_GetTXTMsgGrpAsTable (IN Text CHARACTER, IN msgType CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 6
+	EXTERNAL NAME "dbo.EDI_GetTXTMsgGrpAsTable";
+

@@ -1,0 +1,30 @@
+/*EATE FUNCTION Main() RETURNS BOOLE*/
+	BEGIN
+		SET OutputRoot.XMLNSC.errorDetails.messageFlowName = MessageFlowLabel;
+		SET OutputRoot.XMLNSC.errorDetails.messageBody = Environment.variables.filename;
+		SET OutputRoot.XMLNSC.errorDetails.exceptionList = InputExceptionList;
+		SET OutputRoot.XMLNSC.errorDetails.msRefNo = Environment.variables.commonRefNo;
+		SET OutputRoot.XMLNSC.errorDetails.eventName = 'Consumption';
+		SET Environment.variables.portCode = SUBSTRING(Environment.variables.ediDirectory AFTER 'PORTS/');
+		SET OutputRoot.XMLNSC.errorDetails.portCode = SUBSTRING(Environment.variables.portCode BEFORE '/');
+		
+		IF (EXISTS(InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException[])) THEN
+			SET OutputRoot.XMLNSC.errorDetails.ErrorCode = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException.Number;
+			SET OutputRoot.XMLNSC.errorDetails.ErrorText = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException.Text;
+		ELSEIF (EXISTS(InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException[])) THEN
+			SET OutputRoot.XMLNSC.errorDetails.ErrorCode = InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException.Number;
+			SET OutputRoot.XMLNSC.errorDetails.ErrorText = InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException.Insert[3].Text;
+		ELSEIF (EXISTS(InputExceptionList.RecoverableException.RecoverableException.RecoverableException[])) THEN
+			SET OutputRoot.XMLNSC.errorDetails.ErrorCode = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.Number;
+			SET OutputRoot.XMLNSC.errorDetails.ErrorText = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.Text;
+		ELSE
+			SET OutputRoot.XMLNSC.errorDetails.ErrorCode = 'ER002';
+			SET OutputRoot.XMLNSC.errorDetails.ErrorText = 'ESB Exception Occurred';
+		END IF;
+
+		RETURN TRUE;
+
+	END;
+
+
+

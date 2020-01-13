@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2007 Crimsonlogic Pte Ltd; Version:3.2  -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:PCS-CMN="PCS_Common_Types">
+	<xsd:import namespace="PCS_Common_Types" schemaLocation="PCS_CommonTypes.xsd"/>
+	<xsd:element name="AgentDeliveryOrder" type="AgentDeliveryOrderType"/>
+	<xsd:complexType name="AgentDeliveryOrderType">
+		<xsd:sequence>
+			<xsd:element name="DocumentHeader" type="PCS-CMN:DocumentHeaderType"/>
+			<xsd:element name="DocumentDetails" type="DocumentDetailsType"/>
+			<xsd:element name="DocumentSummary" type="PCS-CMN:DocumentSummaryType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="DocumentDetailsType">
+		<xsd:sequence>
+			<xsd:element name="AgentDOHeader" type="AgentDOHeaderType"/>
+			<xsd:element name="AgentDOSummary" type="AgentDOSummaryType"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AgentDOHeaderType">
+		<xsd:sequence>
+			<xsd:element name="RecordType" type="PCS-CMN:RecordType"/>
+			<xsd:element name="DeliveryOrderNumber" type="PCS-CMN:NameTextType" minOccurs="0"/>
+			<xsd:element name="DeliveryOrderDate" type="PCS-CMN:DateType" minOccurs="0"/>
+			<xsd:element name="DeliveryOrderExamination" type="PCS-CMN:BooleanType"/>
+			<xsd:element name="ValidUpTo" type="PCS-CMN:DateType" minOccurs="0"/>
+			<xsd:element name="VCN" type="PCS-CMN:VCNType"/>
+			<xsd:element name="CallSign" type="PCS-CMN:CodeIDNameTextType"/>
+			<xsd:element name="IMONumber" type="PCS-CMN:CodeIDNameTextType"/>
+			<xsd:element name="VoyageNumber" type="PCS-CMN:CodeIDNameTextType"/>
+			<xsd:element name="ForeignCoastalFlag" type="PCS-CMN:Char1CodeType"/>
+			<xsd:element name="IGMNumber" type="PCS-CMN:IGMNumberType" minOccurs="0"/>
+			<xsd:element name="IGMDate" type="PCS-CMN:DateType" minOccurs="0"/>
+			<xsd:element name="IGMLineNumber" type="PCS-CMN:NoOfContainersType" minOccurs="0"/>
+			<xsd:element name="IGMSubLineNumber" type="PCS-CMN:CustomSubLineNumberType" minOccurs="0"/>
+			<xsd:element name="BillLadingNo" type="PCS-CMN:NameTextType"/>
+			<xsd:element name="BillLadingDate" type="PCS-CMN:DateType"/>
+			<xsd:element name="HouseBillLadingNumber" type="PCS-CMN:NameTextType" minOccurs="0"/>
+			<xsd:element name="HouseBillLadingDate" type="PCS-CMN:DateType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AgentDOSummaryType">
+		<xsd:sequence>
+			<xsd:element name="AgentDODetails" type="AgentDODetailsType" maxOccurs="unbounded"/>
+		</xsd:sequence>
+	</xsd:complexType>
+	<xsd:complexType name="AgentDODetailsType">
+		<xsd:sequence>
+			<xsd:element name="RecordType" type="PCS-CMN:RecordType"/>
+			<xsd:element name="RecordNumber" type="PCS-CMN:RecordNumberType"/>
+			<xsd:element name="NameofConsignee" type="PCS-CMN:VesselNameType"/>
+			<xsd:element name="ConsigneeAddress1" type="PCS-CMN:VesselNameType"/>
+			<xsd:element name="ConsigneeAddress2" type="PCS-CMN:VesselNameType" minOccurs="0"/>
+			<xsd:element name="ConsigneeCity" type="PCS-CMN:StakeholderIDTextType"/>
+			<xsd:element name="ConsigneeState" type="PCS-CMN:StakeholderIDTextType"/>
+			<xsd:element name="PortOfLoading" type="PCS-CMN:PortEquipmentCodeType"/>
+			<xsd:element name="PortOfDischarge" type="PCS-CMN:PortEquipmentCodeType"/>
+			<xsd:element name="Containerised" type="PCS-CMN:BooleanType" minOccurs="0"/>
+			<xsd:element name="ContainerNo" type="PCS-CMN:ContainerNumberType" minOccurs="0"/>
+			<xsd:element name="ContISOCode" type="PCS-CMN:ISOCodeType" minOccurs="0"/>
+			<xsd:element name="CargoDescription" type="PCS-CMN:DescType"/>
+			<xsd:element name="NumberOfPackages" type="PCS-CMN:NoOfPackages" minOccurs="0"/>
+			<xsd:element name="PackageCode" type="PCS-CMN:MessageType" minOccurs="0"/>
+			<xsd:element name="MarksAndNumbers" type="PCS-CMN:AddressDescType"/>
+			<xsd:element name="FreightPaid" type="PCS-CMN:FreightPaid"/>
+			<xsd:element name="ReceiptNumber" type="PCS-CMN:ContainerNumberType" minOccurs="0"/>
+			<xsd:element name="ReceiptDate" type="PCS-CMN:DateType" minOccurs="0"/>
+			<xsd:element name="StampDuty" type="PCS-CMN:FreightPaid"/>
+			<xsd:element name="StampDutyPaidAmount" type="PCS-CMN:BOLStampDutyPaidType" minOccurs="0"/>
+			<xsd:element name="StampDutyPaidDate" type="PCS-CMN:DateType" minOccurs="0"/>
+			<xsd:element name="DeliveryToAgent" type="PCS-CMN:VesselNameType"/>
+			<xsd:element name="AuthCodeOfAgent" type="PCS-CMN:StakeholderIDTextType" minOccurs="0"/>
+			<xsd:element name="CHACode" type="PCS-CMN:StakeholderIDTextType" minOccurs="0"/>
+			<xsd:element name="TotalGrossWeight" type="PCS-CMN:SummerDeadWeightType"/>
+			<xsd:element name="DirectOrTransit" type="PCS-CMN:MessageType" minOccurs="0"/>
+			<xsd:element name="Stage" type="PCS-CMN:MessageType" minOccurs="0"/>
+			<xsd:element name="IECode" type="PCS-CMN:BerthLocationCodeType" minOccurs="0"/>
+		</xsd:sequence>
+	</xsd:complexType>
+</xsd:schema>

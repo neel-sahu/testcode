@@ -1,0 +1,36 @@
+CREATE COMPUTE MODULE INVOIC_TXT_MSG_IN_mailSMSCall
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+--		SET Environment.variables.mailStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS MAILSTARTTIME;');
+--		SET OutputRoot.XMLNSC.emailNotificationReq.emailTo = COALESCE(Environment.Variables.NresultSet2[1].Email_id,Environment.Variables.NresultSet1[1].Email_id);
+--		SET OutputRoot.XMLNSC.emailNotificationReq.emailCc = '';
+--		SET OutputRoot.XMLNSC.emailNotificationReq.emailBcc = '';
+--		SET OutputRoot.XMLNSC.emailNotificationReq.emailReplyTo = '';
+--		SET OutputRoot.XMLNSC.emailNotificationReq.emailFrom = '';
+--		SET OutputRoot.XMLNSC.emailNotificationReq.emailSubject = 'Berth '||COALESCE(Environment.Variables.NresultSet1[1].AllottedBerth,'')||' has been allotted for vessel '||COALESCE(Environment.Variables.NresultSet1[1].VesselName,'')||' by '||COALESCE(Environment.Variables.NresultSet1[1].PortAbbr,'');
+--		SET OutputRoot.XMLNSC.emailNotificationReq.emailBody = 'Dear '|| COALESCE(Environment.Variables.NresultSet1[1].AgentName,'')||',
+--		Your berthing request for vessel '||COALESCE(Environment.Variables.NresultSet1[1].VesselName,'') ||' has been approved by '||COALESCE(Environment.Variables.NresultSet1[1].PortAbbr,'')||'.'||
+--			' Please find below details of the vessel.
+--
+--			Vessel Name: '||COALESCE(Environment.Variables.NresultSet1[1].VesselName,'')||'
+--			IMO No.: '||COALESCE(Environment.Variables.NresultSet1[1].IMONumber,'')||'
+--			VCN: '||COALESCE(Environment.Variables.NresultSet1[1].VCN,'')||'
+--			Terminal Applied for: '||COALESCE(Environment.Variables.NresultSet1[1].TerminalName,'')||'
+--			Submission Date & Time: '||COALESCE(Environment.Variables.NresultSet1[1].SubmissionDateTime,'')||'
+--			Approval Date & Time: '||COALESCE(Environment.Variables.NresultSet1[1].ApprovalDateTime,'')||'
+--
+--			Please visit the PCS website for more details.
+--
+--				Thanks & regards,
+--				Team PCS ';
+--				PROPAGATE TO TERMINAL 'out1';
+--				SET Environment.variables.mailEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS MAILENDTIME;');
+--				SET OutputRoot.XMLNSC.ReqBody.MobileNo = COALESCE(Environment.Variables.NresultSet2[1].Mobile,Environment.Variables.NresultSet1[1].Mobile);
+--				SET OutputRoot.XMLNSC.ReqBody.message = 'Your berthing request for vessel '|| COALESCE(Environment.Variables.NresultSet1[1].VesselName,'')||' has been approved by '|| COALESCE(Environment.Variables.NresultSet1[1].PortAbbr,'')||'. Allotted Berth is '|| COALESCE(Environment.Variables.NresultSet1[1].AllottedBerth,'')||'.
+--
+--				-Team PCS';
+--				PROPAGATE TO TERMINAL 'out2';
+--				SET Environment.variables.SMSStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS SMSSTARTTIME;');
+--				RETURN TRUE;
+			END;
+		END MODULE;

@@ -1,0 +1,56 @@
+CREATE COMPUTE MODULE VESSEL_Get_IFTDGN_Data_failureResponse_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE errorCode CHARACTER;
+		DECLARE errorText CHARACTER;
+		IF (EXISTS(InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException[])) THEN
+			SET errorCode = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException.Number;
+			SET errorText = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException.Text;
+		ELSEIF (EXISTS(InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException[])) THEN
+			SET errorCode = InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException.Number;
+			SET errorText = InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException.Insert[3].Text;
+		ELSEIF (Environment.variables.noResultbyProcedure = TRUE) THEN
+			SET errorCode = 'ERR01';
+			SET errorText = 'No resultset obtained from EDI_GetFormatTypeByRefAndMsg procedure';
+		ELSEIF (EXISTS(InputExceptionList.RecoverableException.RecoverableException.RecoverableException[])) THEN
+			SET errorCode = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.Number;
+			SET errorText = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.Text;
+		ELSE
+			SET errorCode = 'ERR01';
+			SET errorText = 'ESB exception occurred';
+		END IF;
+
+		DECLARE currTime CHARACTER CURRENT_TIMESTAMP;
+		SET currTime = REPLACE(currTime,'TIMESTAMP ','');
+		SET currTime = SUBSTRING(currTime BEFORE '.');
+		SET currTime = SUBSTRING(currTime FROM 2);
+		SET OutputRoot.XMLNSC.MQI_ERRORS.UserExceptionTree.Executiongroup = ExecutionGroupLabel;
+		DECLARE userExcepRef REFERENCE TO OutputRoot.XMLNSC.MQI_ERRORS.UserExceptionTree;
+		SET userExcepRef.Brokername = BrokerName;
+		SET userExcepRef.FlowName = MessageFlowLabel;
+		SET userExcepRef.ErrorCode = errorCode;
+		SET userExcepRef.ErrorText = errorText;
+
+
+		SET OutputRoot.XMLNSC.MQI_ERRORS.TIMESTAMP = currTime;
+
+		SET OutputRoot.XMLNSC.MQI_ERRORS.MsgBody = Environment.variables.request;
+
+		SET OutputRoot.XMLNSC.MQI_ERRORS.ExceptionList = InputExceptionList;
+
+		DECLARE outputBlob BLOB ASBITSTREAM(OutputRoot.XMLNSC, 549,1208);
+		DECLARE outputChar CHARACTER CAST(outputBlob AS CHARACTER CCSID 1208);
+		CALL EDI_InsIIBError(outputChar);
+		-- CALL zzz_EDI_InsIIBError_20190118(outputChar);
+		COMMIT;
+		RETURN TRUE;
+	END;
+	CREATE PROCEDURE EDI_InsIIBError( IN errorXML CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 0
+	EXTERNAL NAME "dbo.EDI_InsIIBError";
+	-- CREATE PROCEDURE zzz_EDI_InsIIBError_20190118( IN errorXML CHARACTER)
+	-- LANGUAGE DATABASE
+	-- DYNAMIC RESULT SETS 0
+	-- EXTERNAL NAME "dbo.zzz_EDI_InsIIBError_20190118";
+END MODULE;

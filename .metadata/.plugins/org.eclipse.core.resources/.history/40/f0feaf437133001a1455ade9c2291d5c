@@ -1,0 +1,325 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BROKER SCHEMA OUTBOUND_TXT_XML
+
+
+CREATE COMPUTE MODULE EDGA_Get_AGNCHG_Data_GetFormatType_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.variables.ediStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS EDISTARTTIME;');
+		SET Environment.variables.txnID = InputRoot.XMLNSC.PCS.Common_Ref;
+		DECLARE MessageName CHARACTER InputRoot.XMLNSC.PCS.Action_In;
+		DECLARE request BLOB ASBITSTREAM(InputRoot.XMLNSC, 549,1208);
+		DECLARE ReplaceCarriageReturn BLOB X'0d0a';
+		SET request = REPLACE(request, ReplaceCarriageReturn);
+		SET Environment.variables.request = CAST(request AS CHARACTER CCSID 1208);
+		SET Environment.variables.dbStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBSTARTTIME;');
+		-- CALL EDI_GetFormatTypeByRefAndMsg(Environment.variables.txnID,MessageName,Environment.Variables.Result[],Environment.Variables.Result56[]);
+	END;
+	-- CREATE PROCEDURE EDI_GetFormatTypeByRefAndMsg( IN TransactionID CHARACTER,IN MessageName CHARACTER)
+	-- LANGUAGE DATABASE
+	-- DYNAMIC RESULT SETS 2
+	-- EXTERNAL NAME "dbo.EDI_GetFormatTypeByRefAndMsg";
+END MODULE;
+--BROKER SCHEMA OUTBOUND_TXT_XML
+
+
+CREATE COMPUTE MODULE EDGA_Get_AGNCHG_Data_textCreation_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		CALL EDI_TGetAGNCHG (Environment.variables.txnID,Environment.Variables.TXTResult1[],Environment.Variables.TXTResult2[],Environment.Variables.TXTResult3[],Environment.Variables.TXTResult4[],Environment.Variables.TXTResult5[]);
+		SET Environment.variables.dbEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBENDTIME;');
+		--UNH
+
+		SET OutputRoot.DFDL.AGNCHG.Header.Values = COALESCE(Environment.Variables.TXTResult1[1].DocumentType,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].DocumentName,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].DocumentNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].CommonRefNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].MessageType,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].SenderID,'');
+		-- SET OutputRoot.DFDL.AGNCHG.UNH.DocumentType = Environment.Variables.TXTResult1[1].DocumentType;
+		-- SET OutputRoot.DFDL.AGNCHG.UNH.DocumentName = Environment.Variables.TXTResult1[1].DocumentName;
+		-- SET OutputRoot.DFDL.AGNCHG.UNH.DocumentNumber = Environment.Variables.TXTResult1[1].DocumentNumber;
+		-- SET OutputRoot.DFDL.AGNCHG.UNH.CommonRefNumber = Environment.Variables.TXTResult1[1].CommonRefNumber;
+		-- SET OutputRoot.DFDL.AGNCHG.UNH.MessageType = Environment.Variables.TXTResult1[1].MessageType;
+		-- SET OutputRoot.DFDL.AGNCHG.UNH.SenderID = Environment.Variables.TXTResult1[1].SenderID;
+		--RPD
+
+		DECLARE RecieveCount INTEGER CARDINALITY (Environment.Variables.TXTResult2[]);
+		DECLARE Recipientlist CHARACTER;
+		DECLARE K INTEGER 1;
+
+		WHILE K <= RecieveCount DO
+			IF K = 1 THEN
+				SET Recipientlist = ''||Environment.Variables.TXTResult2[1].ReceivingParty;
+			ELSE
+				SET Recipientlist = COALESCE(Recipientlist,'')||''||Environment.Variables.TXTResult2[K].ReceivingParty;
+			END IF;
+			SET K=K+1;
+		END WHILE ;
+
+		SET Recipientlist = TRIM(LEADING '' FROM Recipientlist);
+
+		SET OutputRoot.DFDL.AGNCHG.RDP.BodyValues = Recipientlist;
+
+		DECLARE RecieveCountNPD INTEGER CARDINALITY(Environment.Variables.TXTResult3[]);
+		DECLARE RecipientlistNPD CHARACTER;
+		DECLARE T INTEGER 1;
+
+		WHILE T <= RecieveCountNPD DO
+			IF T =1 THEN
+				SET RecipientlistNPD = ''||Environment.Variables.TXTResult3[1].NotifyParty;
+			ELSE
+				SET RecipientlistNPD=COALESCE(RecipientlistNPD,'')||''||Environment.Variables.TXTResult3[T].NotifyParty;
+			END IF;
+			SET T=T+1;
+		END WHILE ;
+
+		SET RecipientlistNPD = TRIM(LEADING '' FROM RecipientlistNPD);
+		IF (LENGTH(RecipientlistNPD) > 0) THEN
+			SET OutputRoot.DFDL.AGNCHG.NPD.BodyValues = RecipientlistNPD;
+		END IF;
+		-- DECLARE countRecord INTEGER 0;
+		-- DECLARE i INTEGER 1;
+		--
+		-- SET countRecord = CARDINALITY(Environment.Variables.TXTResult2[]);
+		--
+		-- WHILE countRecord > 0 DO
+		-- SET OutputRoot.DFDL.AGNCHG.RPD.RecipientsID[i] = Environment.Variables.TXTResult2[i].ReceivingParty ;
+		-- SET i = i + 1;
+		-- SET countRecord = countRecord - 1;
+		-- END WHILE;
+		--
+		-- -- NPD
+		--
+		-- DECLARE countRecord1 INTEGER 0;
+		-- DECLARE j INTEGER 1;
+		--
+		-- SET countRecord1 = CARDINALITY(Environment.Variables.TXTResult3[]);
+		--
+		-- WHILE countRecord1 > 0 DO
+		-- SET OutputRoot.DFDL.AGNCHG.NPD.NotifyPartyIDs[j] = Environment.Variables.TXTResult3[j].NOTIFYPARTY ;
+		-- SET j = j + 1;
+		-- SET countRecord1 = countRecord1 - 1;
+		-- END WHILE;
+		-- FOR PSD
+
+		SET OutputRoot.DFDL.AGNCHG.ACD.ACDValues = COALESCE(CAST(Environment.Variables.TXTResult4[1].IMONumber AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].VesselName AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].VCN AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].ExAgencyFunctionCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].ExAgencyCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].NewAgencyFunctionCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].NewAgencyCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].OwnerProtectAgentCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].AgentChangeDateTime AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].PortCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].Berth AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].TransfereeApproval AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].TransfereeApprovalDateTime AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].OwnerAgentApproval AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].PortAcceptance AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].ReasonForRejection AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].PortAcceptanceDateTime AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].PortAppRejDateTime AS CHARACTER),'');
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.VCN = Environment.Variables.TXTResult4[1].VCN;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.BillNumber = Environment.Variables.TXTResult4[1].BillNumber;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.BankReferenceId = Environment.Variables.TXTResult4[1].BankReferenceId;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.BankTransactionStatus = Environment.Variables.TXTResult4[1].BankTransactionStatus;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.BankTransactionDate = Environment.Variables.TXTResult4[1].BankTransactionDate;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.PDAccountNo = Environment.Variables.TXTResult4[1].PDAccountNo;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.ServiceCategory = Environment.Variables.TXTResult4[1].ServiceCategory;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.GrossAmount = Environment.Variables.TXTResult4[1].GrossAmount;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.TDSAmount = Environment.Variables.TXTResult4[1].TDSAmount;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.NetAmount = Environment.Variables.TXTResult4[1].NetAmount||'';
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.Remarks = Environment.Variables.TXTResult4[1].Remarks;
+		-- FOR UNT
+		SET OutputRoot.DFDL.AGNCHG.trailer.Trailvalues = COALESCE(Environment.Variables.TXTResult5[1].IssuedDateTime,'');
+		--SET OutputRoot.DFDL.AGNCHG.UNT.DocumentCreatedDateandTime = Environment.Variables.TXTResult5[1].IssuedDateTime;
+	END;
+
+
+
+	CREATE PROCEDURE EDI_TGetAGNCHG( IN TransactionID CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 5
+	EXTERNAL NAME "dbo.EDI_TGetAGNCHG";
+END MODULE;
+----BROKER SCHEMA OUTBOUND_TXT_XML
+
+
+CREATE COMPUTE MODULE EDGA_Get_AGNCHG_Data_FileCreation_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.Properties.MessageType ='{}:AGNCHG';
+		SET OutputRoot.Properties.MessageSet ='{JMB_DFDL}';
+		SET OutputRoot.DFDL.AGNCHG = InputRoot.DFDL.AGNCHG;
+		SET OutputLocalEnvironment.Destination.File.Name = 'AGNCHG' || Environment.variables.txnID || '.txt';
+		SET OutputLocalEnvironment.Destination.File.Remote.ServerDirectory = Environment.Variables.TXTResult2[1].SFTP_PATH;
+		SET Environment.variables.fileName = OutputLocalEnvironment.Destination.File.Name;
+		SET Environment.variables.fileDirectory = OutputLocalEnvironment.Destination.File.Remote.ServerDirectory;
+		RETURN TRUE;
+	END;
+END MODULE;
+--BROKER SCHEMA OUTBOUND_TXT_XML
+
+
+CREATE COMPUTE MODULE EDGA_Get_AGNCHG_Data_mailSMSCall_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.variables.mailStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS MAILSTARTTIME;');
+		SET Environment.variables.mailEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS MAILENDTIME;');
+		SET Environment.variables.SMSStartTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS SMSSTARTTIME;');
+	END;
+END MODULE;
+--BROKER SCHEMA OUTBOUND_TXT_XML
+
+
+CREATE COMPUTE MODULE EDGA_Get_AGNCHG_Data_auditDetails_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET Environment.variables.ediEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS EDIENDTIME;');
+		DECLARE ediEndTime CHARACTER CAST(Environment.variables.ediEndTime[1].EDIENDTIME AS CHARACTER);
+		SET ediEndTime = REPLACE(ediEndTime,'TIMESTAMP ','');
+		-- SET ediEndTime = SUBSTRING(mailStartTime BEFORE '.');
+		SET ediEndTime = SUBSTRING(ediEndTime FROM 2 FOR 23);
+
+		DECLARE ediStartTime CHARACTER CAST(Environment.variables.ediStartTime[1].EDISTARTTIME AS CHARACTER);
+		DECLARE mailStartTime CHARACTER CAST(Environment.variables.mailStartTime[1].MAILSTARTTIME AS CHARACTER);
+		DECLARE mailEndTime CHARACTER CAST(Environment.variables.mailEndTime[1].MAILENDTIME AS CHARACTER);
+		DECLARE dbStartTime CHARACTER CAST(Environment.variables.dbStartTime[1].DBSTARTTIME AS CHARACTER);
+		DECLARE dbEndTime CHARACTER CAST(Environment.variables.dbEndTime[1].DBENDTIME AS CHARACTER);
+		DECLARE SMSStartTime CHARACTER CAST(Environment.variables.SMSStartTime[1].SMSSTARTTIME AS CHARACTER);
+
+		SET ediStartTime = REPLACE(ediStartTime,'TIMESTAMP ','');
+		SET ediStartTime = SUBSTRING(ediStartTime FROM 2 FOR 23);
+
+		SET mailStartTime = REPLACE(mailStartTime,'TIMESTAMP ','');
+		SET mailStartTime = SUBSTRING(mailStartTime FROM 2 FOR 23);
+
+		SET mailEndTime = REPLACE(mailEndTime,'TIMESTAMP ','');
+		SET mailEndTime = SUBSTRING(mailEndTime FROM 2 FOR 23);
+
+		SET SMSStartTime = REPLACE(SMSStartTime,'TIMESTAMP ','');
+		SET SMSStartTime = SUBSTRING(SMSStartTime FROM 2 FOR 23);
+
+		SET dbStartTime = REPLACE(dbStartTime,'TIMESTAMP ','');
+		SET dbStartTime = SUBSTRING(dbStartTime FROM 2 FOR 23);
+
+		SET dbEndTime = REPLACE(dbEndTime,'TIMESTAMP ','');
+		SET dbEndTime = SUBSTRING(dbEndTime FROM 2 FOR 23);
+
+		DECLARE messageSender CHARACTER Environment.Variables.TXTResult1[1].SenderID;
+		DECLARE emailId CHARACTER Environment.Variables.TXTResult2[1].Email_id;
+		DECLARE mobileNumber CHARACTER Environment.Variables.TXTResult2[1].Mobile;
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Header.MS_REF_NO = Environment.variables.txnID;
+		DECLARE headerRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Header;
+		SET headerRef.MSG_UID = UUIDASCHAR;
+		SET headerRef.MSG_TYPE = 'AGNCHG_TXT_OUT';
+		SET headerRef.EVENT_NAME = 'Generation';
+
+		SET headerRef.MSG_TIME = ediStartTime;
+		SET headerRef.MSG_SNDR = messageSender;
+		SET headerRef.PORT_CODE = SUBSTRING( Environment.variables.fileDirectory AFTER 'PORTS/');
+		SET headerRef.PORT_CODE = SUBSTRING(headerRef.PORT_CODE BEFORE '/');
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.Message.EDI_START_TS = ediStartTime;
+		DECLARE messageRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.Message;
+		SET messageRef.EDI_END_TS = ediEndTime;
+		SET messageRef.FILE_NAME = Environment.variables.fileName;
+		SET messageRef.EDI_DIRECTORY_INFO = Environment.variables.fileDirectory;
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.Email.MAIL_START_TS = mailStartTime;
+		DECLARE emailRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.Email;
+		SET emailRef.MAILING_ID = emailId;
+		SET emailRef.MAIL_NOTIFICATION_STATUS = 'Not Sent';
+		SET emailRef.MAIL_END_TS = mailEndTime;
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.SMS.SMS_START_TS = SMSStartTime;
+		DECLARE smsRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.SMS;
+		SET smsRef.SMS_NOTIFICATION_NO = mobileNumber;
+		SET smsRef.SMS_NOTIFICATION_STATUS = 'Not Sent';
+
+		SET OutputRoot.XMLNSC.PCS_Audit.Details.Database.DB_SP_START_TS = dbStartTime;
+		DECLARE databaseRef REFERENCE TO OutputRoot.XMLNSC.PCS_Audit.Details.Database;
+		SET databaseRef.DB_SP_END_TS = dbEndTime;
+		SET databaseRef.DB_SP_STATUS = 'S';
+		SET databaseRef.DB_SP_REMARK = 'Executed successfully';
+
+		DECLARE outputBlob BLOB ASBITSTREAM(OutputRoot.XMLNSC, 549,1208);
+		DECLARE outputChar CHARACTER CAST(outputBlob AS CHARACTER CCSID 1208);
+		CALL EDI_InsIIBAudit(outputChar);
+		COMMIT;
+	END;
+	CREATE PROCEDURE EDI_InsIIBAudit( IN auditXML CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 0
+	EXTERNAL NAME "dbo.EDI_InsIIBAudit";
+
+END MODULE;
+--BROKER SCHEMA OUTBOUND_TXT_XML
+
+
+CREATE COMPUTE MODULE EDGA_Get_AGNCHG_Data_FailureResp_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE errorCode CHARACTER;
+		DECLARE errorText CHARACTER;
+		IF (EXISTS(InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException[])) THEN
+			SET errorCode = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException.Number;
+			SET errorText = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.RecoverableException.ParserException.ParserException.Text;
+		ELSEIF (EXISTS(InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException[])) THEN
+			SET errorCode = InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException.Number;
+			SET errorText = InputExceptionList.RecoverableException.DatabaseException.DatabaseException.DatabaseException.Insert[3].Text;
+		ELSEIF (Environment.variables.noResultbyProcedure = TRUE) THEN
+			SET errorCode = 'ERR01';
+			SET errorText = 'No resultset obtained from EDI_GetFormatTypeByRefAndMsg procedure';
+		ELSEIF (EXISTS(InputExceptionList.RecoverableException.RecoverableException.RecoverableException[])) THEN
+			SET errorCode = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.Number;
+			SET errorText = InputExceptionList.RecoverableException.RecoverableException.RecoverableException.Text;
+		ELSE
+			SET errorCode = 'ERR01';
+			SET errorText = 'ESB exception occurred';
+		END IF;
+
+		DECLARE currTime CHARACTER CURRENT_TIMESTAMP;
+		SET currTime = REPLACE(currTime,'TIMESTAMP ','');
+		SET currTime = SUBSTRING(currTime BEFORE '.');
+		SET currTime = SUBSTRING(currTime FROM 2);
+		SET OutputRoot.XMLNSC.MQI_ERRORS.UserExceptionTree.Executiongroup = ExecutionGroupLabel;
+		DECLARE userExcepRef REFERENCE TO OutputRoot.XMLNSC.MQI_ERRORS.UserExceptionTree;
+		SET userExcepRef.Brokername = BrokerName;
+		SET userExcepRef.FlowName = MessageFlowLabel;
+		SET userExcepRef.ErrorCode = errorCode;
+		SET userExcepRef.ErrorText = errorText;
+
+		SET OutputRoot.XMLNSC.MQI_ERRORS.TIMESTAMP = currTime;
+		SET OutputRoot.XMLNSC.MQI_ERRORS.MsgBody = Environment.variables.request;
+		SET OutputRoot.XMLNSC.MQI_ERRORS.ExceptionList = InputExceptionList;
+
+		DECLARE outputBlob BLOB ASBITSTREAM(OutputRoot.XMLNSC, 549,1208);
+		DECLARE outputChar CHARACTER CAST(outputBlob AS CHARACTER CCSID 1208);
+		CALL EDI_InsIIBError(outputChar);
+		COMMIT;
+
+		RETURN TRUE;
+	END;
+	CREATE PROCEDURE EDI_InsIIBError( IN errorXML CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 0
+	EXTERNAL NAME "dbo.EDI_InsIIBError";
+END MODULE;

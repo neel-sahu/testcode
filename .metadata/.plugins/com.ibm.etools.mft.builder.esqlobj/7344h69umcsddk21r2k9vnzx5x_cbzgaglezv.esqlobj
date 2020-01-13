@@ -1,0 +1,122 @@
+CREATE COMPUTE MODULE EDGA_Get_AGNCHG_Data_textCreation_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		CALL EDI_TGetAGNCHG (Environment.variables.txnID,Environment.Variables.TXTResult1[],Environment.Variables.TXTResult2[],Environment.Variables.TXTResult3[],Environment.Variables.TXTResult4[],Environment.Variables.TXTResult5[]);
+		SET Environment.variables.dbEndTime = PASSTHRU('SELECT CURRENT_TIMESTAMP AS DBENDTIME;');
+		--UNH
+
+		SET OutputRoot.DFDL.AGNCHG.Header.Values = COALESCE(Environment.Variables.TXTResult1[1].DocumentType,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].DocumentName,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].DocumentNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].CommonRefNumber,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].MessageType,'')||''||
+		COALESCE(Environment.Variables.TXTResult1[1].SenderID,'');
+		-- SET OutputRoot.DFDL.AGNCHG.UNH.DocumentType = Environment.Variables.TXTResult1[1].DocumentType;
+		-- SET OutputRoot.DFDL.AGNCHG.UNH.DocumentName = Environment.Variables.TXTResult1[1].DocumentName;
+		-- SET OutputRoot.DFDL.AGNCHG.UNH.DocumentNumber = Environment.Variables.TXTResult1[1].DocumentNumber;
+		-- SET OutputRoot.DFDL.AGNCHG.UNH.CommonRefNumber = Environment.Variables.TXTResult1[1].CommonRefNumber;
+		-- SET OutputRoot.DFDL.AGNCHG.UNH.MessageType = Environment.Variables.TXTResult1[1].MessageType;
+		-- SET OutputRoot.DFDL.AGNCHG.UNH.SenderID = Environment.Variables.TXTResult1[1].SenderID;
+		--RPD
+
+		DECLARE RecieveCount INTEGER CARDINALITY (Environment.Variables.TXTResult2[]);
+		DECLARE Recipientlist CHARACTER;
+		DECLARE K INTEGER 1;
+
+		WHILE K <= RecieveCount DO
+			IF K = 1 THEN
+				SET Recipientlist = ''||Environment.Variables.TXTResult2[1].ReceivingParty;
+			ELSE
+				SET Recipientlist = COALESCE(Recipientlist,'')||''||Environment.Variables.TXTResult2[K].ReceivingParty;
+			END IF;
+			SET K=K+1;
+		END WHILE ;
+
+		SET Recipientlist = TRIM(LEADING '' FROM Recipientlist);
+
+		SET OutputRoot.DFDL.AGNCHG.RDP.BodyValues = Recipientlist;
+
+		DECLARE RecieveCountNPD INTEGER CARDINALITY(Environment.Variables.TXTResult3[]);
+		DECLARE RecipientlistNPD CHARACTER;
+		DECLARE T INTEGER 1;
+
+		WHILE T <= RecieveCountNPD DO
+			IF T =1 THEN
+				SET RecipientlistNPD = ''||Environment.Variables.TXTResult3[1].NOTIFYPARTY;
+			ELSE
+				SET RecipientlistNPD=COALESCE(RecipientlistNPD,'')||''||Environment.Variables.TXTResult3[T].NOTIFYPARTY;
+			END IF;
+			SET T=T+1;
+		END WHILE ;
+
+		SET RecipientlistNPD = TRIM(LEADING '' FROM RecipientlistNPD);
+		IF (LENGTH(RecipientlistNPD) > 0) THEN
+			SET OutputRoot.DFDL.AGNCHG.NPD.BodyValues = RecipientlistNPD;
+		END IF;
+		-- DECLARE countRecord INTEGER 0;
+		-- DECLARE i INTEGER 1;
+		--
+		-- SET countRecord = CARDINALITY(Environment.Variables.TXTResult2[]);
+		--
+		-- WHILE countRecord > 0 DO
+		-- SET OutputRoot.DFDL.AGNCHG.RPD.RecipientsID[i] = Environment.Variables.TXTResult2[i].ReceivingParty ;
+		-- SET i = i + 1;
+		-- SET countRecord = countRecord - 1;
+		-- END WHILE;
+		--
+		-- -- NPD
+		--
+		-- DECLARE countRecord1 INTEGER 0;
+		-- DECLARE j INTEGER 1;
+		--
+		-- SET countRecord1 = CARDINALITY(Environment.Variables.TXTResult3[]);
+		--
+		-- WHILE countRecord1 > 0 DO
+		-- SET OutputRoot.DFDL.AGNCHG.NPD.NotifyPartyIDs[j] = Environment.Variables.TXTResult3[j].NOTIFYPARTY ;
+		-- SET j = j + 1;
+		-- SET countRecord1 = countRecord1 - 1;
+		-- END WHILE;
+		-- FOR PSD
+
+		SET OutputRoot.DFDL.AGNCHG.ACD.ACDValues = COALESCE(CAST(Environment.Variables.TXTResult4[1].IMONumber AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].VesselName AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].VCN AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].AgentQualifierCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].AgentCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].TransfereeAgentQualifierCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].TransfereeAgentCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].OwnersProtectingAgentCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].AgentsResponsibilityChangeDateandTime AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].PortCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].BerthCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].TransfereeAgentApprovalRejectStatus AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].TransfereeAgentApprovalRejectDateandTime AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].OwnersProtectingAgentApprovalRejectStatus AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].OwnersProtectingAgentApprovalRejectDateandTime AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].PortCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].PortCode AS CHARACTER),'')||''||
+		COALESCE(CAST(Environment.Variables.TXTResult4[1].PortCode AS CHARACTER),'');
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.VCN = Environment.Variables.TXTResult4[1].VCN;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.BillNumber = Environment.Variables.TXTResult4[1].BillNumber;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.BankReferenceId = Environment.Variables.TXTResult4[1].BankReferenceId;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.BankTransactionStatus = Environment.Variables.TXTResult4[1].BankTransactionStatus;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.BankTransactionDate = Environment.Variables.TXTResult4[1].BankTransactionDate;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.PDAccountNo = Environment.Variables.TXTResult4[1].PDAccountNo;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.ServiceCategory = Environment.Variables.TXTResult4[1].ServiceCategory;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.GrossAmount = Environment.Variables.TXTResult4[1].GrossAmount;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.TDSAmount = Environment.Variables.TXTResult4[1].TDSAmount;
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.NetAmount = Environment.Variables.TXTResult4[1].NetAmount||'';
+		-- SET OutputRoot.DFDL.AGNCHG.PSD.Remarks = Environment.Variables.TXTResult4[1].Remarks;
+		-- FOR UNT
+		SET OutputRoot.DFDL.AGNCHG.trailer.Trailvalues = COALESCE(Environment.Variables.TXTResult5[1].IssuedDateTime,'');
+		--SET OutputRoot.DFDL.AGNCHG.UNT.DocumentCreatedDateandTime = Environment.Variables.TXTResult5[1].IssuedDateTime;
+	END;
+
+
+
+	CREATE PROCEDURE EDI_TGetAGNCHG( IN TransactionID CHARACTER)
+	LANGUAGE DATABASE
+	DYNAMIC RESULT SETS 5
+	EXTERNAL NAME "dbo.EDI_TGetAGNCHG";
+END MODULE;
